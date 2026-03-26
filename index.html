@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoinzoX - Buy & Sell Crypto (Complete Crypto List)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Screenshot Colors & UI */
+        body { background-color: #050a14; color: white; font-family: sans-serif; }
+        .bg-dark-blue { background-color: #0b1426; border: 1px solid #1c2b46; border-radius: 12px; }
+        .input-dark { background-color: #08101d; border: 1px solid #1c2b46; border-radius: 8px; color: #9ca3af; width: 100%; padding: 14px; font-size: 15px; outline: none; }
+        .btn-green { background-color: #16a34a; border-radius: 10px; padding: 14px; font-weight: bold; width: 100%; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .btn-green:active { transform: scale(0.98); }
+        .badge { border: 1px solid #064e3b; color: #10b981; border-radius: 20px; padding: 4px 15px; font-size: 12px; background: rgba(16, 185, 129, 0.05); }
+        .review-box { border: 1px solid #1c2b46; border-radius: 8px; padding: 12px; margin-bottom: 8px; font-size: 14px; }
+        .footer-text { color: #4b5563; font-size: 11px; margin-top: 40px; text-align: center; }
+    </style>
+</head>
+<body class="p-5">
+
+    <div class="text-center mt-6">
+        <h1 class="text-2xl font-bold text-sky-500 px-4">Buy & Sell Crypto in India – USDT, BTC, ETH | CoinzoX</h1>
+        <p class="text-gray-300 text-sm mt-3">Buy & Sell Crypto Instantly 🇮🇳</p>
+        <p class="text-gray-400 text-[11px] mt-8">Fill the form → Get WhatsApp → Complete your transaction securely</p>
+        <div class="flex justify-center gap-2 mt-4">
+            <span class="badge">Fast</span>
+            <span class="badge">Secure</span>
+            <span class="badge">Trusted</span>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto mt-10 space-y-5">
+        <div>
+            <label class="text-[13px] text-gray-400 ml-1">Transaction Type</label>
+            <select id="type" class="input-dark mt-1">
+                <option value="Buy Crypto">Buy Crypto</option>
+                <option value="Sell Crypto">Sell Crypto</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="text-[13px] text-gray-400 ml-1">Select Crypto</label>
+            <select id="crypto" class="input-dark mt-1">
+                <option value="USDT (BEP20)">USDT (BEP20)</option>
+                <option value="USDT (TRC20)">USDT (TRC20)</option>
+                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                <option value="Ethereum (ETH)">Ethereum (ETH)</option>
+                <option value="BNB">BNB</option>
+                <option value="Litecoin">Litecoin</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="text-[13px] text-gray-400 ml-1">Amount (USD)</label>
+            <input type="number" id="amount" placeholder="Minimum $10" class="input-dark mt-1">
+            <p class="text-[10px] text-red-500 mt-1">Minimum order: $10</p>
+            <p class="text-[10px] text-sky-500 mt-1 font-medium">Buy: 1 USD = 310 PKR | Sell: 1 USD = 270 PKR</p>
+        </div>
+
+        <div>
+            <label class="text-[13px] text-gray-400 ml-1">Payment Method</label>
+            <select id="payment" class="input-dark mt-1">
+                <option value="Easypaisa">Easypaisa</option>
+                <option value="JazzCash">JazzCash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+        </div>
+
+        <button onclick="handleOrder()" class="btn-green mt-4">Submit Order</button>
+    </div>
+
+    <div class="max-w-md mx-auto mt-16">
+        <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6">
+            <span class="text-sky-500 text-xl">⚙️</span> How It Works
+        </h2>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-dark-blue p-4 text-center text-sm">Fill Form</div>
+            <div class="bg-dark-blue p-4 text-center text-sm">Get WhatsApp</div>
+            <div class="bg-dark-blue p-4 text-center text-sm">Send Payment</div>
+            <div class="bg-dark-blue p-4 text-center text-sm">Receive Crypto</div>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto mt-14">
+        <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6">
+            <span class="text-sky-500 text-xl">💎</span> Why Choose Us
+        </h2>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-dark-blue p-3 text-center text-sm">Fast</div>
+            <div class="bg-dark-blue p-3 text-center text-sm">Secure</div>
+            <div class="bg-dark-blue p-3 text-center text-sm">Best Rates</div>
+            <div class="bg-dark-blue p-3 text-center text-sm">24/7 Support</div>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto mt-14 pb-10">
+        <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6">
+            <span class="text-yellow-400 text-xl">⭐</span> Client Reviews
+        </h2>
+        <div class="review-box flex justify-between"><span>Aman Yadav ⭐⭐⭐⭐⭐</span> <span>– $20 USDT received</span></div>
+        <div class="review-box flex justify-between"><span>Usman ⭐⭐⭐⭐⭐</span> <span>– $40 smooth deal</span></div>
+        <div class="review-box flex justify-between"><span>Zain ⭐⭐⭐⭐⭐</span> <span>– trusted $70</span></div>
+        <div class="review-box flex justify-between"><span>Abhishek Singh ⭐⭐⭐⭐⭐</span> <span>– fast $15</span></div>
+        <div class="review-box flex justify-between"><span>Vijay Rajput ⭐⭐⭐⭐⭐</span> <span>– best rates $90</span></div>
+
+        <p class="footer-text">After submitting, you will be redirected to WhatsApp for payment.</p>
+        <p class="footer-text mt-2">© 2026 CoinzoX India</p>
+    </div>
+
+    <a href="https://wa.me/917779826401" class="fixed bottom-4 right-4 bg-[#25D366] w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
+        <svg fill="white" width="30" height="30" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+    </a>
+
+    <script>
+        function handleOrder() {
+            const type = document.getElementById('type').value;
+            const crypto = document.getElementById('crypto').value;
+            const amount = document.getElementById('amount').value;
+            const payment = document.getElementById('payment').value;
+            
+            if (!amount || amount < 10) {
+                alert("Please enter a valid amount (Min $10)");
+                return;
+            }
+
+            // Calculation (Rates updated as per previous instructions)
+            const rate = (type === "Buy Crypto") ? 310 : 270;
+            const estimatedPKR = (amount * rate).toLocaleString();
+            
+            // Random Order ID CX + 13 Digits
+            const orderID = "CX" + Math.floor(Math.random() * 9000000000000 + 1000000000000);
+
+            // WhatsApp Message Formatting
+            const msg = `🚀 *CoinzoX India* \n━━━━━━━━━━━━━━\n🆔 Order ID: ${orderID}\n\n📊 *Order Details* \n• Type: ${type}\n• Crypto: ${crypto}\n• Amount: $${amount}\n• Estimated: Rs ${estimatedPKR}\n• Payment: ${payment}\n\n⚠️ Note:\n• You must send full crypto amount\n• Network fee must be paid by sender\n• PKR will be sent after confirmation on blockchain`;
+
+            const whatsappUrl = `https://wa.me/917779826401?text=${encodeURIComponent(msg)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
