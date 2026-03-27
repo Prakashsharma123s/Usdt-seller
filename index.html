@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoinzoX - Secure Exchange</title>
+    <title>CoinzoX - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
@@ -13,42 +13,59 @@
     <style>
         body { background-color: #050a14; color: white; font-family: sans-serif; overflow-x: hidden; }
         .bg-dark-blue { background-color: #0b1426; border: 1px solid #1c2b46; border-radius: 12px; }
-        .wallet-card { background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2); }
+        .wallet-card { 
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); 
+            border-radius: 20px; padding: 25px; 
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+        }
         .input-dark { background-color: #08101d; border: 1px solid #1c2b46; border-radius: 10px; color: white; width: 100%; padding: 14px; outline: none; }
         .btn-green { background-color: #16a34a; border-radius: 12px; padding: 16px; font-weight: bold; width: 100%; font-size: 18px; transition: 0.3s; }
+        .btn-green:active { transform: scale(0.97); }
         .asset-box { background: #0b1426; border: 1px solid #1c2b46; border-radius: 12px; padding: 15px; }
+        .review-box { border: 1px solid #1c2b46; border-radius: 8px; padding: 12px; margin-bottom: 8px; font-size: 14px; }
         .hidden { display: none; }
         
-        /* Sidebar & Modals */
-        #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #08101d; border-right: 1px solid #1c2b46; z-index: 1000; transition: 0.4s; padding: 20px; }
+        #sidebar {
+            position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
+            background: #08101d; border-right: 1px solid #1c2b46;
+            z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        }
         #sidebar.open { left: 0; }
-        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; }
-        #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: #0b1426; border: 1px solid #1c2b46; padding: 30px; border-radius: 20px; width: 90%; max-width: 350px; text-align: center; }
+        .sidebar-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 999;
+        }
+        .nav-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 10px; transition: 0.2s; cursor: pointer; color: #9ca3af; }
+        .nav-item:hover { background: #1c2b46; color: #0ea5e9; }
+
+        #customAlert {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #0b1426; border: 1px solid #1c2b46;
+            padding: 30px; border-radius: 20px;
+            width: 90%; max-width: 350px; text-align: center;
+        }
     </style>
 </head>
-<body>
+<body class="p-5">
 
-    <div id="loginPage" class="flex flex-col items-center justify-center min-h-screen p-6">
-        <div class="w-full max-w-md space-y-8 text-center">
-            <h1 class="text-5xl font-extrabold text-sky-500 italic">CoinzoX</h1>
-            <p class="text-gray-400">Enter phone to access your wallet</p>
-            
-            <div id="recaptcha-container"></div>
-            
-            <div id="phoneInputArea" class="space-y-4">
-                <input type="tel" id="phoneNumber" placeholder="+923XXXXXXXXX" class="input-dark text-center text-xl">
-                <button onclick="sendOTP()" class="btn-green">Send Verification Code</button>
-            </div>
-
-            <div id="otpInputArea" class="hidden space-y-4">
-                <input type="number" id="otpCode" placeholder="Enter 6-digit OTP" class="input-dark text-center text-2xl tracking-[10px]">
-                <button onclick="verifyOTP()" class="btn-green">Verify & Enter Dashboard</button>
-            </div>
+    <div id="loginSection" class="flex flex-col items-center justify-center min-h-screen space-y-8">
+        <h1 class="text-5xl font-bold text-sky-500 italic">CoinzoX</h1>
+        <div id="recaptcha-container"></div>
+        <div id="phoneArea" class="w-full max-w-sm space-y-4">
+            <input type="tel" id="phoneNumber" placeholder="+923XXXXXXXXX" class="input-dark text-center text-xl border-sky-500/30">
+            <button onclick="sendOTP()" class="btn-green">Get OTP Code</button>
+        </div>
+        <div id="otpArea" class="hidden w-full max-w-sm space-y-4">
+            <input type="number" id="otpCode" placeholder="Enter OTP" class="input-dark text-center text-2xl tracking-[10px]">
+            <button onclick="verifyOTP()" class="btn-green">Verify & Login</button>
         </div>
     </div>
 
-    <div id="dashboardPage" class="hidden">
+    <div id="dashboardSection" class="hidden">
         <div id="overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
         <div id="sidebar">
@@ -57,41 +74,58 @@
                 <button onclick="toggleSidebar()" class="text-gray-400 text-2xl">✕</button>
             </div>
             <div class="space-y-2">
-                <p id="userPhoneDisplay" class="text-sky-400 text-xs font-bold mb-4 ml-4 tracking-widest"></p>
-                <div class="p-4 hover:bg-gray-800 rounded-lg cursor-pointer">🏠 Dashboard</div>
-                <div class="p-4 hover:bg-gray-800 rounded-lg cursor-pointer" onclick="addMoney()">💰 Deposit Cash</div>
-                <div class="p-4 hover:bg-red-900/20 text-red-400 rounded-lg cursor-pointer mt-10" onclick="logout()">🚪 Logout</div>
+                <div class="nav-item"><span>🏠</span> Dashboard</div>
+                <div class="nav-item" onclick="addMoney()"><span>💰</span> Deposit Cash</div>
+                <div class="nav-item"><span>📉</span> Trade History</div>
+                <div class="nav-item"><span>🛡️</span> Security</div>
+                <div class="nav-item"><span>🎧</span> Support</div>
+                <div class="nav-item mt-10 text-red-400" onclick="logout()"><span>🚪</span> Logout</div>
             </div>
         </div>
 
-        <div class="flex justify-between items-center p-5 mb-4">
+        <div id="customAlert">
+            <div class="modal-content">
+                <div class="text-red-500 text-5xl mb-4">⚠️</div>
+                <h3 class="text-xl font-bold mb-2">Insufficient Balance</h3>
+                <p class="text-gray-400 text-sm mb-6">Aapke wallet mein balance kam hai. Pehle "Add Cash" par click karke balance badhayein.</p>
+                <button onclick="closeAlert()" class="btn-green py-3 text-sm">Theek Hai</button>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center mb-8 px-2">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="text-2xl">☰</button>
-                <h1 class="text-lg font-bold text-sky-500 leading-none">CoinzoX</h1>
+                <button onclick="toggleSidebar()" class="text-2xl focus:outline-none">☰</button>
+                <div>
+                    <h1 class="text-lg font-bold text-sky-500 leading-none">CoinzoX</h1>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-tighter">Dashboard</p>
+                </div>
             </div>
-            <div class="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center font-bold">U</div>
+            <div class="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center font-bold shadow-lg shadow-sky-500/20">U</div>
         </div>
 
-        <div class="max-w-md mx-auto p-5">
+        <div class="max-w-md mx-auto mb-10">
             <div class="wallet-card text-white">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs opacity-80 font-bold uppercase">Total Balance</p>
+                        <p class="text-xs opacity-80 uppercase tracking-widest font-bold">Total Balance</p>
                         <h2 class="text-4xl font-extrabold mt-1">Rs <span id="pkrBalance">0.00</span></h2>
                     </div>
-                    <button onclick="addMoney()" class="bg-white/20 px-3 py-1 rounded-lg text-xs font-bold border border-white/30">Add Cash</button>
+                    <button onclick="addMoney()" class="bg-white/20 p-2 rounded-lg text-xs font-bold border border-white/30">Add Cash</button>
                 </div>
-                <div class="mt-8 pt-5 border-t border-white/20 flex justify-between items-center">
+                <div class="mt-8 pt-5 border-t border-white/20 flex justify-between">
                     <div>
-                        <p class="text-[10px] opacity-70 font-bold uppercase">Crypto Assets</p>
-                        <p class="text-lg font-bold" id="usdtBalance">0.00 USDT</p>
+                        <p class="text-[10px] opacity-70 uppercase font-bold">Crypto Assets</p>
+                        <p class="text-lg font-bold" id="usdtBalanceDisplay">0.00 USDT</p>
                     </div>
-                    <p class="text-sm font-bold text-green-300">● Active</p>
+                    <div class="text-right">
+                        <p class="text-[10px] opacity-70 uppercase font-bold">Account Status</p>
+                        <p class="text-sm font-bold text-green-300">● Active</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-md mx-auto grid grid-cols-2 gap-3 px-5 mb-8">
+        <div class="max-w-md mx-auto grid grid-cols-2 gap-3 mb-10">
             <div class="asset-box text-center border-orange-500/20 border">
                 <p class="text-[10px] text-gray-400">BTC Portfolio</p>
                 <p class="font-bold text-orange-400">0.00000</p>
@@ -102,33 +136,61 @@
             </div>
         </div>
 
-        <div class="max-w-md mx-auto bg-dark-blue p-6 m-5 space-y-5">
-            <h3 class="text-lg font-bold text-sky-400">Exchange Center</h3>
-            <select id="type" class="input-dark">
-                <option value="Buy Crypto">Buy Crypto (using Wallet)</option>
-                <option value="Sell Crypto">Sell Crypto (to Wallet)</option>
-            </select>
-            <select id="crypto" class="input-dark">
-                <option value="USDT (TRC20)">USDT (TRC20)</option>
-                <option value="USDT (BEP20)">USDT (BEP20)</option>
-                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
-            </select>
-            <input type="number" id="amount" placeholder="Amount (USD) - Min $10" class="input-dark">
-            <button onclick="handleTrade()" class="btn-green">Execute Order</button>
+        <div class="max-w-md mx-auto bg-dark-blue p-6 space-y-5 shadow-2xl">
+            <h3 class="text-lg font-bold text-sky-400 mb-2">Exchange Center</h3>
+            <div>
+                <label class="text-[13px] text-gray-400 ml-1">Action</label>
+                <select id="type" class="input-dark mt-1">
+                    <option value="Buy Crypto">Buy Crypto (using Wallet)</option>
+                    <option value="Sell Crypto">Sell Crypto (to Wallet)</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-[13px] text-gray-400 ml-1">Select Asset</label>
+                <select id="crypto" class="input-dark mt-1">
+                    <option value="USDT (TRC20)">USDT (TRC20)</option>
+                    <option value="USDT (BEP20)">USDT (BEP20)</option>
+                    <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                    <option value="Ethereum (ETH)">Ethereum (ETH)</option>
+                    <option value="BNB">BNB</option>
+                    <option value="Litecoin">Litecoin</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-[13px] text-gray-400 ml-1">Amount (USD)</label>
+                <input type="number" id="amount" placeholder="Min $10" class="input-dark mt-1">
+                <p class="text-[10px] text-sky-500 mt-1">Rate: Buy 310 | Sell 270 PKR</p>
+            </div>
+            <button onclick="handleTrade()" class="btn-green shadow-lg shadow-green-500/20">Execute Order</button>
         </div>
-    </div>
 
-    <div id="customAlert">
-        <div class="modal-content">
-            <div class="text-red-500 text-5xl mb-4">⚠️</div>
-            <h3 class="text-xl font-bold mb-2 text-white">Insufficient Balance</h3>
-            <p class="text-gray-400 text-sm mb-6">Pehle wallet mein paise add karein.</p>
-            <button onclick="closeAlert()" class="btn-green py-3 text-sm">Theek Hai</button>
+        <div class="max-w-md mx-auto mt-16 px-2">
+            <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6 text-gray-300 italic uppercase tracking-widest text-[12px]">How It Works</h2>
+            <div class="grid grid-cols-2 gap-3 text-center">
+                <div class="bg-dark-blue p-4 text-xs">Add Wallet Cash</div>
+                <div class="bg-dark-blue p-4 text-xs">Select Crypto</div>
+                <div class="bg-dark-blue p-4 text-xs">Instant Trade</div>
+                <div class="bg-dark-blue p-4 text-xs">Withdraw Anytime</div>
+            </div>
+        </div>
+
+        <div class="max-w-md mx-auto mt-14 pb-10 px-2">
+            <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6 text-gray-300 italic uppercase tracking-widest text-[12px]">Recent Trades</h2>
+            <div class="review-box flex justify-between items-center bg-dark-blue/30 border-gray-800">
+                <span class="text-gray-300">Ali ⭐⭐⭐⭐⭐</span> 
+                <span class="text-green-400 text-[10px] font-bold">$20 USDT Success</span>
+            </div>
+            <div class="review-box flex justify-between items-center bg-dark-blue/30 border-gray-800">
+                <span class="text-gray-300">Usman ⭐⭐⭐⭐⭐</span> 
+                <span class="text-green-400 text-[10px] font-bold">$40 BNB Success</span>
+            </div>
+            <p class="text-center text-gray-700 text-[10px] mt-10">© 2026 CoinzoX Pakistan</p>
         </div>
     </div>
 
     <script>
-        // --- YOUR CONFIG (FROM SCREENSHOT) ---
+        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
             authDomain: "trusted-usdt-seller.firebaseapp.com",
@@ -142,67 +204,69 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         let confirmationResult;
-        let userData = { balance: 0, usdt: 0 };
+        let wallet = { pkr: 0.00, usdt: 0.00 };
 
-        // 1. AUTH FUNCTIONS
+        // AUTH LOGIC
         function sendOTP() {
             const phone = document.getElementById('phoneNumber').value;
-            if(!phone.includes('+')) return alert("Use format +923XXXXXXXXX");
+            if(!phone.includes('+')) return alert("Use format +923...");
             const appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
             auth.signInWithPhoneNumber(phone, appVerifier).then(result => {
                 confirmationResult = result;
-                document.getElementById('phoneInputArea').classList.add('hidden');
-                document.getElementById('otpInputArea').classList.remove('hidden');
-            }).catch(err => alert("Error: " + err.message));
+                document.getElementById('phoneArea').classList.add('hidden');
+                document.getElementById('otpArea').classList.remove('hidden');
+            }).catch(e => alert(e.message));
         }
 
         function verifyOTP() {
             const code = document.getElementById('otpCode').value;
-            confirmationResult.confirm(code).then(result => setupDashboard(result.user)).catch(() => alert("Wrong OTP!"));
+            confirmationResult.confirm(code).then(result => startApp(result.user)).catch(() => alert("Invalid OTP"));
         }
 
-        // 2. DASHBOARD LOGIC
-        function setupDashboard(user) {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('dashboardPage').classList.remove('hidden');
-            document.getElementById('userPhoneDisplay').innerText = "User: " + user.phoneNumber;
-
-            // Database se real balance fetch karna
+        function startApp(user) {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            
             db.collection("users").doc(user.uid).onSnapshot(doc => {
                 if(doc.exists) {
-                    userData = doc.data();
-                    document.getElementById('pkrBalance').innerText = userData.balance.toLocaleString();
-                    document.getElementById('usdtBalance').innerText = userData.usdt + " USDT";
+                    wallet = doc.data();
+                    document.getElementById('pkrBalance').innerText = (wallet.balance || 0).toLocaleString();
+                    document.getElementById('usdtBalanceDisplay').innerText = (wallet.usdt || 0) + " USDT";
                 } else {
                     db.collection("users").doc(user.uid).set({ balance: 0, usdt: 0, phone: user.phoneNumber });
                 }
             });
         }
 
-        function handleTrade() {
-            const amt = document.getElementById('amount').value;
-            const type = document.getElementById('type').value;
-            const crypto = document.getElementById('crypto').value;
-            
-            if(!amt || amt < 10) return alert("Min $10 required");
-
-            const rate = type.includes("Buy") ? 310 : 270;
-            const cost = amt * rate;
-
-            if(type.includes("Buy") && userData.balance < cost) {
-                document.getElementById('customAlert').style.display = 'flex';
-                return;
-            }
-
-            window.open(`https://wa.me/917779826401?text=Trade: ${type} ${amt} USD ${crypto}`);
+        // ORIGINAL FUNCTIONS
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
         }
 
         function addMoney() {
-            const amt = prompt("Amount in PKR:");
-            if(amt) window.open(`https://wa.me/917779826401?text=Deposit: Rs ${amt}`);
+            const amt = prompt("Enter amount to add (PKR):");
+            if(amt) window.open(`https://wa.me/917779826401?text=Deposit Rs ${amt}`);
         }
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none'; }
+        function handleTrade() {
+            const type = document.getElementById('type').value;
+            const amount = document.getElementById('amount').value;
+            const crypto = document.getElementById('crypto').value;
+            if(!amount || amount < 10) return alert("Min $10");
+
+            const rate = (type.includes("Buy")) ? 310 : 270;
+            const pkrRequired = amount * rate;
+            
+            if(type.includes("Buy") && wallet.balance < pkrRequired) {
+                document.getElementById('customAlert').style.display = 'flex';
+                return;
+            }
+            window.open(`https://wa.me/917779826401?text=Trade: ${type} ${amount} USD`);
+        }
+
         function closeAlert() { document.getElementById('customAlert').style.display = 'none'; }
         function logout() { auth.signOut().then(() => location.reload()); }
     </script>
