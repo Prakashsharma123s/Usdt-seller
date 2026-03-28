@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoinzoX - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>CoinzoX - Dashboard & Trading</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
@@ -11,192 +14,359 @@
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
     <style>
-        body { background-color: #050a14; color: white; font-family: sans-serif; overflow-x: hidden; }
-        .bg-dark-blue { background-color: #0b1426; border: 1px solid #1c2b46; border-radius: 12px; }
-        .wallet-card { 
-            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); 
-            border-radius: 20px; padding: 25px; 
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+        /* --- GLOBAL & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        .input-dark { background-color: #08101d; border: 1px solid #1c2b46; border-radius: 10px; color: white; width: 100%; padding: 14px; outline: none; }
-        .btn-green { background-color: #16a34a; border-radius: 12px; padding: 16px; font-weight: bold; width: 100%; font-size: 18px; transition: 0.3s; cursor: pointer; }
-        .btn-green:active { transform: scale(0.97); }
-        .btn-google { background-color: white; color: #050a14; border-radius: 12px; padding: 14px; font-weight: bold; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; cursor: pointer; }
-        .btn-google:active { transform: scale(0.97); }
-        .asset-box { background: #0b1426; border: 1px solid #1c2b46; border-radius: 12px; padding: 15px; }
-        .review-box { border: 1px solid #1c2b46; border-radius: 8px; padding: 12px; margin-bottom: 8px; font-size: 14px; }
-        .hidden { display: none; }
-        
-        #sidebar {
+
+        body {
+            background: #ffffff;
+            color: #333;
+            transition: background 0.3s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- NEW GREEN LOGIN UI (AS PER YOUR DESIGN) --- */
+        .login-container {
+            width: 100%;
+            height: 100vh;
+            max-width: 420px;
+            margin: auto;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .green-top-banner {
+            background: linear-gradient(135deg, #b6ff7a, #7ee000);
+            height: 240px;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
+            box-shadow: 0 10px 20px rgba(126, 224, 0, 0.2);
+        }
+
+        .login-content-area {
+            padding: 25px;
+            margin-top: -120px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-card-main {
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .login-card-main h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #111;
+        }
+
+        .input-group-custom {
+            margin-bottom: 20px;
+        }
+
+        .input-group-custom input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #f0f0f0;
+            background: #fcfcfc;
+            outline: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-group-custom input:focus {
+            border-color: #7ee000;
+            background: #fff;
+        }
+
+        .btn-continue-green {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 35px;
+            background: linear-gradient(135deg, #b6ff7a, #7ee000);
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(126, 224, 0, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-continue-green:active { transform: scale(0.96); }
+
+        .social-login-section {
+            margin-top: 25px;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 20px;
+        }
+
+        .social-btn-item {
+            width: 100%;
+            padding: 14px;
+            border-radius: 15px;
+            border: 1px solid #ececec;
+            background: #fff;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .social-btn-item:hover { background: #fafafa; }
+        .social-btn-item img { width: 20px; }
+
+        .switch-link {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .switch-link span {
+            color: #7ee000;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- DASHBOARD DARK UI STYLES --- */
+        #dashboardSection {
+            background-color: #050a14;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .bg-card-dark {
+            background-color: #0b1426;
+            border: 1px solid #1c2b46;
+            border-radius: 15px;
+        }
+
+        .wallet-gradient-card { 
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); 
+            border-radius: 25px; 
+            padding: 30px; 
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .dashboard-input {
+            background-color: #08101d;
+            border: 1px solid #1c2b46;
+            border-radius: 12px;
+            color: white;
+            width: 100%;
+            padding: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .dashboard-input:focus { border-color: #0ea5e9; }
+
+        .btn-execute {
+            background-color: #16a34a;
+            border-radius: 15px;
+            padding: 18px;
+            font-weight: bold;
+            width: 100%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(22, 163, 74, 0.2);
+        }
+
+        /* Sidebar Navigation */
+        #sidebarMenu {
             position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
             background: #08101d; border-right: 1px solid #1c2b46;
-            z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 20px;
+            z-index: 1000; transition: 0.4s ease-in-out;
+            padding: 25px;
         }
-        #sidebar.open { left: 0; }
-        .sidebar-overlay {
+        #sidebarMenu.active { left: 0; }
+        
+        .overlay-bg {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 999;
+            background: rgba(0,0,0,0.8); z-index: 999;
         }
-        .nav-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 10px; transition: 0.2s; cursor: pointer; color: #9ca3af; }
-        .nav-item:hover { background: #1c2b46; color: #0ea5e9; }
 
-        #customAlert {
+        /* Custom Alert Modal */
+        #alertModal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;
         }
-        .modal-content {
+        .modal-box {
             background: #0b1426; border: 1px solid #1c2b46;
-            padding: 30px; border-radius: 20px;
-            width: 90%; max-width: 350px; text-align: center;
+            padding: 35px; border-radius: 25px;
+            width: 90%; max-width: 360px; text-align: center;
         }
+
+        .nav-link {
+            display: flex; align-items: center; gap: 15px; padding: 15px;
+            border-radius: 12px; margin-bottom: 5px; color: #9ca3af;
+            cursor: pointer; transition: 0.2s;
+        }
+        .nav-link:hover { background: #1c2b46; color: #0ea5e9; }
     </style>
 </head>
-<body class="p-5">
+<body>
 
-    <div id="loginSection" class="flex flex-col items-center justify-center min-h-screen space-y-8">
-        <div class="text-center">
-            <h1 class="text-5xl font-bold text-sky-500 italic mb-2">CoinzoX</h1>
-            <p class="text-gray-400 text-sm">Safe & Secure Crypto Exchange</p>
-        </div>
-        
-        <div class="w-full max-w-sm p-6 bg-dark-blue border-sky-500/20 border shadow-2xl rounded-2xl">
-            <h2 class="text-xl font-bold mb-6 text-center">Login to Dashboard</h2>
-            <button onclick="loginWithGoogle()" class="btn-google">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-                Continue with Google
-            </button>
-            <p class="text-[10px] text-gray-500 mt-6 text-center leading-relaxed">By continuing, you agree to CoinzoX Terms & Conditions and Privacy Policy.</p>
+    <div id="loginSection" class="login-container">
+        <div class="green-top-banner"></div>
+        <div class="login-content-area">
+            
+            <div id="page-login" class="login-card-main">
+                <h2>Welcome to CoinzoX<br>Login to Continue</h2>
+                <div class="input-group-custom">
+                    <input type="text" placeholder="Phone number (Disabled)" disabled>
+                </div>
+                <button class="btn-continue-green opacity-60">Continue</button>
+                
+                <div class="social-login-section">
+                    <button onclick="handleGoogleLogin()" class="social-btn-item">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google">
+                        Continue with Google
+                    </button>
+                    <button class="social-btn-item">
+                        <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple">
+                        Continue with Apple
+                    </button>
+                </div>
+                
+                <p class="switch-link">Don't have an account? <span onclick="toggleAuthPages('page-signup')">Create account</span></p>
+            </div>
+
+            <div id="page-signup" class="login-card-main hidden">
+                <h2>Join CoinzoX<br>Create Account</h2>
+                <div class="input-group-custom"><input placeholder="Full Name"></div>
+                <div class="input-group-custom"><input placeholder="Email Address"></div>
+                <div class="input-group-custom"><input placeholder="Password" type="password"></div>
+                
+                <button class="btn-continue-green" onclick="handleGoogleLogin()">Sign Up Now</button>
+                <p class="switch-link">Already have an account? <span onclick="toggleAuthPages('page-login')">Login</span></p>
+            </div>
         </div>
     </div>
 
     <div id="dashboardSection" class="hidden">
-        <div id="overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <div id="sidebarOverlay" class="overlay-bg" onclick="toggleSidebar(false)"></div>
 
-        <div id="sidebar">
-            <div class="flex justify-between items-center mb-10">
+        <nav id="sidebarMenu">
+            <div class="flex justify-between items-center mb-12">
                 <h2 class="text-2xl font-bold text-sky-500">CoinzoX</h2>
-                <button onclick="toggleSidebar()" class="text-gray-400 text-2xl">✕</button>
+                <button onclick="toggleSidebar(false)" class="text-gray-400 text-3xl">✕</button>
             </div>
-            <div class="space-y-2">
-                <div class="nav-item"><span>🏠</span> Dashboard</div>
-                <div class="nav-item" onclick="addMoney()"><span>💰</span> Deposit Cash</div>
-                <div class="nav-item"><span>📉</span> Trade History</div>
-                <div class="nav-item"><span>🛡️</span> Security</div>
-                <div class="nav-item"><span>🎧</span> Support</div>
-                <div class="nav-item mt-10 text-red-400" onclick="logout()"><span>🚪</span> Logout</div>
+            <div class="space-y-3">
+                <div class="nav-link"><span>🏠</span> Dashboard</div>
+                <div class="nav-link" onclick="triggerDeposit()"><span>💰</span> Deposit Funds</div>
+                <div class="nav-link"><span>📊</span> Trade History</div>
+                <div class="nav-link"><span>⚙️</span> Settings</div>
+                <div class="nav-link mt-12 text-red-400" onclick="handleLogout()"><span>🚪</span> Logout Account</div>
+            </div>
+        </nav>
+
+        <div id="alertModal">
+            <div class="modal-box">
+                <div class="text-red-500 text-6xl mb-5">⚠️</div>
+                <h3 class="text-2xl font-bold mb-3">Balance Low</h3>
+                <p class="text-gray-400 text-sm mb-8">Aapke account mein kafi balance nahi hai. Trade karne ke liye pehle deposit karein.</p>
+                <button onclick="closeModal()" class="btn-execute py-4 text-base">Deposit Now</button>
             </div>
         </div>
 
-        <div id="customAlert">
-            <div class="modal-content">
-                <div class="text-red-500 text-5xl mb-4">⚠️</div>
-                <h3 class="text-xl font-bold mb-2">Insufficient Balance</h3>
-                <p class="text-gray-400 text-sm mb-6">Aapke wallet mein balance kam hai. Pehle "Add Cash" par click karke balance badhayein.</p>
-                <button onclick="closeAlert()" class="btn-green py-3 text-sm">Theek Hai</button>
-            </div>
-        </div>
-
-        <div class="flex justify-between items-center mb-8 px-2">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="text-2xl focus:outline-none">☰</button>
+        <header class="flex justify-between items-center mb-10 px-2">
+            <div class="flex items-center gap-5">
+                <button onclick="toggleSidebar(true)" class="text-3xl focus:outline-none">☰</button>
                 <div>
-                    <h1 class="text-lg font-bold text-sky-500 leading-none">CoinzoX</h1>
-                    <p class="text-[10px] text-gray-400 uppercase tracking-tighter">Welcome, <span id="userName">User</span></p>
+                    <h1 class="text-xl font-bold text-sky-500 italic">CoinzoX</h1>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest">Active User: <span id="displayUserName">...</span></p>
                 </div>
             </div>
-            <img id="userImg" src="" class="w-10 h-10 rounded-full border-2 border-sky-500 shadow-lg shadow-sky-500/20">
-        </div>
+            <img id="displayUserImg" src="" class="w-12 h-12 rounded-full border-2 border-sky-500 shadow-lg">
+        </header>
 
-        <div class="max-w-md mx-auto mb-10">
-            <div class="wallet-card text-white">
+        <section class="max-w-md mx-auto mb-12">
+            <div class="wallet-gradient-card">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs opacity-80 uppercase tracking-widest font-bold">Total Balance</p>
-                        <h2 class="text-4xl font-extrabold mt-1">Rs <span id="pkrBalance">0.00</span></h2>
+                        <p class="text-xs opacity-80 uppercase tracking-widest font-bold mb-2">Available Balance</p>
+                        <h2 class="text-5xl font-black">Rs <span id="valPkr">0.00</span></h2>
                     </div>
-                    <button onclick="addMoney()" class="bg-white/20 p-2 rounded-lg text-xs font-bold border border-white/30">Add Cash</button>
+                    <button onclick="triggerDeposit()" class="bg-white/20 px-4 py-2 rounded-xl text-xs font-bold border border-white/40">Add Cash</button>
                 </div>
-                <div class="mt-8 pt-5 border-t border-white/20 flex justify-between">
+                <div class="mt-10 pt-6 border-t border-white/20 flex justify-between items-center">
                     <div>
-                        <p class="text-[10px] opacity-70 uppercase font-bold">Crypto Assets</p>
-                        <p class="text-lg font-bold" id="usdtBalanceDisplay">0.00 USDT</p>
+                        <p class="text-[10px] opacity-70 uppercase font-bold">Total USDT</p>
+                        <p class="text-xl font-bold" id="valUsdt">0.00 USDT</p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-[10px] opacity-70 uppercase font-bold">Account Status</p>
-                        <p class="text-sm font-bold text-green-300">● Active</p>
+                    <div class="bg-green-500/20 px-3 py-1 rounded-full border border-green-500/30">
+                        <p class="text-[10px] font-bold text-green-400 uppercase">Verified Account</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="max-w-md mx-auto grid grid-cols-2 gap-3 mb-10">
-            <div class="asset-box text-center border-orange-500/20 border">
-                <p class="text-[10px] text-gray-400">BTC Portfolio</p>
-                <p class="font-bold text-orange-400">0.00000</p>
+        <main class="max-w-md mx-auto bg-card-dark p-8 space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-xl font-bold text-sky-400">Trading Hub</h3>
+                <span class="text-[10px] text-gray-500">Live Rates Applied</span>
             </div>
-            <div class="asset-box text-center border-yellow-500/20 border">
-                <p class="text-[10px] text-gray-400">BNB Portfolio</p>
-                <p class="font-bold text-yellow-400">0.000</p>
-            </div>
-        </div>
-
-        <div class="max-w-md mx-auto bg-dark-blue p-6 space-y-5 shadow-2xl">
-            <h3 class="text-lg font-bold text-sky-400 mb-2">Exchange Center</h3>
+            
             <div>
-                <label class="text-[13px] text-gray-400 ml-1">Action</label>
-                <select id="type" class="input-dark mt-1">
-                    <option value="Buy Crypto">Buy Crypto (using Wallet)</option>
-                    <option value="Sell Crypto">Sell Crypto (to Wallet)</option>
+                <label class="text-xs text-gray-400 ml-1 mb-2 block">Transaction Type</label>
+                <select id="tradeType" class="dashboard-input">
+                    <option value="buy">Buy Crypto Assets</option>
+                    <option value="sell">Sell Crypto Assets</option>
                 </select>
             </div>
-            <div>
-                <label class="text-[13px] text-gray-400 ml-1">Select Asset</label>
-                <select id="crypto" class="input-dark mt-1">
-                    <option value="USDT (TRC20)">USDT (TRC20)</option>
-                    <option value="USDT (BEP20)">USDT (BEP20)</option>
-                    <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
-                    <option value="Ethereum (ETH)">Ethereum (ETH)</option>
-                    <option value="BNB">BNB</option>
-                    <option value="Litecoin">Litecoin</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div>
-                <label class="text-[13px] text-gray-400 ml-1">Amount (USD)</label>
-                <input type="number" id="amount" placeholder="Min $10" class="input-dark mt-1">
-                <p class="text-[10px] text-sky-500 mt-1">Rate: Buy 310 | Sell 270 PKR</p>
-            </div>
-            <button onclick="handleTrade()" class="btn-green shadow-lg shadow-green-500/20">Execute Order</button>
-        </div>
 
-        <div class="max-w-md mx-auto mt-16 px-2">
-            <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6 text-gray-300 italic uppercase tracking-widest text-[12px]">How It Works</h2>
-            <div class="grid grid-cols-2 gap-3 text-center">
-                <div class="bg-dark-blue p-4 text-xs">Add Wallet Cash</div>
-                <div class="bg-dark-blue p-4 text-xs">Select Crypto</div>
-                <div class="bg-dark-blue p-4 text-xs">Instant Trade</div>
-                <div class="bg-dark-blue p-4 text-xs">Withdraw Anytime</div>
+            <div>
+                <label class="text-xs text-gray-400 ml-1 mb-2 block">Investment Amount ($)</label>
+                <input type="number" id="tradeAmount" placeholder="Minimum $10.00" class="dashboard-input">
+                <div class="flex justify-between mt-3 px-1">
+                    <p class="text-[11px] text-sky-500">Buy: 310 PKR</p>
+                    <p class="text-[11px] text-orange-500">Sell: 270 PKR</p>
+                </div>
             </div>
-        </div>
 
-        <div class="max-w-md mx-auto mt-14 pb-10 px-2">
-            <h2 class="text-center text-lg font-semibold flex items-center justify-center gap-2 mb-6 text-gray-300 italic uppercase tracking-widest text-[12px]">Recent Trades</h2>
-            <div class="review-box flex justify-between items-center bg-dark-blue/30 border-gray-800">
-                <span class="text-gray-300">Ali ⭐⭐⭐⭐⭐</span> 
-                <span class="text-green-400 text-[10px] font-bold">$20 USDT Success</span>
+            <button onclick="processTrade()" class="btn-execute">Process Order</button>
+        </main>
+
+        <footer class="max-w-md mx-auto mt-20 pb-12 text-center">
+            <h4 class="text-gray-500 text-[11px] uppercase tracking-widest mb-6">Secured by CoinzoX Cloud</h4>
+            <div class="space-y-3 opacity-60">
+                <div class="bg-card-dark p-4 rounded-xl text-xs flex justify-between">
+                    <span>User_9920...</span> <span class="text-green-400">+$50 USDT SUCCESS</span>
+                </div>
+                <div class="bg-card-dark p-4 rounded-xl text-xs flex justify-between">
+                    <span>User_4412...</span> <span class="text-green-400">+$120 BTC SUCCESS</span>
+                </div>
             </div>
-            <div class="review-box flex justify-between items-center bg-dark-blue/30 border-gray-800">
-                <span class="text-gray-300">Usman ⭐⭐⭐⭐⭐</span> 
-                <span class="text-green-400 text-[10px] font-bold">$40 BNB Success</span>
-            </div>
-            <p class="text-center text-gray-700 text-[10px] mt-10">© 2026 CoinzoX Pakistan</p>
-        </div>
+            <p class="mt-12 text-gray-800 text-[10px]">© 2026 CoinzoX Pakistan Official Platform</p>
+        </footer>
     </div>
 
     <script>
-        // FIREBASE CONFIG (SAME AS YOURS)
-        const firebaseConfig = {
+        // --- 1. FIREBASE CONFIGURATION (STRICTLY FROM SOURCE) ---
+        const config = {
             apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
             authDomain: "trusted-usdt-seller.firebaseapp.com",
             projectId: "trusted-usdt-seller",
@@ -205,75 +375,96 @@
             appId: "1:667426874776:web:2c058a8b06a985e390b7ed"
         };
         
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        let wallet = { balance: 0.00, usdt: 0.00 };
+        firebase.initializeApp(config);
+        const fAuth = firebase.auth();
+        const fDb = firebase.firestore();
+        let currentWallet = { balance: 0, usdt: 0 };
 
-        // GOOGLE LOGIN LOGIC (NEW)
-        function loginWithGoogle() {
+        // --- 2. AUTHENTICATION LOGIC ---
+        function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then(result => {
-                startApp(result.user);
-            }).catch(e => alert("Login Failed: " + e.message));
+            fAuth.signInWithPopup(provider)
+                .then(res => initUserApp(res.user))
+                .catch(err => alert("Auth Failed: " + err.message));
         }
 
-        function startApp(user) {
+        function initUserApp(user) {
+            // Switch UI Sections
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
             
-            // Set user profile data
-            document.getElementById('userName').innerText = user.displayName;
-            document.getElementById('userImg').src = user.photoURL;
+            // Populate User Info
+            document.getElementById('displayUserName').innerText = user.displayName;
+            document.getElementById('displayUserImg').src = user.photoURL;
 
-            // Database sync
-            db.collection("users").doc(user.uid).onSnapshot(doc => {
+            // Live Database Link
+            fDb.collection("users").doc(user.uid).onSnapshot(doc => {
                 if(doc.exists) {
-                    wallet = doc.data();
-                    document.getElementById('pkrBalance').innerText = (wallet.balance || 0).toLocaleString();
-                    document.getElementById('usdtBalanceDisplay').innerText = (wallet.usdt || 0) + " USDT";
+                    currentWallet = doc.data();
+                    document.getElementById('valPkr').innerText = (currentWallet.balance || 0).toLocaleString();
+                    document.getElementById('valUsdt').innerText = (currentWallet.usdt || 0).toFixed(2) + " USDT";
                 } else {
-                    // Create new user in DB
-                    db.collection("users").doc(user.uid).set({ 
-                        balance: 0, 
-                        usdt: 0, 
-                        email: user.email, 
-                        name: user.displayName 
+                    // Create Account Record
+                    fDb.collection("users").doc(user.uid).set({
+                        balance: 0, usdt: 0, email: user.email, name: user.displayName, createdAt: new Date()
                     });
                 }
             });
         }
 
-        // ORIGINAL FUNCTIONS (REMAINED UNCHANGED)
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('open');
-            overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+        // --- 3. DASHBOARD UI FUNCTIONS ---
+        function toggleSidebar(state) {
+            const menu = document.getElementById('sidebarMenu');
+            const overlay = document.getElementById('sidebarOverlay');
+            if(state) {
+                menu.classList.add('active');
+                overlay.style.display = 'block';
+            } else {
+                menu.classList.remove('active');
+                overlay.style.display = 'none';
+            }
         }
 
-        function addMoney() {
-            const amt = prompt("Enter amount to add (PKR):");
-            if(amt) window.open(`https://wa.me/917779826401?text=Deposit Rs ${amt}`);
+        function toggleAuthPages(pageId) {
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-signup').classList.add('hidden');
+            document.getElementById(pageId).classList.remove('hidden');
         }
 
-        function handleTrade() {
-            const type = document.getElementById('type').value;
-            const amount = document.getElementById('amount').value;
-            if(!amount || amount < 10) return alert("Min $10");
+        function triggerDeposit() {
+            const val = prompt("Enter amount to deposit (PKR):");
+            if(val) window.open(`https://wa.me/917779826401?text=Hi, I want to deposit Rs ${val} in my CoinzoX account.`);
+        }
 
-            const rate = (type.includes("Buy")) ? 310 : 270;
-            const pkrRequired = amount * rate;
+        function processTrade() {
+            const amt = document.getElementById('tradeAmount').value;
+            const type = document.getElementById('tradeType').value;
             
-            if(type.includes("Buy") && wallet.balance < pkrRequired) {
-                document.getElementById('customAlert').style.display = 'flex';
+            if(!amt || amt < 10) return alert("Minimum order value is $10.");
+
+            const cost = (type === 'buy') ? amt * 310 : amt * 270;
+
+            if(type === 'buy' && currentWallet.balance < cost) {
+                document.getElementById('alertModal').style.display = 'flex';
                 return;
             }
-            window.open(`https://wa.me/917779826401?text=Trade: ${type} ${amount} USD`);
+            
+            window.open(`https://wa.me/917779826401?text=Trade Request: ${type.toUpperCase()} ${amt} USD Assets.`);
         }
 
-        function closeAlert() { document.getElementById('customAlert').style.display = 'none'; }
-        function logout() { auth.signOut().then(() => location.reload()); }
+        function closeModal() {
+            document.getElementById('alertModal').style.display = 'none';
+            triggerDeposit();
+        }
+
+        function handleLogout() {
+            fAuth.signOut().then(() => location.reload());
+        }
+
+        // --- 4. PERSISTENCE CHECK ---
+        fAuth.onAuthStateChanged(user => {
+            if(user) initUserApp(user);
+        });
     </script>
 </body>
 </html>
