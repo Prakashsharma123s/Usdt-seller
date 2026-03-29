@@ -394,6 +394,7 @@
 
         // NAVIGATION
         function changeView(id) {
+            window.scrollTo(0, 0);
             document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(window.innerWidth < 1000) toggleSidebar();
