@@ -317,59 +317,66 @@
         }
 
         
-        // 1. EXECUTE ORDER FIX (Isse WhatsApp redirect band ho jayega)
-async function processTrade() {
-    const val = parseFloat(document.getElementById('amount').value);
-    const coin = document.getElementById('crypto').value;
-    
-    if(!val || val < 10) return alert("Min order $10 USD");
-    
-    const totalCost = val * RATE_USD;
-    if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
+                // 1. EXECUTE ORDER FIX (Isse WhatsApp redirect band ho jayega)
+        async function processTrade() {
+            const val = parseFloat(document.getElementById('amount').value);
+            const coin = document.getElementById('crypto').value;
+            
+            if(!val || val < 10) return alert("Min order $10 USD");
+            
+            const totalCost = val * RATE_USD;
+            if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
 
-    // Naya data object jo Admin Panel mein turant dikhega
-    const newOrder = { 
-        amt: val, 
-        coin: coin, 
-        date: new Date().toLocaleString('en-GB'), 
-        status: "Processing",
-        timestamp: firebase.firestore.Timestamp.now() 
-    };
-    
-    try {
-        // Database Update: Isse data Admin Panel mein chala jayega
-        await db.collection("users").doc(sessionPhone).update({
-            balance: userStore.balance - totalCost,
-            history: firebase.firestore.FieldValue.arrayUnion(newOrder)
-        });
+            const newOrder = { 
+                amt: val, 
+                coin: coin, 
+                date: new Date().toLocaleString('en-GB'), 
+                status: "Processing",
+                timestamp: firebase.firestore.Timestamp.now() 
+            };
+            
+            try {
+                await db.collection("users").doc(sessionPhone).update({
+                    balance: userStore.balance - totalCost,
+                    history: firebase.firestore.FieldValue.arrayUnion(newOrder)
+                });
 
-        // Sirf success popup dikhayega, WhatsApp nahi khulega
-        document.getElementById('successPopup').style.display = 'flex';
-        document.getElementById('amount').value = "";
-        
-    } catch(e) { 
-        console.error("Error:", e);
-        alert("Transaction failed! Please check connection."); 
-    }
-}
-
-// 2. ADD CASH FIX (WhatsApp redirect sirf yahan hoga)
-function addMoney() {
-    const a = prompt("Kitna Amount Deposit karna hai? (INR):");
-    if(a && !isNaN(a)) {
-        // WhatsApp par redirect sirf tabhi hoga jab user INR add karega
-        window.open(`https://wa.me/917779826401?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet. My Phone: ${sessionPhone}`);
-    } else if(a) {
-        alert("Please enter a valid number!");
-    }
-}
-        
-            const a = prompt("Amount to Deposit (INR):");
-            if(a) window.open(`https://wa.me/917779826401?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet.`);
+                document.getElementById('successPopup').style.display = 'flex';
+                document.getElementById('amount').value = "";
+                
+            } catch(e) { 
+                console.error("Error:", e);
+                alert("Transaction failed! Please check connection."); 
+            }
         }
 
+        // 2. ADD CASH FIX (WhatsApp redirect sirf yahan hoga)
+        function addMoney() {
+            const a = prompt("Kitna Amount Deposit karna hai? (INR):");
+            if(a && !isNaN(a)) {
+                window.open(`https://wa.me/917779826401?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet. My Phone: ${sessionPhone}`);
+            } else if(a) {
+                alert("Please enter a valid number!");
+            }
+        }
+
+        // NAVIGATION
+        function changeView(id) {
+            document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(window.innerWidth < 1000) toggleSidebar();
+        }
+
+        function toggleSidebar() {
+            const s = document.getElementById('sidebar');
+            const o = document.getElementById('overlay');
+            s.classList.toggle('open');
+            if(o) o.style.display = s.classList.contains('open') ? 'block' : 'none';
+        }
+
+        function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
     </script>
 </body>
 </html>
-       
+
        
