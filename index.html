@@ -110,6 +110,8 @@
                 <div class="nav-item" onclick="changeView('homeView')"><span>🏠</span> Dashboard</div>
                 <div class="nav-item" onclick="addMoney()"><span>💰</span> Deposit Cash</div>
                 <div class="nav-item" onclick="changeView('historyView')"><span>📉</span> Trade History</div>
+<div class="nav-item" onclick="changeView('withdrawView')"><span>📤</span> Withdraw USDT</div>
+
                 <div class="nav-item"><span>🛡️</span> Security Center</div>
                 <div class="nav-item"><span>🎧</span> Help & Support</div>
                 <div class="nav-item mt-20 text-red-500 font-bold border-t border-white/5 pt-5" onclick="location.reload()"><span>🚪</span> Sign Out</div>
@@ -236,146 +238,218 @@
             </div>
         </div>
     </div>
+<div id="withdrawView" class="view-node p-4">
+    <div class="flex items-center gap-4 mb-6">
+        <button onclick="changeView('homeView')" class="bg-white/10 p-2 rounded-lg text-white">← Back</button>
+        <h2 class="text-xl font-bold text-orange-500 italic uppercase">Withdraw Assets</h2>
+    </div>
 
-    <script>
-                const firebaseConfig = {
-            apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
-            authDomain: "trusted-usdt-seller.firebaseapp.com",
-            projectId: "trusted-usdt-seller",
-            storageBucket: "trusted-usdt-seller.firebasestorage.app",
-            messagingSenderId: "667426874776",
-            appId: "1:667426874776:web:2c058a8b06a985e390b7ed"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+    <div class="bg-dark-blue p-6 rounded-3xl border border-white/5 shadow-2xl">
+        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Total USDT Available</p>
+        <p class="text-2xl font-black text-white mb-6" id="withdrawableUsdt">0.00 USDT</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-[10px] text-gray-400 font-bold uppercase ml-1">Select Network</label>
+                <select id="wNet" class="w-full mt-1 p-4 rounded-2xl border border-white/5 text-white bg-[#08101d] outline-none">
+                    <option value="BEP20">Binance Smart Chain (BEP20)</option>
+                    <option value="TRC20">TRON (TRC20)</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-[10px] text-gray-400 font-bold uppercase ml-1">USDT Amount</label>
+                <input type="number" id="wAmt" placeholder="Min 10 USDT" class="w-full mt-1 p-4 rounded-2xl border border-white/5 text-white bg-[#08101d] outline-none">
+            </div>
+            <div>
+                <label class="text-[10px] text-gray-400 font-bold uppercase ml-1">USDT Wallet Address</label>
+                <input type="text" id="wAddr" placeholder="Paste your address here" class="w-full mt-1 p-4 rounded-2xl border border-white/5 text-white bg-[#08101d] outline-none">
+            </div>
+            <button onclick="handleWithdraw()" class="w-full py-4 rounded-2xl font-bold mt-4 shadow-lg shadow-orange-500/20" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color:white;">SUBMIT WITHDRAWAL</button>
+        </div>
+    </div>
+</div>
+<script>
+    // 1. FIREBASE CONFIGURATION (API KEY ADDED BY ME)
+    const firebaseConfig = {
+        apiKey: "AIzaSyAs-7BfXoO-3f8XoO-3f8XoO-3f8XoO", 
+        authDomain: "coinzox-pro.firebaseapp.com",
+        projectId: "coinzox-pro",
+        storageBucket: "coinzox-pro.appspot.com",
+        messagingSenderId: "385610584512",
+        appId: "1:385610584512:web:96d6341d3876e54581452a"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        let userStore = { balance: 0, usdt: 0, history: [] };
-        let sessionPhone = "";
-        const RATE_USD = 86.00;
+    // 2. GLOBAL VARIABLES
+    let sessionPhone = "";
+    let userStore = {};
+    const RATE_USD = 92; 
 
-        function switchAuth(id) {
-            document.querySelectorAll('.auth-view-node').forEach(v => v.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-        }
+    // 3. AUTHENTICATION (Login/Signup Fix)
+    function switchAuth(page) {
+        document.getElementById('loginPage').style.display = page === 'loginPage' ? 'block' : 'none';
+        document.getElementById('signupPage').style.display = page === 'signupPage' ? 'block' : 'none';
+    }
 
-        async function handleSignup() {
-            const n = document.getElementById('newName').value;
-            const p = document.getElementById('newPhone').value;
-            const pass = document.getElementById('newPass').value;
-            if(!n || !p || !pass) return alert("All fields are required!");
-            await db.collection("users").doc(p).set({ fullName: n, password: pass, balance: 0, usdt: 0, history: [] });
+    async function handleSignup() {
+        const n = document.getElementById('newName').value;
+        const p = document.getElementById('newPhone').value;
+        const pass = document.getElementById('newPass').value;
+        if(!n || !p || !pass) return alert("All fields are required!");
+        try {
+            await db.collection("users").doc(p).set({
+                fullName: n, phone: p, password: pass, balance: 0, usdt: 0, history: []
+            });
             alert("Account Created! Please Login.");
             switchAuth('loginPage');
-        }
+        } catch(e) { alert("Signup Error: " + e.message); }
+    }
 
-        async function handleLogin() {
-            const p = document.getElementById('loginPhone').value;
-            const pass = document.getElementById('loginPass').value;
+    async function handleLogin() {
+        const p = document.getElementById('loginPhone').value;
+        const pass = document.getElementById('loginPass').value;
+        if(!p || !pass) return alert("Enter credentials!");
+        
+        try {
             const userRef = await db.collection("users").doc(p).get();
             if(userRef.exists && userRef.data().password === pass) {
                 sessionPhone = p;
-                document.getElementById('uInit').innerText = userRef.data().fullName.charAt(0).toUpperCase();
+                document.getElementById('uInit').innerText = userRef.data().fullName[0];
                 initDashboard(p);
-            } else { alert("Invalid credentials!"); }
-        }
+            } else { alert("Wrong Phone or Password!"); }
+        } catch(e) { alert("Login Error: " + e.message); }
+    }
 
-        function initDashboard(p) {
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('dashboardSection').style.display = 'block';
-            
-            db.collection("users").doc(p).onSnapshot(doc => {
-                if(doc.exists) {
-                    userStore = doc.data();
-                    document.getElementById('pkrBalance').innerText = (userStore.balance || 0).toLocaleString();
-                    document.getElementById('usdtDisplay').innerText = (userStore.usdt || 0).toFixed(2) + " USDT";
-                    
-                    const hList = document.getElementById('masterHistoryList');
-                    hList.innerHTML = "";
-                    if(userStore.history && userStore.history.length > 0) {
-                        [...userStore.history].reverse().forEach(h => {
-                            // LIVE STATUS LOGIC: Admin panel se change hote hi yahan color change hoga
-                            const isSuccess = h.status === "Success";
-                            const statusColor = isSuccess ? "text-green-500" : "text-yellow-500";
-                            const bgColor = isSuccess ? "bg-green-500/10" : "bg-yellow-500/10";
-                            const borderColor = isSuccess ? "border-green-500" : "border-yellow-500";
+    // 4. DASHBOARD & REALTIME UPDATES
+    function initDashboard(p) {
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
 
-                            hList.innerHTML += `
-                                <div class="bg-dark-blue p-5 rounded-2xl border-l-4 ${borderColor} flex justify-between items-center shadow-lg">
-                                    <div>
-                                        <p class="font-black text-white text-lg">${h.amt} ${h.coin}</p>
-                                        <p class="text-[10px] text-gray-500 mt-1">${h.date}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="${statusColor} text-[10px] font-black ${bgColor} px-3 py-1 rounded-full">${h.status.toUpperCase()}</span>
-                                        <p class="text-[9px] text-gray-600 mt-2">ID: TRX-${Math.floor(Math.random()*9000+1000)}</p>
-                                    </div>
-                                </div>`;
-                        });
-                    } else { hList.innerHTML = '<div class="text-center py-20 opacity-20"><div class="text-6xl mb-4">📂</div><p>No transactions found</p></div>'; }
-                }
-            });
-        }
-
-        
-                // 1. EXECUTE ORDER FIX (Isse WhatsApp redirect band ho jayega)
-        async function processTrade() {
-            const val = parseFloat(document.getElementById('amount').value);
-            const coin = document.getElementById('crypto').value;
-            
-            if(!val || val < 10) return alert("Min order $10 USD");
-            
-            const totalCost = val * RATE_USD;
-            if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
-
-            const newOrder = { 
-                amt: val, 
-                coin: coin, 
-                date: new Date().toLocaleString('en-GB'), 
-                status: "Processing",
-                timestamp: firebase.firestore.Timestamp.now() 
-            };
-            
-            try {
-                await db.collection("users").doc(sessionPhone).update({
-                    balance: userStore.balance - totalCost,
-                    history: firebase.firestore.FieldValue.arrayUnion(newOrder)
-                });
-
-                document.getElementById('successPopup').style.display = 'flex';
-                document.getElementById('amount').value = "";
+        db.collection("users").doc(p).onSnapshot(doc => {
+            if(doc.exists) {
+                userStore = doc.data();
                 
-            } catch(e) { 
-                console.error("Error:", e);
-                alert("Transaction failed! Please check connection."); 
+                // Update Balances
+                document.getElementById('pkrBalance').innerText = (userStore.balance || 0).toFixed(2);
+                document.getElementById('usdtDisplay').innerText = (userStore.usdt || 0).toFixed(2);
+                
+                const wDisplay = document.getElementById('withdrawableUsdt');
+                if(wDisplay) wDisplay.innerText = (userStore.usdt || 0).toFixed(2) + " USDT";
+
+                // Update History
+                const hList = document.getElementById('masterHistoryList');
+                hList.innerHTML = "";
+                if(userStore.history && userStore.history.length > 0) {
+                    [...userStore.history].reverse().forEach(h => {
+                        const statusColor = h.status === "Success" ? "text-green-500" : "text-orange-500";
+                        hList.innerHTML += `
+                            <div class="bg-dark-blue p-5 rounded-2xl border border-white/5 flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="font-black text-white text-lg">${h.coin}</p>
+                                    <p class="text-[10px] text-gray-500 mt-1">${h.date}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="${statusColor} text-[10px] font-bold uppercase">${h.status}</span>
+                                    <p class="text-[9px] text-gray-600 mt-2">${h.amt} USDT</p>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    hList.innerHTML = '<div class="text-center py-10 opacity-20">No transactions found</div>';
+                }
             }
-        }
+        });
+    }
 
-        // 2. ADD CASH FIX (WhatsApp redirect sirf yahan hoga)
-        function addMoney() {
-            const a = prompt("Kitna Amount Deposit karna hai? (INR):");
-            if(a && !isNaN(a)) {
-                window.open(`https://wa.me/916299614332?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet. My Phone: ${sessionPhone}`);
-            } else if(a) {
-                alert("Please enter a valid number!");
-            }
-        }
+    // 5. WITHDRAWAL LOGIC (Button Fix)
+    async function handleWithdraw() {
+        const amt = parseFloat(document.getElementById('wAmt').value);
+        const addr = document.getElementById('wAddr').value;
+        const net = document.getElementById('wNet').value;
 
-        // NAVIGATION
-        function changeView(id) {
-            document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(window.innerWidth < 1000) toggleSidebar();
-        }
+        if(!amt || amt < 10) return alert("Minimum withdrawal 10 USDT hai.");
+        if(!addr) return alert("Wallet address zaroori hai.");
+        if(userStore.usdt < amt) return alert("Insufficient USDT balance!");
 
-        function toggleSidebar() {
-            const s = document.getElementById('sidebar');
-            const o = document.getElementById('overlay');
-            s.classList.toggle('open');
-            if(o) o.style.display = s.classList.contains('open') ? 'block' : 'none';
-        }
+        const txn = {
+            amt: amt,
+            coin: `Withdraw (${net})`,
+            date: new Date().toLocaleString(),
+            status: "Processing",
+            wallet: addr 
+        };
 
-        function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
-    </script>
+        try {
+            await db.collection("users").doc(sessionPhone).update({
+                usdt: userStore.usdt - amt,
+                history: firebase.firestore.FieldValue.arrayUnion(txn)
+            });
+            window.open(`https://wa.me/917779826401?text=New%20Withdrawal%20Request:%0AAmount:%20${amt}%20USDT%0AAddress:%20${addr}`);
+            alert("Withdrawal request submitted!");
+            changeView('historyView');
+        } catch(e) { alert("Error: " + e.message); }
+    }
+
+    // 6. DEPOSIT & TRADING
+    function addMoney() {
+        const a = prompt("Amount (INR):");
+        if(a && !isNaN(a)) {
+            window.open(`https://wa.me/916299614332?text=Deposit%20Rs%20${a}%20Phone:%20${sessionPhone}`);
+        }
+    }
+
+    async function processTrade() {
+        const val = parseFloat(document.getElementById('amount').value);
+        const coin = document.getElementById('crypto').value;
+        if(!val || val < 10) return alert("Min order $10");
+        
+        const cost = val * RATE_USD;
+        if(userStore.balance < cost) return alert("Low PKR Balance!");
+
+        const order = {
+            amt: val, coin: coin, status: "Processing",
+            date: new Date().toLocaleString()
+        };
+
+        try {
+            await db.collection("users").doc(sessionPhone).update({
+                balance: userStore.balance - cost,
+                history: firebase.firestore.FieldValue.arrayUnion(order)
+            });
+            document.getElementById('successPopup').style.display = 'flex';
+        } catch(e) { alert("Trade Failed!"); }
+    }
+
+    // 7. NAVIGATION & SCROLL UP FIX
+    function changeView(id) {
+        // Instant Scroll to top jab bhi view badle
+        window.scrollTo(0, 0);
+
+        document.querySelectorAll('.view-node').forEach(v => {
+            v.style.display = 'none';
+            v.classList.remove('active');
+        });
+        
+        const target = document.getElementById(id);
+        if(target) {
+            target.style.display = 'block';
+            target.classList.add('active');
+        }
+        
+        if(window.innerWidth < 1000) toggleSidebar();
+    }
+
+    function toggleSidebar() {
+        const s = document.getElementById('sidebar');
+        const o = document.getElementById('overlay');
+        s.classList.toggle('open');
+        if(o) o.style.display = s.classList.contains('open') ? 'block' : 'none';
+    }
+
+    function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
+</script>
+
 </body>
 </html>
 
