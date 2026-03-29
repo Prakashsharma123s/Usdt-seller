@@ -238,7 +238,37 @@
             </div>
         </div>
     </div>
+<div id="withdrawView" class="view-node p-4">
+    <div class="flex items-center gap-4 mb-10">
+        <button onclick="changeView('homeView')" class="bg-dark-blue px-4 py-2 rounded-xl text-sky-500 font-bold">← BACK</button>
+        <h2 class="text-2xl font-black italic">WITHDRAW ASSETS</h2>
+    </div>
+    
+    <div class="bg-dark-blue p-6 rounded-3xl border border-white/5 mb-6">
+        <p class="text-gray-400 text-sm mb-1">Total USDT Available</p>
+        <h3 id="withdrawableUsdt" class="text-3xl font-black text-white">0.00 USDT</h3>
+    </div>
 
+    <div class="space-y-4">
+        <div>
+            <label class="text-[10px] text-gray-500 ml-2 uppercase font-bold">Select Network</label>
+            <select id="wNet" class="input-dark mt-1">
+                <option value="BEP20">Binance Smart Chain (BEP20)</option>
+                <option value="TRC20">Tron (TRC20)</option>
+            </select>
+        </div>
+        <div>
+            <label class="text-[10px] text-gray-500 ml-2 uppercase font-bold">USDT Amount</label>
+            <input id="wAmt" type="number" placeholder="Min 10 USDT" class="input-dark mt-1">
+        </div>
+        <div>
+            <label class="text-[10px] text-gray-500 ml-2 uppercase font-bold">USDT Wallet Address</label>
+            <input id="wAddr" type="text" placeholder="0x..." class="input-dark mt-1">
+        </div>
+        <button onclick="handleWithdraw()" class="btn-green mt-4">SUBMIT WITHDRAWAL</button>
+    </div>
+</div>
+    
     <script>
                 const firebaseConfig = {
             apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
