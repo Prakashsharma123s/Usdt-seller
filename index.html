@@ -81,7 +81,7 @@
                         <div class="auth-input"><input type="text" id="loginPhone" placeholder="Phone Number"></div>
                         <div class="auth-input"><input type="password" id="loginPass" placeholder="Password"></div>
                         <button class="auth-btn" onclick="handleLogin()">Login to Dashboard</button>
-                        <div class="auth-link">Don't have account? <span onclick="switchAuth('signupPage')">Create Account</span></div>
+                        <div class="auth-link">Naya account banana hai? <span onclick="switchAuth('signupPage')">Create Account</span></div>
                     </div>
                 </div>
                 <div id="signupPage" class="auth-view-node" style="display:none;">
@@ -238,7 +238,7 @@
     </div>
 
     <script>
-        const firebaseConfig = {
+                const firebaseConfig = {
             apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
             authDomain: "trusted-usdt-seller.firebaseapp.com",
             projectId: "trusted-usdt-seller",
@@ -253,7 +253,6 @@
         let sessionPhone = "";
         const RATE_USD = 86.00;
 
-        // AUTH LOGIC
         function switchAuth(id) {
             document.querySelectorAll('.auth-view-node').forEach(v => v.style.display = 'none');
             document.getElementById(id).style.display = 'block';
@@ -264,10 +263,7 @@
             const p = document.getElementById('newPhone').value;
             const pass = document.getElementById('newPass').value;
             if(!n || !p || !pass) return alert("All fields are required!");
-            
-            await db.collection("users").doc(p).set({
-                fullName: n, password: pass, balance: 0, usdt: 0, history: []
-            });
+            await db.collection("users").doc(p).set({ fullName: n, password: pass, balance: 0, usdt: 0, history: [] });
             alert("Account Created! Please Login.");
             switchAuth('loginPage');
         }
@@ -276,7 +272,6 @@
             const p = document.getElementById('loginPhone').value;
             const pass = document.getElementById('loginPass').value;
             const userRef = await db.collection("users").doc(p).get();
-            
             if(userRef.exists && userRef.data().password === pass) {
                 sessionPhone = p;
                 document.getElementById('uInit').innerText = userRef.data().fullName.charAt(0).toUpperCase();
@@ -298,15 +293,21 @@
                     hList.innerHTML = "";
                     if(userStore.history && userStore.history.length > 0) {
                         [...userStore.history].reverse().forEach(h => {
+                            // LIVE STATUS LOGIC: Admin panel se change hote hi yahan color change hoga
+                            const isSuccess = h.status === "Success";
+                            const statusColor = isSuccess ? "text-green-500" : "text-yellow-500";
+                            const bgColor = isSuccess ? "bg-green-500/10" : "bg-yellow-500/10";
+                            const borderColor = isSuccess ? "border-green-500" : "border-yellow-500";
+
                             hList.innerHTML += `
-                                <div class="bg-dark-blue p-5 rounded-2xl border-l-4 border-yellow-500 flex justify-between items-center shadow-lg">
+                                <div class="bg-dark-blue p-5 rounded-2xl border-l-4 ${borderColor} flex justify-between items-center shadow-lg">
                                     <div>
                                         <p class="font-black text-white text-lg">${h.amt} ${h.coin}</p>
                                         <p class="text-[10px] text-gray-500 mt-1">${h.date}</p>
                                     </div>
                                     <div class="text-right">
-                                        <span class="text-yellow-500 text-[10px] font-black bg-yellow-500/10 px-3 py-1 rounded-full">PROCESSING</span>
-                                        <p class="text-[9px] text-gray-600 mt-2">ID: TRX-${Math.floor(Math.random()*9000)}</p>
+                                        <span class="${statusColor} text-[10px] font-black ${bgColor} px-3 py-1 rounded-full">${h.status.toUpperCase()}</span>
+                                        <p class="text-[9px] text-gray-600 mt-2">ID: TRX-${Math.floor(Math.random()*9000+1000)}</p>
                                     </div>
                                 </div>`;
                         });
@@ -315,6 +316,7 @@
             });
         }
 
+        
         async function processTrade() {
             const val = parseFloat(document.getElementById('amount').value);
             const coin = document.getElementById('crypto').value;
@@ -323,18 +325,20 @@
             const totalCost = val * RATE_USD;
             if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
 
+            // Initial status "Processing" rahega
             const newHistory = { amt: val, coin: coin, date: new Date().toLocaleString(), status: "Processing" };
             
-                   await db.collection("users").doc(sessionPhone).update({
-                balance: userStore.balance - totalCost,
-                history: firebase.firestore.FieldValue.arrayUnion(newHistory)
-            });
-
-            document.getElementById('successPopup').style.display = 'flex';
-            document.getElementById('amount').value = "";
+            try {
+                await db.collection("users").doc(sessionPhone).update({
+                    balance: userStore.balance - totalCost,
+                    history: firebase.firestore.FieldValue.arrayUnion(newHistory)
+                });
+                window.open(`https://wa.me/917779826401?text=New Order: ${val} USD`);
+                document.getElementById('successPopup').style.display = 'flex';
+                document.getElementById('amount').value = "";
+            } catch(e) { alert("Update failed!"); }
         }
 
-        // NAVIGATION
         function changeView(id) {
             document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -352,8 +356,9 @@
         
         function addMoney() {
             const a = prompt("Amount to Deposit (INR):");
-            if(a) window.open(`https://wa.me/916299614332?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet.`);
+            if(a) window.open(`https://wa.me/917779826401?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet.`);
         }
+
     </script>
 </body>
 </html>
