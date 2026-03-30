@@ -290,26 +290,30 @@
             document.getElementById(id).style.display = 'block';
         }
 
-        async function handleSignup() {
-            const n = document.getElementById('newName').value;
-            const p = document.getElementById('newPhone').value;
-            const pass = document.getElementById('newPass').value;
-            if(!n || !p || !pass) return alert("All fields are required!");
-            await db.collection("users").doc(p).set({ fullName: n, password: pass, balance: 0, usdt: 0, history: [] });
-            alert("Account Created! Please Login.");
-            switchAuth('loginPage');
-        }
-
         async function handleLogin() {
-            const p = document.getElementById('loginPhone').value;
-            const pass = document.getElementById('loginPass').value;
-            const userRef = await db.collection("users").doc(p).get();
-            if(userRef.exists && userRef.data().password === pass) {
-                sessionPhone = p;
-                document.getElementById('uInit').innerText = userRef.data().fullName.charAt(0).toUpperCase();
-                initDashboard(p);
-            } else { alert("Invalid credentials!"); }
+    const p = document.getElementById('loginPhone').value;
+    const pass = document.getElementById('loginPass').value;
+    
+    try {
+        const userRef = await db.collection("users").doc(p).get();
+        if(userRef.exists && userRef.data().password === pass) {
+            sessionPhone = p;
+            document.getElementById('uInit').innerText = userRef.data().fullName.charAt(0).toUpperCase();
+            
+            // Login ke baad ye 2 lines zaroori hain
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            
+            initDashboard(p);
+            changeView('homeView'); // Dashboard load hote hi home view dikhao
+        } else { 
+            alert("Invalid credentials!"); 
         }
+    } catch(e) {
+        alert("Login Error: " + e.message);
+    }
+        }
+        
 
         function initDashboard(p) {
             document.getElementById('authSection').style.display = 'none';
