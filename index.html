@@ -394,21 +394,37 @@
 
         // NAVIGATION
         function changeView(id) {
-            window.scrollTo(0, 0);
-            document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(window.innerWidth < 1000) toggleSidebar();
-        }
+    // 1. Screen ko ekdum upar bhejo
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0; // Safari ke liye
+    document.documentElement.scrollTop = 0; // Chrome/Firefox ke liye
 
-        function toggleSidebar() {
-            const s = document.getElementById('sidebar');
-            const o = document.getElementById('overlay');
-            s.classList.toggle('open');
-            if(o) o.style.display = s.classList.contains('open') ? 'block' : 'none';
-        }
+    // 2. Saare pages ko hide karo
+    const views = document.querySelectorAll('.view-node');
+    views.forEach(v => {
+        v.style.display = 'none';
+        v.classList.remove('active');
+    });
 
-        function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
-    </script>
+    // 3. Sirf selected page ko dikhao
+    const target = document.getElementById(id);
+    if (target) {
+        target.style.display = 'block';
+        // Choti si delay taaki browser rendering sahi se kare
+        setTimeout(() => {
+            target.classList.add('active');
+        }, 10);
+    }
+
+    // 4. Sidebar band karo (Mobile ke liye)
+    if(window.innerWidth < 1000) {
+        const s = document.getElementById('sidebar');
+        const o = document.getElementById('overlay');
+        if(s) s.classList.remove('open');
+        if(o) o.style.display = 'none';
+    }
+        }
+        
 </body>
 </html>
 
