@@ -110,8 +110,6 @@
                 <div class="nav-item" onclick="changeView('homeView')"><span>🏠</span> Dashboard</div>
                 <div class="nav-item" onclick="addMoney()"><span>💰</span> Deposit Cash</div>
                 <div class="nav-item" onclick="changeView('historyView')"><span>📉</span> Trade History</div>
-                <div class="nav-item" onclick="changeView('withdrawView')"><span>📤</span> Withdraw USDT</div>
-                
                 <div class="nav-item"><span>🛡️</span> Security Center</div>
                 <div class="nav-item"><span>🎧</span> Help & Support</div>
                 <div class="nav-item mt-20 text-red-500 font-bold border-t border-white/5 pt-5" onclick="location.reload()"><span>🚪</span> Sign Out</div>
@@ -238,37 +236,7 @@
             </div>
         </div>
     </div>
-<div id="withdrawView" class="view-node p-4">
-    <div class="flex items-center gap-4 mb-10">
-        <button onclick="changeView('homeView')" class="bg-dark-blue px-4 py-2 rounded-xl text-sky-500 font-bold">← BACK</button>
-        <h2 class="text-2xl font-black italic">WITHDRAW ASSETS</h2>
-    </div>
-    
-    <div class="bg-dark-blue p-6 rounded-3xl border border-white/5 mb-6">
-        <p class="text-gray-400 text-sm mb-1">Total USDT Available</p>
-        <h3 id="withdrawableUsdt" class="text-3xl font-black text-white">0.00 USDT</h3>
-    </div>
 
-    <div class="space-y-4">
-        <div>
-            <label class="text-[10px] text-gray-500 ml-2 uppercase font-bold">Select Network</label>
-            <select id="wNet" class="input-dark mt-1">
-                <option value="BEP20">Binance Smart Chain (BEP20)</option>
-                <option value="TRC20">Tron (TRC20)</option>
-            </select>
-        </div>
-        <div>
-            <label class="text-[10px] text-gray-500 ml-2 uppercase font-bold">USDT Amount</label>
-            <input id="wAmt" type="number" placeholder="Min 10 USDT" class="input-dark mt-1">
-        </div>
-        <div>
-            <label class="text-[10px] text-gray-500 ml-2 uppercase font-bold">USDT Wallet Address</label>
-            <input id="wAddr" type="text" placeholder="0x..." class="input-dark mt-1">
-        </div>
-        <button onclick="handleWithdraw()" class="btn-green mt-4">SUBMIT WITHDRAWAL</button>
-    </div>
-</div>
-    
     <script>
                 const firebaseConfig = {
             apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
@@ -290,30 +258,26 @@
             document.getElementById(id).style.display = 'block';
         }
 
+        async function handleSignup() {
+            const n = document.getElementById('newName').value;
+            const p = document.getElementById('newPhone').value;
+            const pass = document.getElementById('newPass').value;
+            if(!n || !p || !pass) return alert("All fields are required!");
+            await db.collection("users").doc(p).set({ fullName: n, password: pass, balance: 0, usdt: 0, history: [] });
+            alert("Account Created! Please Login.");
+            switchAuth('loginPage');
+        }
+
         async function handleLogin() {
-    const p = document.getElementById('loginPhone').value;
-    const pass = document.getElementById('loginPass').value;
-    
-    try {
-        const userRef = await db.collection("users").doc(p).get();
-        if(userRef.exists && userRef.data().password === pass) {
-            sessionPhone = p;
-            document.getElementById('uInit').innerText = userRef.data().fullName.charAt(0).toUpperCase();
-            
-            // Login ke baad ye 2 lines zaroori hain
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('dashboardSection').style.display = 'block';
-            
-            initDashboard(p);
-            changeView('homeView'); // Dashboard load hote hi home view dikhao
-        } else { 
-            alert("Invalid credentials!"); 
+            const p = document.getElementById('loginPhone').value;
+            const pass = document.getElementById('loginPass').value;
+            const userRef = await db.collection("users").doc(p).get();
+            if(userRef.exists && userRef.data().password === pass) {
+                sessionPhone = p;
+                document.getElementById('uInit').innerText = userRef.data().fullName.charAt(0).toUpperCase();
+                initDashboard(p);
+            } else { alert("Invalid credentials!"); }
         }
-    } catch(e) {
-        alert("Login Error: " + e.message);
-    }
-        }
-        
 
         function initDashboard(p) {
             document.getElementById('authSection').style.display = 'none';
@@ -398,39 +362,21 @@
 
         // NAVIGATION
         function changeView(id) {
-    // 1. Screen ko ekdum upar bhejo
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0; // Safari ke liye
-    document.documentElement.scrollTop = 0; // Chrome/Firefox ke liye
-
-    // 2. Saare pages ko hide karo
-    const views = document.querySelectorAll('.view-node');
-    views.forEach(v => {
-        v.style.display = 'none';
-        v.classList.remove('active');
-    });
-
-    // 3. Sirf selected page ko dikhao
-    const target = document.getElementById(id);
-    if (target) {
-        target.style.display = 'block';
-        // Choti si delay taaki browser rendering sahi se kare
-        setTimeout(() => {
-            target.classList.add('active');
-        }, 10);
-    }
-
-    // 4. Sidebar band karo (Mobile ke liye)
-    if(window.innerWidth < 1000) {
-        const s = document.getElementById('sidebar');
-        const o = document.getElementById('overlay');
-        if(s) s.classList.remove('open');
-        if(o) o.style.display = 'none';
-    }
+            document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(window.innerWidth < 1000) toggleSidebar();
         }
-        
+
+        function toggleSidebar() {
+            const s = document.getElementById('sidebar');
+            const o = document.getElementById('overlay');
+            s.classList.toggle('open');
+            if(o) o.style.display = s.classList.contains('open') ? 'block' : 'none';
+        }
+
+        function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
+    </script>
 </body>
 </html>
 
        
-            
