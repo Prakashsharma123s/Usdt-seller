@@ -70,6 +70,26 @@
             <button onclick="closePopup()" class="btn-green py-3 text-base">Theek Hai</button>
         </div>
     </div>
+<div id="withdrawPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
+    
+    <div style="background:#0b1426; padding:30px; border-radius:20px; text-align:center; max-width:300px; width:100%;">
+        
+        <div style="font-size:50px; color:#22c55e;">✓</div>
+        
+        <h3 style="font-size:22px; font-weight:bold; margin-top:10px;">
+            Withdrawal Submitted
+        </h3>
+        
+        <p style="font-size:13px; color:#aaa; margin-top:10px;">
+            Your withdrawal request has been successfully submitted.
+        </p>
+
+        <button onclick="closeWithdrawPopup()" class="btn-green" style="margin-top:20px;">
+            OK
+        </button>
+
+    </div>
+</div>
 
     <div id="authSection">
         <div class="app-view">
@@ -158,12 +178,13 @@
 
             <div class="max-w-md mx-auto bg-dark-blue p-7 space-y-6 shadow-2xl mb-12 border border-white/5">
                 <h3 class="text-xl font-bold text-sky-400 border-b border-white/5 pb-3">Exchange Terminal</h3>
+<div id="buyForm">
                 
                 <div>
                     <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Trade Action</label>
                     <select id="type" class="input-dark mt-1">
                         <option value="Buy Crypto">Buy Crypto (using Wallet)</option>
-                        <option value="Sell Crypto">Sell Crypto</option>
+<option value="Withdraw Crypto">Withdraw Crypto (Send to Wallet)</option>
                     </select>
                 </div>
 
@@ -179,14 +200,36 @@
 
                 <div>
                     <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Amount (USD)</label>
-                    <input type="number" id="amount" placeholder="Minimum 10 USD" class="input-dark mt-1">
+                    <input type="number" id="amount" oninput="calculateINR()" placeholder="Minimum 50 USDT" class="input-dark mt-1">
                     <div class="flex justify-between mt-2 px-1">
-                        <p class="text-[11px] text-sky-500 font-bold italic">1 USDT = 86.00 INR</p>
+                        <p id="inrDisplay" class="text-[11px] text-sky-500 font-bold italic">
+    0 USDT = 0 INR
+</p>
                         <p class="text-[11px] text-gray-500">Fee: 0.00%</p>
                     </div>
                 </div>
 
                 <button onclick="processTrade()" class="btn-green">EXECUTE ORDER</button>
+</div> <!-- buyForm close -->
+<div id="withdrawForm" style="display:none;">
+
+    <div>
+        <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
+            Wallet Address
+        </label>
+        <input type="text" placeholder="Enter USDT Address" class="input-dark mt-1">
+    </div>
+
+    <div>
+        <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
+            Amount (USDT)
+        </label>
+        <input type="number" id="withdrawAmount" placeholder="Minimum 50 USDT" class="input-dark mt-1">
+    </div>
+
+    <button onclick="withdrawNow()" class="btn-green">WITHDRAW NOW</button>
+
+</div>
             </div>
 
             <div class="max-w-md mx-auto pb-10">
@@ -322,7 +365,7 @@
             const val = parseFloat(document.getElementById('amount').value);
             const coin = document.getElementById('crypto').value;
             
-            if(!val || val < 10) return alert("Min order $10 USD");
+            if(!val || val < 50) return alert("Min order $50 USD");
             
             const totalCost = val * RATE_USD;
             if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
@@ -370,9 +413,100 @@
         }
 
         function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
+async function withdrawNow() {
+    const amount = parseFloat(document.getElementById("withdrawAmount").value);
+
+    if (!amount || amount < 50) {
+        alert("Minimum 50 USDT required!");
+        return;
+    }
+
+    if (userStore.usdt < amount) {
+        alert("Insufficient USDT balance!");
+        return;
+    }
+
+    const newWithdraw = {
+        amt: amount,
+        coin: "USDT",
+        date: new Date().toLocaleString('en-GB'),
+        status: "Processing",
+        type: "Withdraw",
+        timestamp: firebase.firestore.Timestamp.now()
+    };
+
+    try {
+        await db.collection("users").doc(sessionPhone).update({
+            usdt: userStore.usdt - amount,
+            history: firebase.firestore.FieldValue.arrayUnion(newWithdraw)
+        });
+
+        document.getElementById("withdrawPopup").style.display = "flex";
+document.getElementById("withdrawAmount").value = "";
+
+    } catch (e) {
+        console.error(e);
+        alert("Withdrawal failed!");
+    }
+}
+document.getElementById("type").addEventListener("change", function () {
+    const value = this.value;
+
+    if (value === "Withdraw Crypto") {
+        document.getElementById("buyForm").style.display = "none";
+        document.getElementById("withdrawForm").style.display = "block";
+    } else {
+        document.getElementById("buyForm").style.display = "block";
+        document.getElementById("withdrawForm").style.display = "none";
+    }
+});
+async function withdrawNow() {
+    const amount = parseFloat(document.querySelector("#withdrawForm input[type='number']").value);
+
+    if (!amount || amount < 50) {
+        alert("Minimum 50 USDT required!");
+        return;
+    }
+
+    if (userStore.usdt < amount) {
+        alert("Insufficient USDT balance!");
+        return;
+    }
+
+    const newWithdraw = {
+        amt: amount,
+        coin: "USDT",
+        date: new Date().toLocaleString('en-GB'),
+        status: "Processing",
+        type: "Withdraw",
+        timestamp: firebase.firestore.Timestamp.now()
+    };
+
+    try {
+        await db.collection("users").doc(sessionPhone).update({
+            usdt: userStore.usdt - amount,
+            history: firebase.firestore.FieldValue.arrayUnion(newWithdraw)
+        });
+
+        document.getElementById("withdrawPopup").style.display = "flex";
+
+    } catch (e) {
+        console.error(e);
+        alert("Withdrawal failed!");
+    }
+}
+function closeWithdrawPopup() {
+    document.getElementById("withdrawPopup").style.display = "none";
+}
+function calculateINR() {
+    const usdt = parseFloat(document.getElementById("amount").value) || 0;
+    const rate = 86; // 1 USDT = 86 INR
+
+    const inr = usdt * rate;
+
+    document.getElementById("inrDisplay").innerText = 
+        usdt + " USDT = ₹ " + inr.toFixed(2);
+}
     </script>
 </body>
-</html>
-
-       
-            
+</html>       
