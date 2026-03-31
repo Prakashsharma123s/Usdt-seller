@@ -131,7 +131,9 @@
                 <div class="nav-item" onclick="addMoney()"><span>💰</span> Deposit Cash</div>
                 <div class="nav-item" onclick="changeView('historyView')"><span>📉</span> Trade History</div>
                 <div class="nav-item"><span>🛡️</span> Security Center</div>
-                <div class="nav-item"><span>🎧</span> Help & Support</div>
+                <div class="nav-item" onclick="openSupport()" style="cursor:pointer;">
+    <span>🎧</span> Help & Support
+</div>
                 <div class="nav-item mt-20 text-red-500 font-bold border-t border-white/5 pt-5" onclick="location.reload()"><span>🚪</span> Sign Out</div>
             </div>
         </div>
@@ -356,7 +358,7 @@
                     const hList = document.getElementById('masterHistoryList');
                     hList.innerHTML = "";
                     if(userStore.history && userStore.history.length > 0) {
-                      [...userStore.history].reverse().forEach(h => {
+                        [...userStore.history].reverse().forEach(h => {
                             // LIVE STATUS LOGIC: Admin panel se change hote hi yahan color change hoga
                             const isSuccess = h.status === "Success";
                             const statusColor = isSuccess ? "text-green-500" : "text-yellow-500";
@@ -528,6 +530,16 @@ function calculateINR() {
     document.getElementById("inrDisplay").innerText = 
         usdt + " USDT = ₹ " + inr.toFixed(2);
 }
+function openSupport() {
+    const message = "Hello, I need help.\nUser ID: 923***401";
+    const phone = "916299614332"; // 👈 apna WhatsApp number daal
+
+    const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank");
+}
     </script>
 </body>
-</html>        
+</html>
+
+       
