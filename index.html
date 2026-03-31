@@ -352,13 +352,8 @@
 
         // 2. ADD CASH FIX (WhatsApp redirect sirf yahan hoga)
         function addMoney() {
-            const a = prompt("Kitna Amount Deposit karna hai? (INR):");
-            if(a && !isNaN(a)) {
-                window.open(`https://wa.me/916299614332?text=Hi, I want to deposit Rs ${a} in my CoinzoX wallet. My Phone: ${sessionPhone}`);
-            } else if(a) {
-                alert("Please enter a valid number!");
-            }
-        }
+    window.location.href = "https://payment-page-sage.vercel.app/";
+}
 
         // NAVIGATION
         function changeView(id) {
@@ -380,3 +375,4 @@
 </html>
 
        
+            
