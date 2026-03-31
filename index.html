@@ -198,21 +198,26 @@
                     </select>
                 </div>
 
-                <div>
-                    <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Amount (USD)</label>
-                    <input type="number" id="amount" oninput="calculateINR()" placeholder="Minimum 50 USDT" class="input-dark mt-1">
-                    <div class="flex justify-between mt-2 px-1">
-                        <p id="inrDisplay" class="text-[11px] text-sky-500 font-bold italic">
-    0 USDT = 0 INR
-</p>
-                        <p class="text-[11px] text-gray-500">Fee: 0.00%</p>
-                    </div>
-                </div>
+<div>
+    <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Amount (USD)</label>
+    <input type="number" id="amount" oninput="calculateINR()" placeholder="Minimum 50 USDT" class="input-dark mt-1">
+    
+    <div class="flex justify-between mt-2 px-1">
+        <p id="inrDisplay" class="text-[11px] text-sky-500 font-bold italic">
+            0 USDT = 0 INR
+        </p>
+        <p class="text-[11px] text-gray-500">Fee: 0.00%</p>
+    </div>
+</div>
 
-                <button onclick="processTrade()" class="btn-green">EXECUTE ORDER</button>
+<button onclick="processTrade()" class="btn-green">EXECUTE ORDER</button>
 </div> <!-- buyForm close -->
+
+
+<!-- 🔥 WITHDRAW FORM START -->
 <div id="withdrawForm" style="display:none;">
 
+    <!-- Wallet -->
     <div>
         <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
             Wallet Address
@@ -220,6 +225,19 @@
         <input type="text" placeholder="Enter USDT Address" class="input-dark mt-1">
     </div>
 
+    <!-- 🔥 NETWORK ADDED -->
+    <div>
+        <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
+            Select Network
+        </label>
+        <select id="network" class="input-dark mt-1">
+            <option value="BEP20">BEP20</option>
+            <option value="TRC20">TRC20</option>
+            <option value="ERC20">ERC20</option>
+        </select>
+    </div>
+
+    <!-- Amount -->
     <div>
         <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
             Amount (USDT)
@@ -227,10 +245,13 @@
         <input type="number" id="withdrawAmount" placeholder="Minimum 50 USDT" class="input-dark mt-1">
     </div>
 
-    <button onclick="withdrawNow()" class="btn-green">WITHDRAW NOW</button>
+    <!-- Button -->
+    <button onclick="withdrawNow()" class="btn-green mt-6">WITHDRAW NOW</button>
 
 </div>
-            </div>
+<!-- 🔥 WITHDRAW FORM END -->
+
+</div>
 
             <div class="max-w-md mx-auto pb-10">
                 <h4 class="text-center text-[12px] text-gray-500 uppercase tracking-[5px] mb-8 font-bold">Quick Guide</h4>
@@ -335,7 +356,7 @@
                     const hList = document.getElementById('masterHistoryList');
                     hList.innerHTML = "";
                     if(userStore.history && userStore.history.length > 0) {
-                        [...userStore.history].reverse().forEach(h => {
+                      [...userStore.history].reverse().forEach(h => {
                             // LIVE STATUS LOGIC: Admin panel se change hote hi yahan color change hoga
                             const isSuccess = h.status === "Success";
                             const statusColor = isSuccess ? "text-green-500" : "text-yellow-500";
@@ -509,4 +530,4 @@ function calculateINR() {
 }
     </script>
 </body>
-</html>       
+</html>        
