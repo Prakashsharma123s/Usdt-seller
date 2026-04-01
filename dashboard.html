@@ -66,8 +66,8 @@
                 <span class="text-green-500 text-5xl font-bold">✓</span>
             </div>
             <h3 class="text-2xl font-bold mb-2">Order Submitted</h3>
-            <p class="text-gray-400 text-sm mb-8">Your order has been successfully submitted. The amount has been deducted from the wallet.</p>
-            <button onclick="closePopup()" class="btn-green py-3 text-base">Close</button>
+            <p class="text-gray-400 text-sm mb-8">Aapka order successfully submit ho gaya hai. Wallet se amount deduct kar li gayi hai.</p>
+            <button onclick="closePopup()" class="btn-green py-3 text-base">Theek Hai</button>
         </div>
     </div>
 <div id="withdrawPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
@@ -109,7 +109,7 @@
                 <div class="nav-item" onclick="openSupport()" style="cursor:pointer;">
     <span>🎧</span> Help & Support
 </div>
-                <div class="nav-item mt-20 text-red-500 font-bold border-t border-white/5 pt-5" onclick="location.reload()"><span>🚪</span> Sign Out</div>
+                <div class="nav-item mt-20 text-red-500 font-bold border-t border-white/5 pt-5" onclick="logout()"><span>🚪</span> Sign Out</div>
             </div>
         </div>
 
@@ -292,7 +292,7 @@
 
         let userStore = { balance: 0, usdt: 0, history: [] };
         let sessionPhone = "";
-        const RATE_USD = 90.00;
+        const RATE_USD = 86.00;
 
         function switchAuth(id) {
             document.querySelectorAll('.auth-view-node').forEach(v => v.style.display = 'none');
@@ -498,7 +498,7 @@ function closeWithdrawPopup() {
 }
 function calculateINR() {
     const usdt = parseFloat(document.getElementById("amount").value) || 0;
-    const rate = 90; // 1 USDT = 90 INR
+    const rate = 86; // 1 USDT = 86 INR
 
     const inr = usdt * rate;
 
@@ -542,6 +542,13 @@ window.onload = async function () {
         location.reload();
     }
 };
+function logout() {
+    localStorage.removeItem("user");   // user delete
+
+    alert("Logged out ✅");
+
+    window.location.href = "index.html"; // login page
+}
     </script>
 </body>
 </html>
