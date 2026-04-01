@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>CoinzoX - Premium Trading Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        /* FULL SCALE CSS RESTORED */
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #050a14; color: white; scroll-behavior: smooth; }
+        
+        /* AUTH SECTION - ORIGINAL LIGHT THEME */
+        #authSection { background:#ffffff; height:100vh; position: fixed; width: 100%; z-index: 5000; }
+        .app-view { width:100%; height:100vh; max-width:420px; margin:auto; background:#fff; position:relative; overflow-y:auto; }
+        .top-banner { background:linear-gradient(135deg,#b6ff7a,#7ee000); height:260px; border-bottom-left-radius:40px; border-bottom-right-radius:40px; }
+        .auth-container { padding:25px; margin-top:-130px; }
+        .auth-card { background:#fff; border-radius:30px; padding:30px; box-shadow:0 15px 35px rgba(0,0,0,0.1); border: 1px solid #f0f0f0; }
+        .auth-input { margin-bottom:18px; position: relative; }
+        .auth-input input { width:100%; padding:15px; border-radius:15px; border:1.5px solid #eee; background:#fafafa; outline:none; color: #000; font-size: 14px; transition: 0.3s; }
+        .auth-input input:focus { border-color: #7ee000; background: #fff; }
+        .auth-btn { width:100%; padding:16px; border:none; border-radius:35px; background:linear-gradient(135deg,#b6ff7a,#7ee000); color:#000; font-weight:700; cursor:pointer; font-size: 16px; box-shadow: 0 5px 15px rgba(126, 224, 0, 0.3); }
+        .auth-link { text-align:center; font-size:14px; margin-top:20px; color: #666; }
+        .auth-link span { color:#7ee000; cursor:pointer; font-weight: 700; text-decoration: underline; }
+
+        /* DASHBOARD THEME - DARK */
+        #dashboardSection { display: none; min-height: 100vh; padding-bottom: 50px; }
+        .bg-dark-blue { background: #0b1426; border: 1px solid #1c2b46; border-radius: 20px; }
+        .wallet-card { background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); border-radius: 25px; padding: 28px; position: relative; overflow: hidden; }
+        .wallet-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        
+        .input-dark { background-color: #08101d; border: 1.5px solid #1c2b46; border-radius: 12px; color: white; width: 100%; padding: 15px; outline: none; font-size: 14px; }
+        .input-dark:focus { border-color: #0ea5e9; }
+        .btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); border-radius: 15px; padding: 18px; font-weight: 700; width: 100%; font-size: 18px; box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2); border: none; color: white; }
+
+        /* SIDEBAR */
+        #sidebar { position: fixed; top: 0; left: -300px; width: 300px; height: 100%; background: #08101d; border-right: 1px solid #1c2b46; z-index: 6000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px; }
+        #sidebar.open { left: 0; }
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 5500; backdrop-filter: blur(5px); }
+        .nav-item { display: flex; align-items: center; gap: 15px; padding: 16px; border-radius: 12px; cursor: pointer; color: #9ca3af; margin-bottom: 8px; transition: 0.2s; }
+        .nav-item:hover { background: #1c2b46; color: white; }
+
+        /* MULTI-VIEW SYSTEM */
+        .view-node { display: none; animation: fadeIn 0.4s ease; }
+        .view-node.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* SUCCESS POPUP */
+        #successPopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9000; align-items: center; justify-content: center; padding: 20px; }
+        .popup-card { background: #0b1426; border: 1px solid #1c2b46; padding: 40px 30px; border-radius: 30px; width: 100%; max-width: 360px; text-align: center; }
+
+        .status-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; }
+        .review-box { background: rgba(28, 43, 70, 0.4); border: 1px solid #1c2b46; padding: 15px; border-radius: 15px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+    <div id="successPopup">
+        <div class="popup-card">
+            <div class="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="text-green-500 text-5xl font-bold">✓</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Order Submitted</h3>
+            <p class="text-gray-400 text-sm mb-8">Aapka order successfully submit ho gaya hai. Wallet se amount deduct kar li gayi hai.</p>
+            <button onclick="closePopup()" class="btn-green py-3 text-base">Theek Hai</button>
+        </div>
+    </div>
+<div id="withdrawPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
+    
+    <div style="background:#0b1426; padding:30px; border-radius:20px; text-align:center; max-width:300px; width:100%;">
+        
+        <div style="font-size:50px; color:#22c55e;">✓</div>
+        
+        <h3 style="font-size:22px; font-weight:bold; margin-top:10px;">
+            Withdrawal Submitted
+        </h3>
+        
+        <p style="font-size:13px; color:#aaa; margin-top:10px;">
+            Your withdrawal request has been successfully submitted.
+        </p>
+
+        <button onclick="closeWithdrawPopup()" class="btn-green" style="margin-top:20px;">
+            OK
+        </button>
+
+    </div>
+</div>
+
+    <div id="authSection" style="display:none;"></div>
+
+    <div id="dashboardSection" class="p-6">
+        <div id="overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        
+        <div id="sidebar">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold text-sky-500 italic">CoinzoX</h2>
+                <button onclick="toggleSidebar()" class="text-gray-400 text-3xl">✕</button>
+            </div>
+            <div class="space-y-2">
+                <div class="nav-item" onclick="changeView('homeView')"><span>🏠</span> Dashboard</div>
+                <div class="nav-item" onclick="addMoney()"><span>💰</span> Deposit Cash</div>
+                <div class="nav-item" onclick="changeView('historyView')"><span>📉</span> Trade History</div>
+                <div class="nav-item"><span>🛡️</span> Security Center</div>
+                <div class="nav-item" onclick="openSupport()" style="cursor:pointer;">
+    <span>🎧</span> Help & Support
+</div>
+                <div class="nav-item mt-20 text-red-500 font-bold border-t border-white/5 pt-5" onclick="location.reload()"><span>🚪</span> Sign Out</div>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center mb-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="text-3xl bg-dark-blue p-2 rounded-xl">☰</button>
+                <div>
+                    <h1 class="text-xl font-extrabold text-sky-500">Terminal</h1>
+                    <div class="flex items-center gap-1">
+                        <span class="status-dot"></span>
+                        <p class="text-[10px] text-gray-400 uppercase tracking-tighter">System Online</p>
+                    </div>
+                </div>
+            </div>
+            <div id="uInit" class="w-12 h-12 bg-sky-500 border-2 border-white/10 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-sky-500/20">U</div>
+        </div>
+
+        <div id="homeView" class="view-node active">
+            <div class="max-w-md mx-auto mb-10">
+                <div class="wallet-card shadow-2xl">
+                    <div class="flex justify-between items-start mb-10">
+                        <div>
+                            <p class="text-[11px] opacity-80 uppercase font-black tracking-widest">Available Balance</p>
+                            <h2 class="text-4xl font-black mt-1">Rs <span id="pkrBalance">0</span></h2>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="bg-green-500 text-[10px] px-3 py-1 rounded-full font-bold mb-2">ACTIVE ACCOUNT</span>
+                            <button onclick="addMoney()" class="text-[10px] bg-white/10 px-3 py-2 rounded-lg border border-white/20 font-bold hover:bg-white/20">ADD CASH</button>
+                        </div>
+                    </div>
+                    <div class="pt-6 border-t border-white/20 flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] opacity-70 uppercase font-bold tracking-tighter">Total Assets</p>
+                            <p class="text-xl font-black" id="usdtDisplay">0.00 USDT</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] opacity-60 uppercase">Verified Member</p>
+                            <p class="text-[12px] font-bold">ID: 923***401</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-md mx-auto bg-dark-blue p-7 space-y-6 shadow-2xl mb-12 border border-white/5">
+                <h3 class="text-xl font-bold text-sky-400 border-b border-white/5 pb-3">Exchange Terminal</h3>
+<div id="buyForm">
+                
+                <div>
+                    <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Trade Action</label>
+                    <select id="type" class="input-dark mt-1">
+                        <option value="Buy Crypto">Buy Crypto (using Wallet)</option>
+<option value="Withdraw Crypto">Withdraw Crypto (Send to Wallet)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Select Asset</label>
+                    <select id="crypto" class="input-dark mt-1">
+                        <option value="USDT (BEP20)">USDT (BEP20) - Fast</option>
+                        <option value="USDT (TRC20)">USDT (TRC20) - Low Fee</option>
+                        <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                        <option value="Binance Coin (BNB)">Binance Coin (BNB)</option>
+                    </select>
+                </div>
+
+<div>
+    <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Amount (USD)</label>
+    <input type="number" id="amount" oninput="calculateINR()" placeholder="Minimum 50 USDT" class="input-dark mt-1">
+    
+    <div class="flex justify-between mt-2 px-1">
+        <p id="inrDisplay" class="text-[11px] text-sky-500 font-bold italic">
+            0 USDT = 0 INR
+        </p>
+        <p class="text-[11px] text-gray-500">Fee: 0.00%</p>
+    </div>
+</div>
+
+<button onclick="processTrade()" class="btn-green">EXECUTE ORDER</button>
+</div> <!-- buyForm close -->
+
+
+<!-- 🔥 WITHDRAW FORM START -->
+<div id="withdrawForm" style="display:none;">
+
+    <!-- Wallet -->
+    <div>
+        <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
+            Wallet Address
+        </label>
+        <input type="text" placeholder="Enter USDT Address" class="input-dark mt-1">
+    </div>
+
+    <!-- 🔥 NETWORK ADDED -->
+    <div>
+        <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
+            Select Network
+        </label>
+        <select id="network" class="input-dark mt-1">
+            <option value="BEP20">BEP20</option>
+            <option value="TRC20">TRC20</option>
+            <option value="ERC20">ERC20</option>
+        </select>
+    </div>
+
+    <!-- Amount -->
+    <div>
+        <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
+            Amount (USDT)
+        </label>
+        <input type="number" id="withdrawAmount" placeholder="Minimum 50 USDT" class="input-dark mt-1">
+    </div>
+
+    <!-- Button -->
+    <button onclick="withdrawNow()" class="btn-green mt-6">WITHDRAW NOW</button>
+
+</div>
+<!-- 🔥 WITHDRAW FORM END -->
+
+</div>
+
+            <div class="max-w-md mx-auto pb-10">
+                <h4 class="text-center text-[12px] text-gray-500 uppercase tracking-[5px] mb-8 font-bold">Quick Guide</h4>
+                <div class="grid grid-cols-2 gap-4 mb-16">
+                    <div class="bg-dark-blue p-5 rounded-2xl text-center border border-white/5">
+                        <div class="text-2xl mb-2">📥</div>
+                        <p class="text-[10px] font-bold text-gray-300">ADD FUNDS</p>
+                    </div>
+                    <div class="bg-dark-blue p-5 rounded-2xl text-center border border-white/5">
+                        <div class="text-2xl mb-2">⚙️</div>
+                        <p class="text-[10px] font-bold text-gray-300">CHOOSE CRYPTO</p>
+                    </div>
+                </div>
+
+                <h4 class="text-center text-[12px] text-gray-500 uppercase tracking-[5px] mb-8 font-bold">Live Reviews</h4>
+                <div class="review-box flex justify-between items-center border-l-4 border-green-500">
+                    <div>
+                        <p class="text-sm font-bold">Ali Ahmed ⭐⭐⭐⭐⭐</p>
+                        <p class="text-[10px] text-gray-500">2 minutes ago</p>
+                    </div>
+                    <span class="text-green-500 font-black text-xs">$240.00 Success</span>
+                </div>
+                <div class="review-box flex justify-between items-center border-l-4 border-green-500">
+                    <div>
+                        <p class="text-sm font-bold">Usman Khan ⭐⭐⭐⭐⭐</p>
+                        <p class="text-[10px] text-gray-500">15 minutes ago</p>
+                    </div>
+                    <span class="text-green-500 font-black text-xs">$1,100.00 Success</span>
+                </div>
+                <p class="text-center text-gray-800 text-[10px] mt-20">Securely Encrypted by CoinzoX Cloud © 2026</p>
+            </div>
+        </div>
+
+        <div id="historyView" class="view-node">
+            <div class="max-w-md mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <button onclick="changeView('homeView')" class="bg-dark-blue px-4 py-2 rounded-xl text-sky-500 font-bold">← BACK</button>
+                    <h2 class="text-2xl font-black italic">TRADE LOGS</h2>
+                </div>
+                <div id="masterHistoryList" class="space-y-4">
+                    <div class="text-center py-20 opacity-20">
+                        <div class="text-6xl mb-4">📂</div>
+                        <p>No transactions found</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+                const firebaseConfig = {
+            apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
+            authDomain: "trusted-usdt-seller.firebaseapp.com",
+            projectId: "trusted-usdt-seller",
+            storageBucket: "trusted-usdt-seller.firebasestorage.app",
+            messagingSenderId: "667426874776",
+            appId: "1:667426874776:web:2c058a8b06a985e390b7ed"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let userStore = { balance: 0, usdt: 0, history: [] };
+        let sessionPhone = "";
+        const RATE_USD = 86.00;
+
+        function switchAuth(id) {
+            document.querySelectorAll('.auth-view-node').forEach(v => v.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+
+        async function handleSignup() {
+            const n = document.getElementById('newName').value;
+            const p = document.getElementById('newPhone').value;
+            const pass = document.getElementById('newPass').value;
+            if(!n || !p || !pass) return alert("All fields are required!");
+            await db.collection("users").doc(p).set({ name: n, password: pass, balance: 0, usdt: 0, history: [] });
+            alert("Account Created! Please Login.");
+            switchAuth('loginPage');
+        }
+
+        async function handleLogin() {
+            const p = document.getElementById('loginPhone').value;
+            const pass = document.getElementById('loginPass').value;
+            const userRef = await db.collection("users").doc(p).get();
+            if(userRef.exists && userRef.data().password === pass) {
+                sessionPhone = p;
+                document.getElementById('uInit').innerText = userRef.data().name.charAt(0).toUpperCase();
+                initDashboard(p);
+            } else { alert("Invalid credentials!"); }
+        }
+
+        function initDashboard(p) {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            
+            db.collection("users").doc(p).onSnapshot(doc => {
+                if(doc.exists) {
+                    userStore = doc.data();
+                    document.getElementById('pkrBalance').innerText = (userStore.balance || 0).toLocaleString();
+                    document.getElementById('usdtDisplay').innerText = (userStore.usdt || 0).toFixed(2) + " USDT";
+                    
+                    const hList = document.getElementById('masterHistoryList');
+                    hList.innerHTML = "";
+                    if(userStore.history && userStore.history.length > 0) {
+                        [...userStore.history].reverse().forEach(h => {
+                            // LIVE STATUS LOGIC: Admin panel se change hote hi yahan color change hoga
+                            const isSuccess = h.status === "Success";
+                            const statusColor = isSuccess ? "text-green-500" : "text-yellow-500";
+                            const bgColor = isSuccess ? "bg-green-500/10" : "bg-yellow-500/10";
+                            const borderColor = isSuccess ? "border-green-500" : "border-yellow-500";
+
+                            hList.innerHTML += `
+                                <div class="bg-dark-blue p-5 rounded-2xl border-l-4 ${borderColor} flex justify-between items-center shadow-lg">
+                                    <div>
+                                        <p class="font-black text-white text-lg">${h.amt} ${h.coin}</p>
+                                        <p class="text-[10px] text-gray-500 mt-1">${h.date}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="${statusColor} text-[10px] font-black ${bgColor} px-3 py-1 rounded-full">${h.status.toUpperCase()}</span>
+                                        <p class="text-[9px] text-gray-600 mt-2">ID: TRX-${Math.floor(Math.random()*9000+1000)}</p>
+                                    </div>
+                                </div>`;
+                        });
+                    } else { hList.innerHTML = '<div class="text-center py-20 opacity-20"><div class="text-6xl mb-4">📂</div><p>No transactions found</p></div>'; }
+                }
+            });
+        }
+
+        
+                // 1. EXECUTE ORDER FIX (Isse WhatsApp redirect band ho jayega)
+        async function processTrade() {
+            const val = parseFloat(document.getElementById('amount').value);
+            const coin = document.getElementById('crypto').value;
+            
+            if(!val || val < 50) return alert("Min order $50 USD");
+            
+            const totalCost = val * RATE_USD;
+            if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
+
+            const newOrder = { 
+                amt: val, 
+                coin: coin, 
+                date: new Date().toLocaleString('en-GB'), 
+                status: "Processing",
+                timestamp: firebase.firestore.Timestamp.now() 
+            };
+            
+            try {
+                await db.collection("users").doc(sessionPhone).update({
+                    balance: userStore.balance - totalCost,
+                    history: firebase.firestore.FieldValue.arrayUnion(newOrder)
+                });
+
+                document.getElementById('successPopup').style.display = 'flex';
+                document.getElementById('amount').value = "";
+                
+            } catch(e) { 
+                console.error("Error:", e);
+                alert("Transaction failed! Please check connection."); 
+            }
+        }
+
+        // 2. ADD CASH FIX (WhatsApp redirect sirf yahan hoga)
+        function addMoney() {
+    window.location.href = "https://payment-page-sage.vercel.app/";
+}
+
+        // NAVIGATION
+        function changeView(id) {
+            document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(window.innerWidth < 1000) toggleSidebar();
+        }
+
+        function toggleSidebar() {
+            const s = document.getElementById('sidebar');
+            const o = document.getElementById('overlay');
+            s.classList.toggle('open');
+            if(o) o.style.display = s.classList.contains('open') ? 'block' : 'none';
+        }
+
+        function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
+async function withdrawNow() {
+    const amount = parseFloat(document.getElementById("withdrawAmount").value);
+
+    if (!amount || amount < 50) {
+        alert("Minimum 50 USDT required!");
+        return;
+    }
+
+    if (userStore.usdt < amount) {
+        alert("Insufficient USDT balance!");
+        return;
+    }
+
+    const newWithdraw = {
+        amt: amount,
+        coin: "USDT",
+        date: new Date().toLocaleString('en-GB'),
+        status: "Processing",
+        type: "Withdraw",
+        timestamp: firebase.firestore.Timestamp.now()
+    };
+
+    try {
+        await db.collection("users").doc(sessionPhone).update({
+            usdt: userStore.usdt - amount,
+            history: firebase.firestore.FieldValue.arrayUnion(newWithdraw)
+        });
+
+        document.getElementById("withdrawPopup").style.display = "flex";
+document.getElementById("withdrawAmount").value = "";
+
+    } catch (e) {
+        console.error(e);
+        alert("Withdrawal failed!");
+    }
+}
+document.getElementById("type").addEventListener("change", function () {
+    const value = this.value;
+
+    if (value === "Withdraw Crypto") {
+        document.getElementById("buyForm").style.display = "none";
+        document.getElementById("withdrawForm").style.display = "block";
+    } else {
+        document.getElementById("buyForm").style.display = "block";
+        document.getElementById("withdrawForm").style.display = "none";
+    }
+});
+async function withdrawNow() {
+    const amount = parseFloat(document.querySelector("#withdrawForm input[type='number']").value);
+
+    if (!amount || amount < 50) {
+        alert("Minimum 50 USDT required!");
+        return;
+    }
+
+    if (userStore.usdt < amount) {
+        alert("Insufficient USDT balance!");
+        return;
+    }
+
+    const newWithdraw = {
+        amt: amount,
+        coin: "USDT",
+        date: new Date().toLocaleString('en-GB'),
+        status: "Processing",
+        type: "Withdraw",
+        timestamp: firebase.firestore.Timestamp.now()
+    };
+
+    try {
+        await db.collection("users").doc(sessionPhone).update({
+            usdt: userStore.usdt - amount,
+            history: firebase.firestore.FieldValue.arrayUnion(newWithdraw)
+        });
+
+        document.getElementById("withdrawPopup").style.display = "flex";
+
+    } catch (e) {
+        console.error(e);
+        alert("Withdrawal failed!");
+    }
+}
+function closeWithdrawPopup() {
+    document.getElementById("withdrawPopup").style.display = "none";
+}
+function calculateINR() {
+    const usdt = parseFloat(document.getElementById("amount").value) || 0;
+    const rate = 86; // 1 USDT = 86 INR
+
+    const inr = usdt * rate;
+
+    document.getElementById("inrDisplay").innerText = 
+        usdt + " USDT = ₹ " + inr.toFixed(2);
+}
+function openSupport() {
+    const message = "Hello, I need help.\nUser ID: 923***401";
+    const phone = "916299614332"; // 👈 apna WhatsApp number daal
+
+    const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank");
+}
+window.onload = async function () {
+
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+        document.getElementById("authSection").style.display = "block";
+        document.getElementById("dashboardSection").style.display = "none";
+        return;
+    }
+
+    sessionPhone = user;
+
+    const userRef = await db.collection("users").doc(user).get();
+
+    if (userRef.exists) {
+
+        document.getElementById('uInit').innerText =
+            userRef.data().name
+                ? userRef.data().name.charAt(0).toUpperCase()
+                : "U";
+
+        initDashboard(user);
+
+    } else {
+        alert("User not found!");
+        localStorage.removeItem("user");
+        location.reload();
+    }
+};
+    </script>
+</body>
+</html>
+
+       
