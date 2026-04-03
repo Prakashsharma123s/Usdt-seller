@@ -187,7 +187,7 @@
     </div>
 </div>
 
-<button onclick="processTrade()" class="btn-green">SUBMIT ORDER </button>
+<button onclick="processTrade()" class="btn-green" id="submitBtn">EXECUTE ORDER</button>
 </div> <!-- buyForm close -->
 
 
@@ -223,7 +223,7 @@
     </div>
 
     <!-- Button -->
-    <button onclick="withdrawNow()" class="btn-green mt-6">WITHDRAW CRYPTO</button>
+    <button onclick="withdrawNow()" class="btn-green mt-6">WITHDRAW NOW</button>
 
 </div>
 <!-- 🔥 WITHDRAW FORM END -->
@@ -360,36 +360,60 @@
         
                 // 1. EXECUTE ORDER FIX (Isse WhatsApp redirect band ho jayega)
         async function processTrade() {
-            const val = parseFloat(document.getElementById('amount').value);
-            const coin = document.getElementById('crypto').value;
-            
-            if(!val || val < 50) return alert("Min order $50 USD");
-            
-            const totalCost = val * RATE_USD;
-            if(userStore.balance < totalCost) return alert("Insufficient balance! Rs " + totalCost + " required.");
 
-            const newOrder = { 
-                amt: val, 
-                coin: coin, 
-                date: new Date().toLocaleString('en-GB'), 
-                status: "Processing",
-                timestamp: firebase.firestore.Timestamp.now() 
-            };
-            
-            try {
-                await db.collection("users").doc(sessionPhone).update({
-                    balance: userStore.balance - totalCost,
-                    history: firebase.firestore.FieldValue.arrayUnion(newOrder)
-                });
+    const usdt = parseFloat(document.getElementById('amount').value);
+    const coin = document.getElementById('crypto').value;
 
-                document.getElementById('successPopup').style.display = 'flex';
-                document.getElementById('amount').value = "";
-                
-            } catch(e) { 
-                console.error("Error:", e);
-                alert("Transaction failed! Please check connection."); 
-            }
-        }
+    // ❌ EMPTY / INVALID CHECK
+    if (isNaN(usdt) || usdt <= 0) {
+        alert("Enter valid amount!");
+        return;
+    }
+
+    // ❌ MIN LIMIT
+    if (usdt < 50) {
+        alert("Minimum 50 USDT required!");
+        return;
+    }
+
+    // ✅ INR CALCULATION
+    const rate = 90;
+    const totalINR = usdt * rate;
+
+    // ❌ INR ZERO CHECK
+    if (totalINR <= 0) {
+        alert("Invalid INR amount!");
+        return;
+    }
+
+    // ❌ BALANCE CHECK
+    if (userStore.balance < totalINR) {
+        alert("Insufficient balance! ₹ " + totalINR + " required.");
+        return;
+    }
+
+    const newOrder = { 
+        amt: usdt, 
+        coin: coin, 
+        date: new Date().toLocaleString('en-GB'), 
+        status: "Processing",
+        timestamp: firebase.firestore.Timestamp.now() 
+    };
+
+    try {
+        await db.collection("users").doc(sessionPhone).update({
+            balance: userStore.balance - totalINR,
+            history: firebase.firestore.FieldValue.arrayUnion(newOrder)
+        });
+
+        document.getElementById('successPopup').style.display = 'flex';
+        document.getElementById('amount').value = "";
+
+    } catch(e) { 
+        console.error("Error:", e);
+        alert("Transaction failed!");
+    }
+}
 
         // 2. ADD CASH FIX (WhatsApp redirect sirf yahan hoga)
         function addMoney() {
@@ -504,6 +528,17 @@ function calculateINR() {
 
     document.getElementById("inrDisplay").innerText = 
         usdt + " USDT = ₹ " + inr.toFixed(2);
+
+    // 🔥 BUTTON CONTROL (IMPORTANT)
+    const btn = document.getElementById("submitBtn");
+
+    if (usdt < 50) {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+    } else {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+    }
 }
 function openSupport() {
     const message = "Hello, I need help.\nUser ID: 923***401";
