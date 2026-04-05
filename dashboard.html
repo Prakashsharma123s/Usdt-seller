@@ -289,10 +289,17 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+let RATE = 90;
+
+db.collection("settings").doc("payment")
+.onSnapshot(doc => {
+    if(doc.exists){
+        RATE = doc.data().rate || 90;
+    }
+});
 
         let userStore = { balance: 0, usdt: 0, history: [] };
         let sessionPhone = "";
-        const RATE_USD = 86.00;
 
         function switchAuth(id) {
             document.querySelectorAll('.auth-view-node').forEach(v => v.style.display = 'none');
@@ -377,8 +384,7 @@
     }
 
     // ✅ INR CALCULATION
-    const rate = 90;
-    const totalINR = usdt * rate;
+    const totalINR = usdt * RATE;
 
     // ❌ INR ZERO CHECK
     if (totalINR <= 0) {
@@ -435,53 +441,7 @@
         }
 
         function closePopup() { document.getElementById('successPopup').style.display = 'none'; }
-async function withdrawNow() {
-    const amount = parseFloat(document.getElementById("withdrawAmount").value);
 
-    if (!amount || amount < 50) {
-        alert("Minimum 50 USDT required!");
-        return;
-    }
-
-    if (userStore.usdt < amount) {
-        alert("Insufficient USDT balance!");
-        return;
-    }
-
-    const newWithdraw = {
-        amt: amount,
-        coin: "USDT",
-        date: new Date().toLocaleString('en-GB'),
-        status: "Processing",
-        type: "Withdraw",
-        timestamp: firebase.firestore.Timestamp.now()
-    };
-
-    try {
-        await db.collection("users").doc(sessionPhone).update({
-            usdt: userStore.usdt - amount,
-            history: firebase.firestore.FieldValue.arrayUnion(newWithdraw)
-        });
-
-        document.getElementById("withdrawPopup").style.display = "flex";
-document.getElementById("withdrawAmount").value = "";
-
-    } catch (e) {
-        console.error(e);
-        alert("Withdrawal failed!");
-    }
-}
-document.getElementById("type").addEventListener("change", function () {
-    const value = this.value;
-
-    if (value === "Withdraw Crypto") {
-        document.getElementById("buyForm").style.display = "none";
-        document.getElementById("withdrawForm").style.display = "block";
-    } else {
-        document.getElementById("buyForm").style.display = "block";
-        document.getElementById("withdrawForm").style.display = "none";
-    }
-});
 async function withdrawNow() {
     const amount = parseFloat(document.querySelector("#withdrawForm input[type='number']").value);
 
@@ -511,6 +471,7 @@ async function withdrawNow() {
         });
 
         document.getElementById("withdrawPopup").style.display = "flex";
+document.querySelector("#withdrawForm input[type='number']").value = "";
 
     } catch (e) {
         console.error(e);
@@ -522,9 +483,9 @@ function closeWithdrawPopup() {
 }
 function calculateINR() {
     const usdt = parseFloat(document.getElementById("amount").value) || 0;
-    const rate = 90; // 1 USDT = 90 INR
+    const totalINR = usdt * RATE; // 1 USDT = 90 INR
 
-    const inr = usdt * rate;
+    const inr = usdt * RATE;
 
     document.getElementById("inrDisplay").innerText = 
         usdt + " USDT = ₹ " + inr.toFixed(2);
