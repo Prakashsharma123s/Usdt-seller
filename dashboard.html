@@ -478,6 +478,18 @@ document.querySelector("#withdrawForm input[type='number']").value = "";
         alert("Withdrawal failed!");
     }
 }
+document.getElementById("type").addEventListener("change", function () {
+    const value = this.value;
+
+    if (value === "Withdraw Crypto") {
+        document.getElementById("buyForm").style.display = "none";
+        document.getElementById("withdrawForm").style.display = "block";
+    } else {
+        document.getElementById("buyForm").style.display = "block";
+        document.getElementById("withdrawForm").style.display = "none";
+    }
+});
+
 function closeWithdrawPopup() {
     document.getElementById("withdrawPopup").style.display = "none";
 }
