@@ -151,7 +151,13 @@
     </style>
 </head>
 <body>
+<script>
+const user = localStorage.getItem("user");
 
+if (!user || user === "null") {
+    window.location.href = "index.html";
+}
+</script>
     <div class="payment-card">
         <div class="header">Secure Payment</div>
         
