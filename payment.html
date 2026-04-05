@@ -163,7 +163,7 @@ if (!user || user === "null") {
         
         <div class="qr-section">
             <div class="qr-container">
-                <img src="https://yourimageshare.com/ib/ciFdt6sqMZ.jpg" alt="QR" class="qr-image">
+                <img id="qrImage" src="" alt="QR" class="qr-image">
             </div>
             <p class="instruction">Scan QR to pay with any UPI App.</p>
         </div>
@@ -203,6 +203,26 @@ if (!user || user === "null") {
             }, 3000);
         });
     </script>
+<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
+  authDomain: "trusted-usdt-seller.firebaseapp.com",
+  projectId: "trusted-usdt-seller"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 🔥 QR AUTO LOAD
+db.collection("settings").doc("payment")
+.onSnapshot(doc => {
+    if(doc.exists){
+        document.getElementById("qrImage").src = doc.data().qr;
+    }
+});
+</script>
 </body>
 </html>
