@@ -170,16 +170,23 @@ if (!user || user === "null") {
 
         <form class="form-section" id="payForm">
             <div class="input-group">
-                <label>UTR / Transaction ID</label>
-                <input type="text" id="utr" placeholder="12 Digit UTR Number" required>
-            </div>
+    <label>Enter Amount (₹)</label>
+    <input type="number" id="amount" placeholder="Enter deposit amount">
+</div>
+
+<div class="input-group">
+    <label>UTR / Transaction ID</label>
+    <input type="text" id="utr" placeholder="12 Digit UTR Number" required>
+</div>
 
             <div class="input-group">
                 <label>Payment Screenshot</label>
                 <input type="file" id="screenshot" accept="image/*" required>
             </div>
 
-            <button type="submit" class="submit-btn">Submit Payment</button>
+            <button type="button" onclick="submitPayment()" class="submit-btn">
+    Submit Payment
+</button>
             <p class="footer-note">Verification takes only 10 minutes.</p>
         </form>
 
@@ -192,16 +199,7 @@ if (!user || user === "null") {
     </div>
 
     <script>
-        document.getElementById('payForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const popup = document.getElementById('vip-popup');
-            popup.style.display = 'flex';
-
-            setTimeout(() => {
-                popup.style.display = 'none';
-                document.getElementById('payForm').reset();
-            }, 3000);
-        });
+    
     </script>
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
@@ -215,7 +213,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-
 // 🔥 QR AUTO LOAD
 db.collection("settings").doc("payment")
 .onSnapshot(doc => {
@@ -223,6 +220,42 @@ db.collection("settings").doc("payment")
         document.getElementById("qrImage").src = doc.data().qr;
     }
 });
+
+// ✅ YAHAN PASTE KAR
+async function submitPayment() {
+
+    const amount = parseFloat(document.getElementById("amount").value);
+    const utr = document.getElementById("utr").value;
+    const file = document.getElementById("screenshot").files[0];
+    const phone = localStorage.getItem("user");
+
+    if (!amount || !utr || !file) {
+        alert("Sab fill karo + screenshot upload karo!");
+        return;
+    }
+
+    try {
+        await db.collection("users").doc(phone).set({
+            history: firebase.firestore.FieldValue.arrayUnion({
+                amt: amount,
+                utr: utr,
+                status: "Processing",
+                date: new Date().toLocaleString()
+            })
+        }, { merge: true });
+
+        document.getElementById('vip-popup').style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById('vip-popup').style.display = 'none';
+            document.getElementById('payForm').reset();
+        }, 3000);
+
+    } catch (err) {
+        alert("Error ❌");
+    }
+}
+
 </script>
 </body>
 </html>
