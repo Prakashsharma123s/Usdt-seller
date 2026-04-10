@@ -378,8 +378,8 @@ db.collection("settings").doc("payment")
     }
 
     // ❌ MIN LIMIT
-    if (usdt < 50) {
-        alert("Minimum 50 USDT required!");
+    if (usdt < 40) {
+        alert("Minimum 40 USDT required!");
         return;
     }
 
@@ -445,8 +445,8 @@ db.collection("settings").doc("payment")
 async function withdrawNow() {
     const amount = parseFloat(document.querySelector("#withdrawForm input[type='number']").value);
 
-    if (!amount || amount < 50) {
-        alert("Minimum 50 USDT required!");
+    if (!amount || amount < 40) {
+        alert("Minimum 40 USDT required!");
         return;
     }
 
@@ -505,7 +505,7 @@ function calculateINR() {
     // 🔥 BUTTON CONTROL (IMPORTANT)
     const btn = document.getElementById("submitBtn");
 
-    if (usdt < 50) {
+    if (usdt < 40) {
         btn.disabled = true;
         btn.style.opacity = "0.5";
     } else {
