@@ -177,7 +177,7 @@
 
 <div>
     <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">Amount (USD)</label>
-    <input type="number" id="amount" oninput="calculateINR()" placeholder="Minimum 30 USDT" class="input-dark mt-1">
+    <input type="number" id="amount" oninput="calculateINR()" placeholder="Minimum 50 USDT" class="input-dark mt-1">
     
     <div class="flex justify-between mt-2 px-1">
         <p id="inrDisplay" class="text-[11px] text-sky-500 font-bold italic">
@@ -219,7 +219,7 @@
         <label class="text-[11px] text-gray-400 uppercase font-bold ml-1">
             Amount (USDT)
         </label>
-        <input type="number" id="withdrawAmount" placeholder="Minimum 30 USDT" class="input-dark mt-1">
+        <input type="number" id="withdrawAmount" placeholder="Minimum 50 USDT" class="input-dark mt-1">
     </div>
 
     <!-- Button -->
@@ -289,12 +289,12 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-let RATE = 90;
+let RATE = 91;
 
 db.collection("settings").doc("payment")
 .onSnapshot(doc => {
     if(doc.exists){
-        RATE = doc.data().rate || 90;
+        RATE = doc.data().rate || 91;
     }
 });
 
@@ -378,8 +378,8 @@ db.collection("settings").doc("payment")
     }
 
     // ❌ MIN LIMIT
-    if (usdt < 30) {
-        alert("Minimum 40 USDT required!");
+    if (usdt < 50) {
+        alert("Minimum 50 USDT required!");
         return;
     }
 
@@ -445,8 +445,8 @@ db.collection("settings").doc("payment")
 async function withdrawNow() {
     const amount = parseFloat(document.querySelector("#withdrawForm input[type='number']").value);
 
-    if (!amount || amount < 30) {
-        alert("Minimum 30 USDT required!");
+    if (!amount || amount < 50) {
+        alert("Minimum 50 USDT required!");
         return;
     }
 
@@ -495,7 +495,7 @@ function closeWithdrawPopup() {
 }
 function calculateINR() {
     const usdt = parseFloat(document.getElementById("amount").value) || 0;
-    const totalINR = usdt * RATE; // 1 USDT = 90 INR
+    const totalINR = usdt * RATE; // 1 USDT = 91 INR
 
     const inr = usdt * RATE;
 
