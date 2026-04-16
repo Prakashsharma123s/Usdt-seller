@@ -237,21 +237,19 @@ async function submitPayment() {
     }
 
     try {
-        await db.collection("users").doc(phone).set({
-            history: firebase.firestore.FieldValue.arrayUnion({
-                amt: amount,
-                utr: utr,
-                status: "Processing",
-                date: new Date().toLocaleString()
-            })
-        }, { merge: true });
+        await db.collection("payments").add({
+            phone: phone,
+            amount: amount,
+            utr: utr,
+            status: "Pending",
+            date: new Date().toLocaleString()
+        });
 
         document.getElementById('vip-popup').style.display = 'flex';
-
-        setTimeout(() => {
-            document.getElementById('vip-popup').style.display = 'none';
-            document.getElementById('payForm').reset();
-        }, 3000);
+setTimeout(() => {
+    document.getElementById('vip-popup').style.display = 'none';
+}, 3000);
+document.getElementById("payForm").reset();
 
     } catch (err) {
         alert("Error ❌");
