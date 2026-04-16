@@ -237,13 +237,25 @@ async function submitPayment() {
     }
 
     try {
-        await db.collection("payments").add({
-            phone: phone,
-            amount: amount,
-            utr: utr,
-            status: "Pending",
-            date: new Date().toLocaleString()
-        });
+        // 1. payments collection
+await db.collection("payments").add({
+    phone: phone,
+    amount: amount,
+    utr: utr,
+    status: "Pending",
+    date: new Date().toLocaleString()
+});
+
+// 2. history me bhi add
+await db.collection("users").doc(phone).update({
+    history: firebase.firestore.FieldValue.arrayUnion({
+        amt: amount,
+        coin: "INR",
+        type: "deposit",
+        status: "Pending",
+        date: new Date().toLocaleString()
+    })
+});
 
         document.getElementById('vip-popup').style.display = 'flex';
 setTimeout(() => {
