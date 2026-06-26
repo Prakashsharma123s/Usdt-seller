@@ -81,15 +81,15 @@
         }
 
         input[type="text"], 
-input[type="file"], 
-input[type="number"] {
-    width: 100%;
-    padding: 14px;
-    border: 1.5px solid #eee;
-    border-radius: 10px;
-    font-size: 1rem;
-    background: #fdfdfd;
-}
+        input[type="file"], 
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #fdfdfd;
+        }
 
         .submit-btn {
             width: 100%;
@@ -104,7 +104,20 @@ input[type="number"] {
             box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
 
-        /* MODAL WITHOUT STICKER */
+        /* 🔔 IN-FORM STATUS ERROR LABEL (Popup alert replaced) */
+        #paymentErrorLog {
+            display: none;
+            color: #d32f2f;
+            background: #ffebee;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid #ffcdd2;
+        }
+
         #vip-popup {
             display: none;
             position: fixed;
@@ -155,7 +168,6 @@ input[type="number"] {
 <body>
 <script>
 const user = localStorage.getItem("user");
-
 if (!user || user === "null") {
     window.location.href = "index.html";
 }
@@ -171,15 +183,17 @@ if (!user || user === "null") {
         </div>
 
         <form class="form-section" id="payForm">
-            <div class="input-group">
-    <label>Enter Amount (₹)</label>
-    <input type="number" id="amount" placeholder="Enter deposit amount">
-</div>
+            <div id="paymentErrorLog"></div>
 
-<div class="input-group">
-    <label>UTR / Transaction ID</label>
-    <input type="text" id="utr" placeholder="12 Digit UTR Number" required>
-</div>
+            <div class="input-group">
+                <label>Enter Amount (₹)</label>
+                <input type="number" id="amount" placeholder="Enter deposit amount">
+            </div>
+
+            <div class="input-group">
+                <label>UTR / Transaction ID</label>
+                <input type="text" id="utr" placeholder="12 Digit UTR Number" required>
+            </div>
 
             <div class="input-group">
                 <label>Payment Screenshot</label>
@@ -187,8 +201,8 @@ if (!user || user === "null") {
             </div>
 
             <button type="button" onclick="submitPayment()" class="submit-btn">
-    Submit Payment
-</button>
+                Submit Payment
+            </button>
             <p class="footer-note">Verification takes only 10 minutes.</p>
         </form>
 
@@ -200,9 +214,6 @@ if (!user || user === "null") {
         </div>
     </div>
 
-    <script>
-    
-    </script>
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
@@ -215,6 +226,15 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+// 🚀 AUTO POPULATE PASSING INR VALUE
+window.addEventListener('DOMContentLoaded', () => {
+    const savedAmount = localStorage.getItem("currentDepositAmount");
+    if (savedAmount) {
+        document.getElementById("amount").value = savedAmount;
+    }
+});
+
 // 🔥 QR AUTO LOAD
 db.collection("settings").doc("payment")
 .onSnapshot(doc => {
@@ -223,8 +243,10 @@ db.collection("settings").doc("payment")
     }
 });
 
-// ✅ YAHAN PASTE KAR
+// ✅ SUBMIT AND REDIRECT
 async function submitPayment() {
+    const errorLog = document.getElementById("paymentErrorLog");
+    errorLog.style.display = "none";
 
     const amount = parseFloat(document.getElementById("amount").value);
     const utr = document.getElementById("utr").value;
@@ -232,42 +254,44 @@ async function submitPayment() {
     const phone = localStorage.getItem("user");
 
     if (!amount || !utr || !file) {
-        alert("Sab fill karo + screenshot upload karo!");
+        errorLog.innerText = "⚠️ Sab fill karo + screenshot upload karo!";
+        errorLog.style.display = "block";
         return;
     }
 
     try {
         // 1. payments collection
-await db.collection("payments").add({
-    phone: phone,
-    amount: amount,
-    utr: utr,
-    status: "Pending",
-    date: new Date().toLocaleString()
-});
+        await db.collection("payments").add({
+            phone: phone,
+            amount: amount,
+            utr: utr,
+            status: "Pending",
+            date: new Date().toLocaleString()
+        });
 
-// 2. history me bhi add
-await db.collection("users").doc(phone).update({
-    history: firebase.firestore.FieldValue.arrayUnion({
-        amt: amount,
-        coin: "INR",
-        type: "deposit",
-        status: "Pending",
-        date: new Date().toLocaleString()
-    })
-});
+        // 2. history me bhi add
+        await db.collection("users").doc(phone).update({
+            history: firebase.firestore.FieldValue.arrayUnion({
+                amt: amount,
+                coin: "INR",
+                type: "deposit",
+                status: "Pending",
+                date: new Date().toLocaleString()
+            })
+        });
 
         document.getElementById('vip-popup').style.display = 'flex';
-setTimeout(() => {
-    document.getElementById('vip-popup').style.display = 'none';
-}, 3000);
-document.getElementById("payForm").reset();
+        setTimeout(() => {
+            document.getElementById('vip-popup').style.display = 'none';
+            window.location.href = "dashboard.html"; // Redirects smoothly back to main panel
+        }, 2500);
+        document.getElementById("payForm").reset();
 
     } catch (err) {
-        alert("Error ❌");
+        errorLog.innerText = "❌ Transact Error. Network down!";
+        errorLog.style.display = "block";
     }
 }
-
 </script>
 </body>
 </html>
