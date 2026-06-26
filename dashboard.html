@@ -5,311 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Prime Exchange - Dashboard</title>
     
+    <!-- 🔒 CRITICAL SECURITY GUARD -->
     <script>
         if (!localStorage.getItem("user")) {
             window.location.href = "index.html";
         }
     </script>
 
+    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #f7f9fc;
         }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        /* Stepper custom circles */
+        .step-circle {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex justify-center items-start">
 
+    <!-- Toast Notification Box -->
     <div id="toastNotification" class="fixed top-4 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg z-[9999] opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
         <i class="fa-solid fa-circle-check text-green-400"></i>
         <span id="toastText">Logged out successfully</span>
     </div>
 
+    <!-- Mobile Wrapper Main Container -->
     <div class="w-full max-w-md bg-slate-50 min-h-screen relative flex flex-col pb-32 overflow-x-hidden shadow-2xl">
         
-        <div class="bg-gradient-to-b from-blue-600 to-blue-700 text-white pt-6 pb-20 px-5 rounded-b-[2.5rem] relative">
-            
-            <div class="flex justify-between items-center mb-4 relative">
-                <span class="text-xs opacity-90 flex items-center gap-1">
-                    <i class="fa-solid fa-shield-halved text-blue-200"></i> Trusted by 10,000+ users
-                </span>
-                
-                <div class="relative">
-                    <button id="profileBtn" class="w-10 h-10 rounded-full border-2 border-white/60 bg-blue-500/50 flex items-center justify-center overflow-hidden shadow-md focus:outline-none active:scale-95 transition-transform">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="w-full h-full object-cover">
+        <!-- ==================== 1. HOME SCREEN SECTION ==================== -->
+        <div id="screen-home" class="screen-view space-y-4">
+            <div class="bg-gradient-to-b from-blue-600 to-blue-700 text-white pt-6 pb-20 px-5 rounded-b-[2.5rem] relative">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs opacity-90 flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved text-blue-200"></i> Trusted by 10,000+ users
+                    </span>
+                    <button id="profileBtn" class="w-10 h-10 rounded-full border-2 border-white/60 bg-blue-500/50 flex items-center justify-center overflow-hidden">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full object-cover">
                     </button>
-
-                    <div id="logoutDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 text-gray-800">
+                    <!-- Small Logout Dropdown -->
+                    <div id="logoutDropdown" class="hidden absolute right-5 top-16 w-40 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 text-gray-800">
                         <div class="px-3 py-2 border-b border-gray-50">
                             <p class="text-[11px] text-gray-400 font-medium">My Account</p>
                             <p id="userDisplay" class="text-xs font-bold text-gray-700 truncate">User Account</p>
                         </div>
-                        <button onclick="logoutAction()" class="w-full text-left px-3 py-2.5 text-xs font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors">
+                        <button onclick="logoutAction()" class="w-full text-left px-3 py-2.5 text-xs font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2">
                             <i class="fa-solid fa-right-from-bracket"></i> Logout
                         </button>
                     </div>
                 </div>
-            </div>
-            
-            <div class="mb-5">
-                <div class="flex items-center gap-2 text-xl font-black tracking-wider uppercase">
-                    <i class="fa-solid fa-chart-bar text-2xl"></i> Prime Exchange
+                <div class="mb-5">
+                    <div class="flex items-center gap-2 text-xl font-black tracking-wider uppercase">
+                        <i class="fa-solid fa-chart-bar text-2xl"></i> Prime Exchange
+                    </div>
                 </div>
-                <div class="flex gap-4 text-xs mt-2 opacity-80">
-                    <span><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Fast</span>
-                    <span>•</span>
-                    <span><i class="fa-solid fa-shield-halved mr-1"></i> Secure</span>
-                    <span>•</span>
-                    <span><i class="fa-solid fa-circle-check mr-1"></i> Trusted</span>
+                <div class="flex bg-blue-800/40 p-1.5 rounded-2xl gap-2 mt-4">
+                    <button onclick="switchView('buy')" class="w-1/2 bg-white text-blue-700 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm">Buy →</button>
+                    <button onclick="switchView('sell')" class="w-1/2 text-white/90 font-semibold py-3 rounded-xl flex items-center justify-center gap-2">Sell →</button>
                 </div>
             </div>
 
-            <div class="flex bg-blue-800/40 p-1.5 rounded-2xl gap-2 mt-4">
-                <button class="w-1/2 bg-white text-blue-700 font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                    Buy <i class="fa-solid fa-arrow-right text-sm"></i>
-                </button>
-                <button class="w-1/2 text-white/90 font-semibold py-3 px-4 rounded-xl hover:bg-white/10 transition flex items-center justify-center gap-2">
-                    Sell <i class="fa-solid fa-arrow-right text-sm"></i>
-                </button>
+            <!-- Home Content Panel -->
+            <div class="px-4 -mt-14 z-10 space-y-4">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-blue-50 p-3 rounded-xl text-blue-600"><i class="fa-solid fa-wallet text-xl"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-medium">Prime Exch USDT Balance</p>
+                            <p class="text-2xl font-bold text-gray-800">0.00 USDT</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator Container Block -->
+                <div class="bg-white p-5 rounded-3xl shadow-sm border space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-xs text-gray-400 font-bold">USDT / INR</span>
+                            <h2 class="text-3xl font-black text-gray-800">₹92.00</h2>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-400 block mb-1.5">You Pay (INR)</label>
+                        <input id="inrInput" type="number" value="10000" class="w-full bg-gray-50 border rounded-xl py-3 px-4 text-lg font-bold text-gray-800" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-400 block mb-1.5">You Get (USDT)</label>
+                        <div class="w-full bg-gray-50 border rounded-xl py-3 px-4 text-lg font-bold text-blue-600 flex items-center gap-2">
+                            <span id="usdtOutput">108.70 USDT</span>
+                        </div>
+                    </div>
+                    <button onclick="triggerBuyProcess()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg">Buy Now</button>
+                </div>
+
+                <!-- Network Grid Layout -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-800 mb-2.5 px-1">Select Network</h3>
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <div id="net-trc" onclick="selectNetwork('trc')" class="home-net-card bg-white border p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer">
+                            <span class="text-xs font-bold">TRC20</span>
+                        </div>
+                        <div id="net-erc" onclick="selectNetwork('erc')" class="home-net-card bg-blue-50 border-2 border-blue-500 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer">
+                            <span class="text-xs font-bold">ERC20</span>
+                        </div>
+                        <div id="net-bep" onclick="selectNetwork('bep')" class="home-net-card bg-white border p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer">
+                            <span class="text-xs font-bold">BEP20</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="px-4 -mt-14 z-10 space-y-4">
+        <!-- ==================== 2. BUY SCREEN SECTION (IMAGE 1000059209.jpg matched) ==================== -->
+        <div id="screen-buy" class="screen-view hidden space-y-4">
+            <div class="bg-white border-b p-4 flex items-center gap-4">
+                <button onclick="switchView('home')" class="text-gray-800"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                <h2 class="text-lg font-bold text-gray-800">Buy USDT</h2>
+            </div>
             
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="bg-blue-50 p-3 rounded-xl text-blue-600">
-                        <i class="fa-solid fa-wallet text-xl"></i>
+            <!-- 1-2-3-4 Stepper Design -->
+            <div class="flex justify-between items-center px-8 py-2 text-xs font-medium text-gray-400">
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-blue-600 text-white">1</span><span class="text-blue-600 font-bold">Amount</span></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-gray-100 text-gray-400 border">2</span><span>Wallet</span></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-gray-100 text-gray-400 border">3</span><span>Payment</span></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-gray-100 text-gray-400 border">4</span><span>Done</span></div>
+            </div>
+
+            <!-- Content Container Box -->
+            <div class="px-4 space-y-4">
+                <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-4">
+                    <label class="text-xs font-bold text-gray-500 block">Enter INR Amount</label>
+                    <div class="flex items-center bg-gray-50 border rounded-xl overflow-hidden">
+                        <span class="px-4 text-gray-500 font-bold">₹</span>
+                        <input id="buyInrInput" type="number" placeholder="Min. 2,000" class="w-full bg-transparent py-3.5 pr-4 text-base font-bold text-gray-800 focus:outline-none">
                     </div>
+
+                    <!-- 4 Networks Responsive Grid Layout -->
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div id="buy-net-trc" onclick="selectBuyNetwork('trc', 1.00)" class="buy-net-card border rounded-xl p-3 flex flex-col justify-between bg-white cursor-pointer">
+                            <span class="text-xs font-bold text-gray-800">TRC20</span>
+                            <span class="text-[10px] text-gray-400 mt-1">Exchange fee: 1 USDT</span>
+                        </div>
+                        <div id="buy-net-erc" onclick="selectBuyNetwork('erc', 0.45)" class="buy-net-card border rounded-xl p-3 flex flex-col justify-between bg-white cursor-pointer">
+                            <span class="text-xs font-bold text-gray-800">ERC20</span>
+                            <span class="text-[10px] text-gray-400 mt-1">Exchange fee: 0.45 USDT</span>
+                        </div>
+                        <div id="buy-net-bep" onclick="selectBuyNetwork('bep', 0.01)" class="buy-net-card border rounded-xl p-3 flex flex-col justify-between bg-white cursor-pointer">
+                            <span class="text-xs font-bold text-gray-800">BEP20</span>
+                            <span class="text-[10px] text-gray-400 mt-1">Exchange fee: 0.01 USDT</span>
+                        </div>
+                        <div id="buy-net-pex" onclick="selectBuyNetwork('pex', 0.00)" class="buy-net-card border-2 border-blue-500 bg-blue-50/60 rounded-xl p-3 flex flex-col justify-between cursor-pointer">
+                            <span class="text-xs font-bold text-gray-800">PEX-USDT</span>
+                            <span class="text-[10px] text-green-500 font-semibold mt-1">No exchange fee</span>
+                        </div>
+                    </div>
+
+                    <!-- Output Received Layout -->
+                    <div class="flex justify-between items-center bg-blue-50/40 border border-blue-100 rounded-xl p-4 mt-2">
+                        <span class="text-xs text-gray-500 font-medium">You receive (net)</span>
+                        <span id="buyUsdtOutput" class="text-lg font-bold text-blue-600">0.00 USDT</span>
+                    </div>
+
+                    <div class="flex justify-between text-xs text-gray-400 pt-2 font-medium">
+                        <span>Rate: ₹91/USDT</span>
+                        <span id="buyActiveNetDisplay">Network: BEP20</span>
+                    </div>
+
+                    <button onclick="triggerBuyProcessFromTab()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md transition active:scale-[0.99]">Continue &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 3. SELL SCREEN SECTION (IMAGE 1000059210.jpg matched) ==================== -->
+        <div id="screen-sell" class="screen-view hidden space-y-4">
+            <div class="bg-white border-b p-4 flex items-center gap-4">
+                <button onclick="switchView('home')" class="text-gray-800"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                <h2 class="text-lg font-bold text-gray-800">Sell USDT</h2>
+            </div>
+            
+            <!-- 1-2-3-4 Stepper Design -->
+            <div class="flex justify-between items-center px-8 py-2 text-xs font-medium text-gray-400">
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-blue-600 text-white">1</span><span class="text-blue-600 font-bold">Amount</span></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-gray-100 text-gray-400 border">2</span><span>Send</span></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-gray-100 text-gray-400 border">3</span><span>Receive</span></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="flex flex-col items-center gap-1"><span class="step-circle bg-gray-100 text-gray-400 border">4</span><span>Done</span></div>
+            </div>
+
+            <!-- Content Area Box -->
+            <div class="px-4 space-y-4">
+                <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-4">
                     <div>
-                        <p class="text-xs text-gray-400 font-medium">Prime Exch USDT Balance</p>
-                        <p class="text-2xl font-bold text-gray-800">0.00 <span class="text-lg font-black">USDT</span></p>
+                        <label class="text-xs font-bold text-gray-500 block mb-1.5">USDT Amount to Sell</label>
+                        <input id="sellUsdtInput" type="number" placeholder="e.g., 100" class="w-full bg-gray-50 border rounded-xl py-3.5 px-4 text-base font-bold text-gray-800 focus:outline-none focus:bg-white">
                     </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] text-gray-400">Wallet</p>
-                    <p class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">PEX-USDT</p>
-                </div>
-            </div>
 
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 space-y-4">
-                <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center bg-blue-50/40 border border-blue-100 rounded-xl p-4">
+                        <span class="text-xs text-gray-500 font-medium">You will receive</span>
+                        <span id="sellInrOutput" class="text-lg font-bold text-blue-600">₹0.00</span>
+                    </div>
+
+                    <p class="text-xs text-gray-400 font-medium">Rate: ₹91/USDT</p>
+
+                    <!-- 2 Networks Selection Box Row -->
                     <div>
-                        <span class="text-xs text-gray-400 font-bold tracking-wider">USDT / INR</span>
-                        <h2 class="text-3xl font-black text-gray-800 mt-0.5">₹92.00</h2>
+                        <label class="text-xs font-bold text-gray-500 block mb-2">Select Network</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div id="sell-net-trc" onclick="selectSellNetwork('trc')" class="sell-net-card border-2 border-blue-500 bg-blue-50/60 rounded-xl p-3 flex items-center justify-center gap-2 cursor-pointer font-bold text-sm text-gray-800">
+                                <i class="fa-solid fa-triangle-exclamation text-red-500"></i> TRC20
+                            </div>
+                            <div id="sell-net-bep" onclick="selectSellNetwork('bep')" class="sell-net-card border bg-white rounded-xl p-3 flex items-center justify-center gap-2 cursor-pointer font-bold text-sm text-gray-800">
+                                <i class="fa-solid fa-coins text-yellow-500"></i> BEP20
+                            </div>
+                        </div>
                     </div>
-                    <span class="bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1">
-                        <i class="fa-solid fa-chart-line"></i> Platform rate
-                    </span>
-                </div>
 
-                <div>
-                    <label class="text-xs font-bold text-gray-400 block mb-1.5">You Pay (INR)</label>
-                    <div class="relative">
-                        <input id="inrInput" type="number" value="10000" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-lg font-bold text-gray-800 focus:outline-none focus:border-blue-500 focus:bg-white transition" />
-                    </div>
-                </div>
-
-                <div>
-                    <label class="text-xs font-bold text-gray-400 block mb-1.5">You Get (USDT)</label>
-                    <div class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-lg font-bold text-blue-600 flex items-center gap-2">
-                        <i class="fa-brands fa-ethereum text-gray-700"></i>
-                        <span id="usdtOutput">108.70 USDT</span>
-                    </div>
-                </div>
-
-                <button onclick="navigateToPayment()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-blue-200 flex items-center justify-center gap-2 text-base cursor-pointer">
-                    Buy <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-
-            <div>
-                <h3 class="text-sm font-bold text-gray-800 mb-2.5 px-1">Select Network</h3>
-                <div class="grid grid-cols-3 gap-2.5">
-                    <div id="net-trc" onclick="selectNetwork('trc')" class="network-card bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200">
-                        <i class="fa-solid fa-triangle-exclamation text-red-500 text-xl mb-1"></i>
-                        <span class="text-xs font-bold text-gray-800">TRC20</span>
-                        <span class="text-[9px] text-gray-400 mt-1 leading-tight">Exchange fee:<br><b class="text-gray-600">1.3 USDT</b></span>
-                    </div>
-                    <div id="net-erc" onclick="selectNetwork('erc')" class="network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200">
-                        <i class="fa-brands fa-ethereum text-gray-800 text-xl mb-1"></i>
-                        <span class="text-xs font-bold text-gray-800">ERC20</span>
-                        <span class="text-[9px] text-gray-400 mt-1 leading-tight">Exchange fee:<br><b class="text-gray-600">0.45 USDT</b></span>
-                    </div>
-                    <div id="net-bep" onclick="selectNetwork('bep')" class="network-card bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200">
-                        <i class="fa-solid fa-coins text-yellow-500 text-xl mb-1"></i>
-                        <span class="text-xs font-bold text-gray-800">BEP20</span>
-                        <span class="text-[9px] text-gray-400 mt-1 leading-tight">Exchange fee:<br><b class="text-gray-600">0.01 USDT</b></span>
-                    </div>
+                    <button class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md mt-2">Continue &rarr;</button>
                 </div>
             </div>
+        </div>
 
-            <div>
-                <h3 class="text-sm font-bold text-gray-800 mb-2.5 px-1">Quick Actions</h3>
+        <!-- ==================== 4. TRANSACTIONS SCREEN SECTION (IMAGE 1000059211.jpg matched) ==================== -->
+        <div id="screen-txns" class="screen-view hidden space-y-4">
+            <div class="bg-white border-b p-4">
+                <h2 class="text-lg font-bold text-gray-800">Transactions</h2>
+            </div>
+            <div class="text-center py-32 text-gray-400/80 font-medium text-sm">
+                No transactions yet.
+            </div>
+        </div>
+
+        <!-- ==================== 5. PROFILE SCREEN SECTION (IMAGE 1000059212.jpg matched) ==================== -->
+        <div id="screen-profile" class="screen-view hidden space-y-4">
+            <div class="bg-white border-b p-4">
+                <h2 class="text-lg font-bold text-gray-800">Profile</h2>
+            </div>
+
+            <div class="px-4 space-y-4">
+                <!-- Main Identity Card Frame Box -->
+                <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-blue-600 text-white font-black text-xl rounded-full flex items-center justify-center shadow-inner">P</div>
+                        <div>
+                            <h3 id="profileName" class="font-bold text-gray-800 text-base">Prakash Kumar</h3>
+                            <p class="text-xs text-gray-400 font-medium">Verified Account</p>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-600 space-y-2.5 pt-3 border-t font-medium">
+                        <p class="flex items-center gap-2"><i class="fa-regular fa-envelope text-gray-400 text-sm"></i> mrbondex3@gmail.com</p>
+                        <p class="flex items-center gap-2"><i class="fa-regular fa-phone text-gray-400 text-sm"></i> <span id="profilePhone">7779826401</span></p>
+                    </div>
+
+                    <!-- Dedicated Wallet Card Display Readded -->
+                    <div class="bg-gray-50/80 border rounded-xl p-4 flex justify-between items-center mt-2">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-50 p-2.5 rounded-lg text-blue-600"><i class="fa-solid fa-wallet"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Prime Exch USDT</p>
+                                <p class="text-base font-bold text-gray-800">0.00 USDT</p>
+                                <p class="text-[9px] text-gray-400">Wallet • PEX-USDT</p>
+                            </div>
+                        </div>
+                        <button class="bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-lg border border-blue-200 transition">Withdraw ↗</button>
+                    </div>
+                </div>
+
+                <!-- Navigation List Options Rows Grid -->
                 <div class="space-y-2.5">
-                    <div class="bg-white p-3.5 rounded-xl border border-gray-100 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <span class="bg-blue-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">1</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-800">Buy USDT</h4>
-                                <p class="text-[10px] text-gray-400">Convert INR to USDT instantly</p>
-                            </div>
-                        </div>
+                    <div class="bg-white p-4 rounded-xl border flex justify-between items-center cursor-pointer hover:bg-gray-50 font-semibold text-gray-700 text-sm shadow-sm">
+                        <span class="flex items-center gap-3 text-gray-600"><i class="fa-solid fa-key text-blue-500"></i> Change Password</span>
                         <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
                     </div>
-                    <div class="bg-white p-3.5 rounded-xl border border-gray-100 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <span class="bg-blue-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">2</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-800">Sell USDT</h4>
-                                <p class="text-[10px] text-gray-400">Sell USDT and receive INR</p>
-                            </div>
-                        </div>
+                    <div class="bg-white p-4 rounded-xl border flex justify-between items-center cursor-pointer hover:bg-gray-50 font-semibold text-gray-700 text-sm shadow-sm">
+                        <span class="flex items-center gap-3 text-gray-600"><i class="fa-solid fa-user-gear text-blue-500"></i> Contact Us</span>
                         <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
                     </div>
-                    <div class="bg-white p-3.5 rounded-xl border border-gray-100 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <span class="bg-blue-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">3</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-800">Track Orders</h4>
-                                <p class="text-[10px] text-gray-400">View all your transactions</p>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
-                    </div>
-                    <div class="bg-white p-3.5 rounded-xl border border-gray-100 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <span class="bg-blue-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">4</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-800">Secure Wallet</h4>
-                                <p class="text-[10px] text-gray-400">Multi-network support</p>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-center items-center gap-4 py-4 text-[10px] text-gray-400 font-medium">
-                <span><i class="fa-solid fa-shield text-blue-500 mr-0.5"></i> SSL Secured</span>
-                <span><i class="fa-solid fa-bolt text-blue-500 mr-0.5"></i> Instant Processing</span>
-                <span><i class="fa-solid fa-users text-blue-500 mr-0.5"></i> 10K+ Users</span>
-            </div>
-        </div>
-
-        <a href="https://wa.me/#" target="_blank" class="fixed bottom-24 right-4 bg-[#25D366] text-white p-3.5 rounded-full shadow-xl hover:scale-110 transition-transform z-50 flex items-center justify-center w-14 h-14">
-            <i class="fa-brands fa-whatsapp text-3xl"></i>
-        </a>
-
-        <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-gray-100 px-2 py-3 flex justify-around items-center z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
-            <button class="flex flex-col items-center gap-1 text-blue-600">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[10px] font-bold">Home</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-cart-shopping text-lg"></i>
-                <span class="text-[10px] font-medium">Buy</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-circle-arrow-down text-lg"></i>
-                <span class="text-[10px] font-medium">Sell</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-receipt text-lg"></i>
-                <span class="text-[10px] font-medium">Txns</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-user text-lg"></i>
-                <span class="text-[10px] font-medium">Profile</span>
-            </button>
-        </div>
-
-    </div>
-
-    <script>
-        const profileBtn = document.getElementById('profileBtn');
-        const logoutDropdown = document.getElementById('logoutDropdown');
-        const userDisplay = document.getElementById('userDisplay');
-        const toast = document.getElementById('toastNotification');
-        
-        const inrInput = document.getElementById('inrInput');
-        const usdtOutput = document.getElementById('usdtOutput');
-        const rate = 92.00;
-
-        // Live calculation engine function
-        function calculateLiveUSDT() {
-            const inrValue = parseFloat(inrInput.value);
-            if (!isNaN(inrValue) && inrValue > 0) {
-                const totalUSDT = (inrValue / rate).toFixed(2);
-                usdtOutput.innerText = `${totalUSDT} USDT`;
-            } else {
-                usdtOutput.innerText = "0.00 USDT";
-            }
-        }
-        inrInput.addEventListener('input', calculateLiveUSDT);
-
-        // 🚀 NAVIGATION VIA BUY BUTTON LOGIC
-        function navigateToPayment() {
-            const inrAmt = inrInput.value || "10000";
-            localStorage.setItem("currentDepositAmount", inrAmt); // Cache current amount value
-            window.location.href = "payment.html";
-        }
-
-        // 🚀 DYNAMIC NETWORK SELECTION LOGIC
-        function selectNetwork(netType) {
-            // Remove selection border/bg styles from all cards
-            document.querySelectorAll('.network-card').forEach(card => {
-                card.className = "network-card bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200";
-            });
-
-            // Apply selected professional styling to the targeted element
-            const activeCard = document.getElementById(`net-${netType}`);
-            if(activeCard) {
-                activeCard.className = "network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200";
-            }
-        }
-
-        // Session read
-        const activeUser = localStorage.getItem("user");
-        if(activeUser) {
-            userDisplay.innerText = "User: " + activeUser;
-        }
-
-        // Dropdown toggle
-        profileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            logoutDropdown.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', () => {
-            logoutDropdown.classList.add('hidden');
-        });
-
-        function showToast(message) {
-            document.getElementById('toastText').innerText = message;
-            toast.classList.remove('opacity-0', 'pointer-events-none');
-            toast.classList.add('opacity-100');
-            
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                toast.classList.add('opacity-0', 'pointer-events-none');
-                window.location.href = "index.html";
-            }, 1800);
-        }
-
-        function logoutAction() {
-            localStorage.removeItem("user");
-            showToast("Logged out successfully");
-        }
-    </script>
-</body>
-</html>
