@@ -7,7 +7,6 @@
     
     <script>
         if (!localStorage.getItem("user")) {
-            // Agar user logged in nahi hai, toh content load nahi hoga aur seedhe login page par bhej dega
             window.location.href = "index.html";
         }
     </script>
@@ -29,6 +28,11 @@
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex justify-center items-start">
+
+    <div id="toastNotification" class="fixed top-4 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg z-[9999] opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toastText">Logged out successfully</span>
+    </div>
 
     <div class="w-full max-w-md bg-slate-50 min-h-screen relative flex flex-col pb-32 overflow-x-hidden shadow-2xl">
         
@@ -235,14 +239,15 @@
         const profileBtn = document.getElementById('profileBtn');
         const logoutDropdown = document.getElementById('logoutDropdown');
         const userDisplay = document.getElementById('userDisplay');
+        const toast = document.getElementById('toastNotification');
 
-        // LocalStorage se active session fetch karein
+        // Session read
         const activeUser = localStorage.getItem("user");
         if(activeUser) {
             userDisplay.innerText = "User: " + activeUser;
         }
 
-        // Profile Menu Click Behavior
+        // Dropdown toggle
         profileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             logoutDropdown.classList.toggle('hidden');
@@ -252,11 +257,24 @@
             logoutDropdown.classList.add('hidden');
         });
 
-        // Logout triggers redirection to index.html
+        // 🚀 Custom Smooth Notification Function
+        function showToast(message) {
+            document.getElementById('toastText').innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            
+            // Auto hide and redirect after 1.8 seconds
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+                window.location.href = "index.html";
+            }, 1800);
+        }
+
+        // Refactored Logout Logic (No more huge browser alert windows)
         function logoutAction() {
             localStorage.removeItem("user");
-            alert("Logged out successfully");
-            window.location.href = "index.html"; 
+            showToast("Logged out successfully");
         }
     </script>
 </body>
