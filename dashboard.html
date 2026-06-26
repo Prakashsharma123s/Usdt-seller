@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Prime Exchange - Dashboard</title>
     
-    <!-- 🔒 CRITICAL SECURITY GUARD: Runs BEFORE anything else loads -->
     <script>
         if (!localStorage.getItem("user")) {
             window.location.href = "index.html";
         }
     </script>
 
-    <!-- Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for clean icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -32,32 +29,25 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex justify-center items-start">
 
-    <!-- 🔔 CUSTOM SNACKBAR / TOAST NOTIFICATION -->
     <div id="toastNotification" class="fixed top-4 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg z-[9999] opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
         <i class="fa-solid fa-circle-check text-green-400"></i>
         <span id="toastText">Logged out successfully</span>
     </div>
 
-    <!-- Mobile Wrapper Container -->
     <div class="w-full max-w-md bg-slate-50 min-h-screen relative flex flex-col pb-32 overflow-x-hidden shadow-2xl">
         
-        <!-- TOP BLUE HEADER SECTION -->
         <div class="bg-gradient-to-b from-blue-600 to-blue-700 text-white pt-6 pb-20 px-5 rounded-b-[2.5rem] relative">
             
-            <!-- Header Top Line: Trust Badge & PROFILE ICON WITH DROPDOWN -->
             <div class="flex justify-between items-center mb-4 relative">
                 <span class="text-xs opacity-90 flex items-center gap-1">
                     <i class="fa-solid fa-shield-halved text-blue-200"></i> Trusted by 10,000+ users
                 </span>
                 
-                <!-- Profile Section Container -->
                 <div class="relative">
-                    <!-- Profile Avatar Button -->
                     <button id="profileBtn" class="w-10 h-10 rounded-full border-2 border-white/60 bg-blue-500/50 flex items-center justify-center overflow-hidden shadow-md focus:outline-none active:scale-95 transition-transform">
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="w-full h-full object-cover">
                     </button>
 
-                    <!-- Logout Dropdown Menu -->
                     <div id="logoutDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 text-gray-800">
                         <div class="px-3 py-2 border-b border-gray-50">
                             <p class="text-[11px] text-gray-400 font-medium">My Account</p>
@@ -70,7 +60,6 @@
                 </div>
             </div>
             
-            <!-- Brand Logo & Features -->
             <div class="mb-5">
                 <div class="flex items-center gap-2 text-xl font-black tracking-wider uppercase">
                     <i class="fa-solid fa-chart-bar text-2xl"></i> Prime Exchange
@@ -84,7 +73,6 @@
                 </div>
             </div>
 
-            <!-- Buy / Sell Toggle Tabs -->
             <div class="flex bg-blue-800/40 p-1.5 rounded-2xl gap-2 mt-4">
                 <button class="w-1/2 bg-white text-blue-700 font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
                     Buy <i class="fa-solid fa-arrow-right text-sm"></i>
@@ -95,10 +83,8 @@
             </div>
         </div>
 
-        <!-- MAIN CONTENT AREA -->
         <div class="px-4 -mt-14 z-10 space-y-4">
             
-            <!-- 1. Balance Card -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="bg-blue-50 p-3 rounded-xl text-blue-600">
@@ -115,7 +101,6 @@
                 </div>
             </div>
 
-            <!-- 2. Exchange Calculator Card -->
             <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 space-y-4">
                 <div class="flex justify-between items-center">
                     <div>
@@ -127,46 +112,40 @@
                     </span>
                 </div>
 
-                <!-- Input: You Pay -->
                 <div>
                     <label class="text-xs font-bold text-gray-400 block mb-1.5">You Pay (INR)</label>
                     <div class="relative">
-                        <!-- Added id="inrInput" and set default value to 10000 as per image 1000059200.jpg -->
                         <input id="inrInput" type="number" value="10000" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-lg font-bold text-gray-800 focus:outline-none focus:border-blue-500 focus:bg-white transition" />
                     </div>
                 </div>
 
-                <!-- Input: You Get -->
                 <div>
                     <label class="text-xs font-bold text-gray-400 block mb-1.5">You Get (USDT)</label>
                     <div class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-lg font-bold text-blue-600 flex items-center gap-2">
                         <i class="fa-brands fa-ethereum text-gray-700"></i>
-                        <!-- Added id="usdtOutput" for live dynamic text replacement -->
                         <span id="usdtOutput">108.70 USDT</span>
                     </div>
                 </div>
 
-                <!-- Action Button -->
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-blue-200 flex items-center justify-center gap-2 text-base">
+                <button onclick="navigateToPayment()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-blue-200 flex items-center justify-center gap-2 text-base cursor-pointer">
                     Buy <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
 
-            <!-- 3. Network Selection Section -->
             <div>
                 <h3 class="text-sm font-bold text-gray-800 mb-2.5 px-1">Select Network</h3>
                 <div class="grid grid-cols-3 gap-2.5">
-                    <div class="bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer hover:border-red-400 transition">
+                    <div id="net-trc" onclick="selectNetwork('trc')" class="network-card bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200">
                         <i class="fa-solid fa-triangle-exclamation text-red-500 text-xl mb-1"></i>
                         <span class="text-xs font-bold text-gray-800">TRC20</span>
                         <span class="text-[9px] text-gray-400 mt-1 leading-tight">Exchange fee:<br><b class="text-gray-600">1.3 USDT</b></span>
                     </div>
-                    <div class="bg-blue-50/60 border-2 border-blue-500 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer relative">
+                    <div id="net-erc" onclick="selectNetwork('erc')" class="network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200">
                         <i class="fa-brands fa-ethereum text-gray-800 text-xl mb-1"></i>
                         <span class="text-xs font-bold text-gray-800">ERC20</span>
                         <span class="text-[9px] text-gray-400 mt-1 leading-tight">Exchange fee:<br><b class="text-gray-600">0.45 USDT</b></span>
                     </div>
-                    <div class="bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer hover:border-yellow-400 transition">
+                    <div id="net-bep" onclick="selectNetwork('bep')" class="network-card bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200">
                         <i class="fa-solid fa-coins text-yellow-500 text-xl mb-1"></i>
                         <span class="text-xs font-bold text-gray-800">BEP20</span>
                         <span class="text-[9px] text-gray-400 mt-1 leading-tight">Exchange fee:<br><b class="text-gray-600">0.01 USDT</b></span>
@@ -174,7 +153,6 @@
                 </div>
             </div>
 
-            <!-- 4. Quick Actions List -->
             <div>
                 <h3 class="text-sm font-bold text-gray-800 mb-2.5 px-1">Quick Actions</h3>
                 <div class="space-y-2.5">
@@ -221,7 +199,6 @@
                 </div>
             </div>
 
-            <!-- Footer Badges -->
             <div class="flex justify-center items-center gap-4 py-4 text-[10px] text-gray-400 font-medium">
                 <span><i class="fa-solid fa-shield text-blue-500 mr-0.5"></i> SSL Secured</span>
                 <span><i class="fa-solid fa-bolt text-blue-500 mr-0.5"></i> Instant Processing</span>
@@ -229,12 +206,10 @@
             </div>
         </div>
 
-        <!-- FIXED WHATSAPP FLOATING BUTTON -->
         <a href="https://wa.me/#" target="_blank" class="fixed bottom-24 right-4 bg-[#25D366] text-white p-3.5 rounded-full shadow-xl hover:scale-110 transition-transform z-50 flex items-center justify-center w-14 h-14">
             <i class="fa-brands fa-whatsapp text-3xl"></i>
         </a>
 
-        <!-- FIXED BOTTOM NAVIGATION BAR -->
         <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-gray-100 px-2 py-3 flex justify-around items-center z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
             <button class="flex flex-col items-center gap-1 text-blue-600">
                 <i class="fa-solid fa-house text-lg"></i>
@@ -260,17 +235,15 @@
 
     </div>
 
-    <!-- JAVASCRIPT -->
     <script>
         const profileBtn = document.getElementById('profileBtn');
         const logoutDropdown = document.getElementById('logoutDropdown');
         const userDisplay = document.getElementById('userDisplay');
         const toast = document.getElementById('toastNotification');
         
-        // 🚀 LIVE CALCULATOR ELEMENT MAPS
         const inrInput = document.getElementById('inrInput');
         const usdtOutput = document.getElementById('usdtOutput');
-        const rate = 92.00; // Fixed rate as per design image 1000059200.jpg
+        const rate = 92.00;
 
         // Live calculation engine function
         function calculateLiveUSDT() {
@@ -282,9 +255,28 @@
                 usdtOutput.innerText = "0.00 USDT";
             }
         }
-
-        // Attach listeners for type-in tracking ('input' triggers live on every keypress)
         inrInput.addEventListener('input', calculateLiveUSDT);
+
+        // 🚀 NAVIGATION VIA BUY BUTTON LOGIC
+        function navigateToPayment() {
+            const inrAmt = inrInput.value || "10000";
+            localStorage.setItem("currentDepositAmount", inrAmt); // Cache current amount value
+            window.location.href = "payment.html";
+        }
+
+        // 🚀 DYNAMIC NETWORK SELECTION LOGIC
+        function selectNetwork(netType) {
+            // Remove selection border/bg styles from all cards
+            document.querySelectorAll('.network-card').forEach(card => {
+                card.className = "network-card bg-white border border-gray-200 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200";
+            });
+
+            // Apply selected professional styling to the targeted element
+            const activeCard = document.getElementById(`net-${netType}`);
+            if(activeCard) {
+                activeCard.className = "network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-2xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200";
+            }
+        }
 
         // Session read
         const activeUser = localStorage.getItem("user");
@@ -302,7 +294,6 @@
             logoutDropdown.classList.add('hidden');
         });
 
-        // Toast handling
         function showToast(message) {
             document.getElementById('toastText').innerText = message;
             toast.classList.remove('opacity-0', 'pointer-events-none');
