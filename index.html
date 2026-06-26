@@ -6,7 +6,11 @@
 
 <title>BITPay Pro</title>
 
+<!-- Font Awesome Icons for Sidebar Styling -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -19,25 +23,6 @@ background:#060b17;
 color:#fff;
 }
 
-/* 🔔 NEW CUSTOM TOAST NOTIFICATION STYLING (Bada pop-up replaced) */
-#toastNotification {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #00e6a7;
-    color: #000;
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 230, 167, 0.3);
-    z-index: 100000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease, top 0.3s ease;
-}
-
 /* HEADER */
 header{
 display:flex;
@@ -47,6 +32,7 @@ padding:18px 20px;
 background:#0b1220;
 position:sticky;
 top:0;
+z-index: 100;
 }
 
 .logo{
@@ -222,13 +208,133 @@ font-size:28px;
 img{
 border-radius:50%;
 }
+
+/* 🔔 IN-FORM ALERT TEXT DESIGN */
+.form-alert {
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    display: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+.alert-error {
+    color: #ff4d4d;
+    background: rgba(255, 77, 73, 0.1);
+    border: 1px solid rgba(255, 77, 73, 0.2);
+}
+.alert-success {
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+/* 📊 PROFESSIONAL SIDEBAR DESIGN */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: #0b1220;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    display: flex;
+    flex-col: column;
+    flex-direction: column;
+    padding: 0 !important;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 20px;
+    border-b: 1px solid #1e293b;
+    background: #0f172a;
+}
+
+.sidebar-brand {
+    font-size: 22px;
+    font-weight: 800;
+    color: #00e6a7;
+    letter-spacing: 1px;
+}
+
+.sidebar-close {
+    font-size: 18px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: 0.2s;
+}
+
+.sidebar-close:hover {
+    color: #fff;
+}
+
+.sidebar-menu {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.menu-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 1.5px;
+    margin: 15px 0 5px 10px;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 15px;
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.sidebar-item i {
+    font-size: 16px;
+    color: #00e6a7;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-item:hover {
+    background: #1e293b;
+    color: #fff;
+}
+
+/* OVERLAY */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    display: none;
+    z-index: 9998;
+}
+
 </style>
+
 </head>
 
 <body>
-
-<!-- 🔔 TOAST POPUP ELEMENT -->
-<div id="toastNotification">Message</div>
 
 <header>
 <div class="logo">BITPAY</div>
@@ -435,46 +541,45 @@ align-items:center;
         <button id="authBtn" style="margin-top:15px; width:100%; padding:12px; background:#00e6a7; border:none; border-radius:8px; font-weight:bold; color:#000; cursor:pointer;">
         Continue
         </button>
+
+        <!-- 🔔 IN-FORM ALERT TEXT BOX -->
+        <div id="formAlertBox" class="form-alert"></div>
     </div>
 </div>
 
-<!-- SIDEBAR -->
-<div id="sidebar" style="
-position:fixed;
-top:0;
-left:-250px;
-width:250px;
-height:100%;
-background:#0f172a;
-padding:20px;
-transition:0.3s;
-z-index:9999;
-">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h2>BITPAY</h2>
-    <span onclick="closeSidebar()" style="font-size:20px; cursor:pointer;">✖</span>
-</div>
-<hr style="margin:15px 0; border:1px solid #222;">
-<p onclick="showLogin(); closeSidebar();" style="cursor:pointer; margin-bottom:10px;">🔐 Login</p>
-<p onclick="showSignup(); closeSidebar();" style="cursor:pointer; margin-bottom:10px;">📝 Register</p>
-<hr style="margin:15px 0; border:1px solid #222;">
-<p style="margin-bottom:10px;">❓ Help Center</p>
-<p style="margin-bottom:10px;">📞 Support</p>
-<p style="margin-bottom:10px;">📄 Terms & Conditions</p>
-<p style="margin-bottom:10px;">🔒 Privacy Policy</p>
+<!-- 📊 NEW PROFESSIONAL SIDEBAR -->
+<div id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-brand">BITPAY</div>
+        <div class="sidebar-close" onclick="closeSidebar()">✕</div>
+    </div>
+    <div class="sidebar-menu">
+        <div class="menu-title">Account Access</div>
+        <div class="sidebar-item" onclick="showLogin(); closeSidebar();">
+            <i class="fa-solid fa-lock"></i> Login
+        </div>
+        <div class="sidebar-item" onclick="showSignup(); closeSidebar();">
+            <i class="fa-solid fa-user-plus"></i> Register
+        </div>
+        
+        <div class="menu-title">Services & Info</div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-circle-question"></i> Help Center
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-headset"></i> Support
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-file-contract"></i> Terms & Conditions
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-shield-halved"></i> Privacy Policy
+        </div>
+    </div>
 </div>
 
 <!-- OVERLAY -->
-<div id="overlay" onclick="closeSidebar()" style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-z-index:9998;
-"></div>
+<div id="overlay" onclick="closeSidebar()"></div>
 
 <!-- COPYRIGHT -->
 <div style="text-align:center; padding:20px; color:#666; font-size:12px; background:#060b17;">
@@ -498,24 +603,29 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// 🚀 CUSTOM TOAST UTILITY
-function displayToast(msg, isRedirecting, targetUrl) {
-    const toast = document.getElementById("toastNotification");
-    toast.innerText = msg;
-    toast.style.opacity = "1";
-    toast.style.top = "30px";
+// 🚀 CUSTOM FORM IN-ALERT TEXT HANDLER
+function showAlert(message, type) {
+    const alertBox = document.getElementById("formAlertBox");
+    alertBox.innerText = message;
+    alertBox.className = "form-alert"; // Reset
     
-    setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.top = "20px";
-        if(isRedirecting) {
-            window.location.href = targetUrl;
-        }
-    }, 1500);
+    if (type === "success") {
+        alertBox.classList.add("alert-success");
+    } else {
+        alertBox.classList.add("alert-error");
+    }
+    alertBox.style.display = "block";
+}
+
+function clearAlert() {
+    const alertBox = document.getElementById("formAlertBox");
+    alertBox.style.display = "none";
+    alertBox.innerText = "";
 }
 
 // ✅ SHOW LOGIN
 function showLogin() {
+    clearAlert();
     document.getElementById("authBox").style.display = "flex";
     document.getElementById("authTitle").innerText = "Login";
     document.getElementById("fullname").style.display = "none";
@@ -524,31 +634,28 @@ function showLogin() {
 
 // ✅ SHOW SIGNUP
 function showSignup() {
+    clearAlert();
     document.getElementById("authBox").style.display = "flex";
     document.getElementById("authTitle").innerText = "Register";
     document.getElementById("fullname").style.display = "block";
     document.getElementById("authBtn").onclick = registerUser;
 }
 
-// ✅ SIDEBAR
+// ✅ SIDEBAR CONTROL
 function openSidebar() {
     document.getElementById("sidebar").style.left = "0";
     document.getElementById("overlay").style.display = "block";
 }
 
 function closeSidebar() {
-    document.getElementById("sidebar").style.left = "-250px";
+    document.getElementById("sidebar").style.left = "-280px";
     document.getElementById("overlay").style.display = "none";
-}
-
-// ✅ LOGOUT
-function logout() {
-    displayToast("Logged out successfully 👋", true, "index.html");
 }
 
 // ✅ CLOSE MODAL
 function closeAuth() {
     document.getElementById("authBox").style.display = "none";
+    clearAlert();
 }
 
 // ✅ REGISTER
@@ -558,7 +665,7 @@ async function registerUser() {
     const pass = document.getElementById("password").value;
 
     if (!name || !phone || !pass) {
-        displayToast("⚠️ Fill all details!", false);
+        showAlert("⚠️ Fill all details!", "error");
         return;
     }
 
@@ -568,10 +675,10 @@ async function registerUser() {
             phone: phone,
             password: pass
         });
-        closeAuth();
-        displayToast("Account Created Successfully ✅", false);
+        showAlert("Account Created ✅", "success");
+        setTimeout(() => { closeAuth(); }, 1200);
     } catch (err) {
-        displayToast("❌ Error creating account!", false);
+        showAlert("❌ Error creating account!", "error");
     }
 }
 
@@ -581,7 +688,7 @@ async function loginUser() {
     const pass = document.getElementById("password").value;
 
     if (!phone || !pass) {
-        displayToast("⚠️ Enter details!", false);
+        showAlert("⚠️ Enter details!", "error");
         return;
     }
 
@@ -590,13 +697,16 @@ async function loginUser() {
 
         if (userRef.exists && userRef.data().password === pass) {
             localStorage.setItem("user", phone);
-            closeAuth();
-            displayToast("Login successful 🔥", true, "./dashboard.html");
+            showAlert("Login successful 🔥", "success");
+            
+            setTimeout(() => {
+                window.location.href = "./dashboard.html";
+            }, 1000);
         } else {
-            displayToast("❌ Wrong ID or Password!", false);
+            showAlert("❌ Wrong ID or Password!", "error");
         }
     } catch (err) {
-        displayToast("⚠️ Network error!", false);
+        showAlert("⚠️ Network error!", "error");
     }
 }
 </script>
