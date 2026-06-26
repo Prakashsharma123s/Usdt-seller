@@ -7,7 +7,6 @@
 <title>BITPay Pro</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -18,6 +17,25 @@ font-family: 'Poppins', sans-serif;
 body{
 background:#060b17;
 color:#fff;
+}
+
+/* 🔔 NEW CUSTOM TOAST NOTIFICATION STYLING (Bada pop-up replaced) */
+#toastNotification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00e6a7;
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 230, 167, 0.3);
+    z-index: 100000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, top 0.3s ease;
 }
 
 /* HEADER */
@@ -92,6 +110,7 @@ margin-top:18px;
 font-weight:700;
 font-size:16px;
 text-decoration:none;
+cursor:pointer;
 }
 
 .primary{
@@ -203,31 +222,27 @@ font-size:28px;
 img{
 border-radius:50%;
 }
-
 </style>
-
 </head>
 
 <body>
 
+<!-- 🔔 TOAST POPUP ELEMENT -->
+<div id="toastNotification">Message</div>
+
 <header>
 <div class="logo">BITPAY</div>
-<button onclick="openSidebar()" style="font-size:22px; background:none; border:none; color:#fff;">☰</button>
+<button onclick="openSidebar()" style="font-size:22px; background:none; border:none; color:#fff; cursor:pointer;">☰</button>
 </header>
 
 <!-- HERO -->
 <div class="hero">
-
 <div class="tag">🌐 GLOBAL CRYPTO EXCHANGE</div>
-
 <h1>Trade Crypto <br> With <span>Confidence</span></h1>
-
 <p>Buy, sell and trade 300+ cryptocurrencies on BITPay. Competitive rates, ultra-low fees.</p>
-
 <a class="btn primary">🚀 Start Trading</a>
 <a class="btn primary" onclick="showLogin()">🔐 Login</a>
 <a class="btn secondary" onclick="showSignup()">📝 Register</a>
-
 </div>
 
 <!-- STATS -->
@@ -240,9 +255,7 @@ border-radius:50%;
 
 <!-- WHY -->
 <div class="section">
-
 <div class="tag">⚡ WHY BITPAY</div>
-
 <h2>Built for Serious Traders</h2>
 <p>Professional grade tools, institutional security</p>
 
@@ -260,12 +273,10 @@ border-radius:50%;
 <h3>🌍 P2P + Spot + OTC</h3>
 <p>Trade peer-to-peer, access spot markets, or place OTC orders.</p>
 </div>
-
 </div>
 
 <!-- MARKETS -->
 <div class="section">
-
 <div class="tag">📈 TOP MARKETS</div>
 <h2>Hot Right Now</h2>
 
@@ -281,7 +292,6 @@ border-radius:50%;
 </div>
 <span class="green">+1.42%</span>
 </div>
-
 <h3>$67,842</h3>
 <p style="color:#888;">Vol: $8.4B</p>
 </div>
@@ -298,7 +308,6 @@ border-radius:50%;
 </div>
 <span class="red">-0.31%</span>
 </div>
-
 <h3>$3,512</h3>
 <p style="color:#888;">Vol: $4.2B</p>
 </div>
@@ -315,7 +324,6 @@ border-radius:50%;
 </div>
 <span class="green">+2.14%</span>
 </div>
-
 <h3>$172.40</h3>
 <p style="color:#888;">Vol: $1.8B</p>
 </div>
@@ -332,19 +340,15 @@ border-radius:50%;
 </div>
 <span class="green">+0.18%</span>
 </div>
-
 <h3>₹94.69</h3>
 <p style="color:#888;">Vol: $2.4M</p>
 </div>
-
 </div>
+
 <!-- PARTNERS -->
 <div style="padding:40px 20px; text-align:center;">
-
 <p style="color:#888; letter-spacing:2px;">TRUSTED TECHNOLOGY PARTNERS</p>
-
 <br>
-
 <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; color:#888;">
 <span>Binance</span>
 <span>Coinbase</span>
@@ -355,56 +359,44 @@ border-radius:50%;
 <span>TRON</span>
 <span>BNB Chain</span>
 </div>
-
 </div>
 
 <hr style="border:1px solid #111; margin:20px;">
 
 <!-- MAIN FOOTER -->
 <div style="padding:30px 20px;">
-
 <h2 style="font-size:32px;">BITPAY</h2>
-
 <p style="color:#aaa; margin-top:10px;">
 Global crypto exchange — Dubai headquartered, VARA regulated. Secure and fast trading from P2P to Spot.
 </p>
-
 <br>
-
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-<button style="background:#00e6a7; color:#000; padding:10px 15px; border-radius:8px; border:none;">
+<button style="background:#00e6a7; color:#000; padding:10px 15px; border-radius:8px; border:none; font-weight:bold;">
 🇦🇪 Dubai HQ
 </button>
-
-<button style="background:#1a1a1a; color:#ffcc00; padding:10px 15px; border-radius:8px; border:none;">
+<button style="background:#1a1a1a; color:#ffcc00; padding:10px 15px; border-radius:8px; border:none; font-weight:bold;">
 🔒 VARA Regulated
 </button>
 </div>
-
 </div>
 
 <!-- LINKS -->
 <div style="padding:20px;">
-
 <h3 style="margin-bottom:10px;">PRODUCTS</h3>
 <p style="color:#888;">P2P Trading</p>
 <p style="color:#888;">Spot Exchange</p>
 <p style="color:#888;">OTC Desk</p>
 <p style="color:#888;">API Access</p>
-
 <br>
-
 <h3 style="margin-bottom:10px;">SUPPORT</h3>
 <p style="color:#888;">Help Center</p>
 <p style="color:#888;">P2P Trading</p>
 <p style="color:#888;">24/7 Available</p>
-
 </div>
 
 <hr style="border:1px solid #111; margin:20px;">
-<!-- 🔥 AUTH SECTION -->
-<!-- 🔥 AUTH SECTION -->
-<!-- 🔥 AUTH MODAL (NEW) -->
+
+<!-- 🔥 AUTH MODAL -->
 <div id="authBox" style="
 display:none;
 position:fixed;
@@ -417,7 +409,6 @@ z-index:9999;
 justify-content:center;
 align-items:center;
 ">
-
     <div style="
     background:#0f172a;
     padding:25px;
@@ -426,7 +417,6 @@ align-items:center;
     max-width:350px;
     position:relative;
     ">
-
         <!-- ❌ CLOSE -->
         <span onclick="closeAuth()" style="
         position:absolute;
@@ -438,26 +428,17 @@ align-items:center;
 
         <h2 id="authTitle">Login</h2>
 
-        <input id="fullname" placeholder="Full Name"
-style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; display:none;">
-        <input id="phone" placeholder="Phone Number"
-        style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none;">
+        <input id="fullname" placeholder="Full Name" style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; display:none; background:#1e293b; color:#fff;">
+        <input id="phone" placeholder="Phone Number" style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; background:#1e293b; color:#fff;">
+        <input id="password" type="password" placeholder="Password" style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; background:#1e293b; color:#fff;">
 
-        <input id="password" type="password" placeholder="Password"
-        style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none;">
-
-        <button id="authBtn" style="margin-top:15px; width:100%; padding:12px; background:#00e6a7; border:none; border-radius:8px; font-weight:bold;">
-Continue
-</button>
-
+        <button id="authBtn" style="margin-top:15px; width:100%; padding:12px; background:#00e6a7; border:none; border-radius:8px; font-weight:bold; color:#000; cursor:pointer;">
+        Continue
+        </button>
     </div>
 </div>
-    
 
-<!-- COPYRIGHT -->
-<div style="text-align:center; padding:10px; color:#666; font-size:12px;">
-© 2025 BITPay Exchange. All rights reserved.
-</div>
+<!-- SIDEBAR -->
 <div id="sidebar" style="
 position:fixed;
 top:0;
@@ -469,32 +450,21 @@ padding:20px;
 transition:0.3s;
 z-index:9999;
 ">
-
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
     <h2>BITPAY</h2>
-
-
-<span onclick="closeSidebar()" style="font-size:20px; cursor:pointer;">✖</span>
-
-<h2 style="margin-top:10px;">BITPAY</h2>
-
-<hr style="margin:15px 0; border:1px solid #222;">
-
-<p onclick="showLogin()">🔐 Login</p>
-<p onclick="showSignup()">📝 Register</p>
-
-<hr style="margin:15px 0; border:1px solid #222;">
-
-<p>❓ Help Center</p>
-<p>📞 Support</p>
-<p>📄 Terms & Conditions</p>
-<p>🔒 Privacy Policy</p>
-
+    <span onclick="closeSidebar()" style="font-size:20px; cursor:pointer;">✖</span>
 </div>
-<!-- COPYRIGHT -->
-<div>© 2025 BITPay Exchange...</div>
+<hr style="margin:15px 0; border:1px solid #222;">
+<p onclick="showLogin(); closeSidebar();" style="cursor:pointer; margin-bottom:10px;">🔐 Login</p>
+<p onclick="showSignup(); closeSidebar();" style="cursor:pointer; margin-bottom:10px;">📝 Register</p>
+<hr style="margin:15px 0; border:1px solid #222;">
+<p style="margin-bottom:10px;">❓ Help Center</p>
+<p style="margin-bottom:10px;">📞 Support</p>
+<p style="margin-bottom:10px;">📄 Terms & Conditions</p>
+<p style="margin-bottom:10px;">🔒 Privacy Policy</p>
+</div>
 
-
-<!-- ✅ OVERLAY YAHA -->
+<!-- OVERLAY -->
 <div id="overlay" onclick="closeSidebar()" style="
 position:fixed;
 top:0;
@@ -505,13 +475,18 @@ background:rgba(0,0,0,0.5);
 display:none;
 z-index:9998;
 "></div>
+
+<!-- COPYRIGHT -->
+<div style="text-align:center; padding:20px; color:#666; font-size:12px; background:#060b17;">
+© 2026 BITPay Exchange. All rights reserved.
+</div>
+
 <!-- ✅ FIREBASE CDN -->
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
-<!-- ✅ SINGLE SCRIPT -->
+<!-- ✅ SCRIPT LOGIC -->
 <script>
-
 // 🔥 FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
@@ -523,14 +498,28 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// 🚀 CUSTOM TOAST UTILITY
+function displayToast(msg, isRedirecting, targetUrl) {
+    const toast = document.getElementById("toastNotification");
+    toast.innerText = msg;
+    toast.style.opacity = "1";
+    toast.style.top = "30px";
+    
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.top = "20px";
+        if(isRedirecting) {
+            window.location.href = targetUrl;
+        }
+    }, 1500);
+}
 
 // ✅ SHOW LOGIN
 function showLogin() {
     document.getElementById("authBox").style.display = "flex";
     document.getElementById("authTitle").innerText = "Login";
     document.getElementById("fullname").style.display = "none";
-
-    document.getElementById("authBtn").onclick = loginUser; // ✅ ADD THIS
+    document.getElementById("authBtn").onclick = loginUser;
 }
 
 // ✅ SHOW SIGNUP
@@ -538,23 +527,23 @@ function showSignup() {
     document.getElementById("authBox").style.display = "flex";
     document.getElementById("authTitle").innerText = "Register";
     document.getElementById("fullname").style.display = "block";
-
-    document.getElementById("authBtn").onclick = registerUser; // ✅ FIX
+    document.getElementById("authBtn").onclick = registerUser;
 }
 
 // ✅ SIDEBAR
 function openSidebar() {
     document.getElementById("sidebar").style.left = "0";
+    document.getElementById("overlay").style.display = "block";
 }
 
 function closeSidebar() {
     document.getElementById("sidebar").style.left = "-250px";
+    document.getElementById("overlay").style.display = "none";
 }
 
 // ✅ LOGOUT
 function logout() {
-    alert("Logged out");
-    location.reload();
+    displayToast("Logged out successfully 👋", true, "index.html");
 }
 
 // ✅ CLOSE MODAL
@@ -564,13 +553,12 @@ function closeAuth() {
 
 // ✅ REGISTER
 async function registerUser() {
-
     const name = document.getElementById("fullname").value;
     const phone = document.getElementById("phone").value;
     const pass = document.getElementById("password").value;
 
     if (!name || !phone || !pass) {
-        alert("Fill all details!");
+        displayToast("⚠️ Fill all details!", false);
         return;
     }
 
@@ -580,23 +568,20 @@ async function registerUser() {
             phone: phone,
             password: pass
         });
-
-        alert("Account Created ✅");
-
+        closeAuth();
+        displayToast("Account Created Successfully ✅", false);
     } catch (err) {
-        alert("Error creating account ❌");
+        displayToast("❌ Error creating account!", false);
     }
 }
 
-
 // ✅ LOGIN
 async function loginUser() {
-
     const phone = document.getElementById("phone").value;
     const pass = document.getElementById("password").value;
 
     if (!phone || !pass) {
-        alert("Enter details!");
+        displayToast("⚠️ Enter details!", false);
         return;
     }
 
@@ -604,21 +589,16 @@ async function loginUser() {
         const userRef = await db.collection("users").doc(phone).get();
 
         if (userRef.exists && userRef.data().password === pass) {
-
-            localStorage.setItem("user", phone);  // ✅ save user
-            alert("Login successful 🔥");
-
-            window.location.href = "./dashboard.html"; // ✅ redirect
-
+            localStorage.setItem("user", phone);
+            closeAuth();
+            displayToast("Login successful 🔥", true, "./dashboard.html");
         } else {
-            alert("Wrong ID or Password ❌");
+            displayToast("❌ Wrong ID or Password!", false);
         }
-
     } catch (err) {
-        alert("Network error ⚠️");
+        displayToast("⚠️ Network error!", false);
     }
 }
-    
 </script>
 </body>
 </html>
