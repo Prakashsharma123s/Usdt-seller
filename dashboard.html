@@ -480,13 +480,7 @@
         <!-- 4. SYSTEM TXNS SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-txns" class="view-screen-layer hidden flex flex-col w-full animated-transition">
-            <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20">
-                <h2 class="text-base font-extrabold text-slate-800">Transactions Ledger</h2>
-            </div>
-            <!-- Absolute Minimalist Empty State Matrix -->
-            <div class="flex-grow flex flex-col items-center justify-center py-40 text-slate-400 font-semibold text-sm">
-                No transactions yet.
-            </div>
+            <!-- 🌟 AB IDHAR OPERATIONAL SYSTEM SNAPSHOT CODE POORA DYNAMIC INJECT HOGA -->
         </div>
 
         <!-- ========================================================================= -->
@@ -571,7 +565,7 @@
            <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-slate-100 px-2 py-3.5 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
             
             <!-- Navbar Trigger: Home -->
-            <button id="nav-home" onclick="switchView('home')" class="nav-action-item flex flex-col items-center gap-1 text-blue-600">
+               <button id="nav-home" onclick="switchView('home')" class="nav-action-item flex flex-col items-center gap-1 text-blue-600">
                 <i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold tracking-wide">Home</span>
             </button>
             
@@ -783,14 +777,14 @@
         }
 
         // ==========================================
-        // 🚀 CLIENT STATE AND PROFILE IDENTITY MANAGEMENT
+        // 🚀 CLIENT STATE & SNAPSHOT LOGGER (INTEGRATED PATCH)
         // ==========================================
         const cachedUserSessionKey = localStorage.getItem("user");
         if(cachedUserSessionKey) {
             userDisplay.innerText = "User ID: " + cachedUserSessionKey;
             document.getElementById("profileIdentityPhone").innerText = cachedUserSessionKey;
             
-            // 🛠️ REALTIME BALANCE ENGINE UPDATES FOR TRADERS BALANCE CARD
+            // Real-time listen arrays mapping
             db.collection("users").doc(cachedUserSessionKey).onSnapshot((doc) => {
                 if(doc.exists) {
                     const data = doc.data();
@@ -805,6 +799,41 @@
                     if(data.usdt !== undefined) {
                         document.getElementById("dashboardUsdtStack").innerText = parseFloat(data.usdt).toFixed(2);
                         document.getElementById("profileUsdtDisplay").innerText = parseFloat(data.usdt).toFixed(2);
+                    }
+
+                    // 🌟 RENDER REAL-TIME TXNS STATE MODULES ON VIEW-LISTS PANE
+                    const txnsViewBox = document.getElementById("view-txns");
+                    let innerTxnListHtml = `<div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20"><h2 class="text-base font-extrabold text-slate-800">Transactions Ledger</h2></div>`;
+                    
+                    if(data.history && data.history.length > 0) {
+                        innerTxnListHtml += `<div class="p-4 space-y-3 overflow-y-auto no-scrollbar pb-24">`;
+                        
+                        [...data.history].reverse().forEach(txn => {
+                            const isSuccess = txn.status === "Success";
+                            const isFailed = txn.status === "Failed";
+                            
+                            let statusBadgeClass = "bg-yellow-50 text-yellow-600 border border-yellow-100";
+                            if(isSuccess) statusBadgeClass = "bg-emerald-50 text-emerald-600 border border-emerald-100";
+                            if(isFailed) statusBadgeClass = "bg-red-50 text-red-600 border border-red-100";
+
+                            innerTxnListHtml += `
+                            <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex justify-between items-center transition">
+                                <div>
+                                    <p class="text-xs font-mono text-slate-400">ID: ${txn.txnId || 'TRX-NODE'}</p>
+                                    <h4 class="text-sm font-black text-slate-800 mt-1 uppercase">${txn.type || 'BUY'} ${txn.amt} ${txn.coin}</h4>
+                                    <p class="text-[10px] text-slate-400 font-bold mt-1">${txn.date}</p>
+                                </div>
+                                <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-md ${statusBadgeClass}">
+                                    ${txn.status}
+                                </span>
+                            </div>`;
+                        });
+                        innerTxnListHtml += `</div>`;
+                        txnsViewBox.innerHTML = innerTxnListHtml;
+                    } else {
+                        txnsViewBox.innerHTML = `
+                        <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20"><h2 class="text-base font-extrabold text-slate-800">Transactions Ledger</h2></div>
+                        <div class="flex-grow flex flex-col items-center justify-center py-40 text-slate-400 font-semibold text-sm">No transactions yet.</div>`;
                     }
                 }
             }, (err) => {
