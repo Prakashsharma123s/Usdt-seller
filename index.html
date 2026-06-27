@@ -242,7 +242,6 @@ border-radius:50%;
     transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 9999;
     display: flex;
-    flex-col: column;
     flex-direction: column;
     padding: 0 !important;
 }
@@ -338,17 +337,22 @@ border-radius:50%;
 
 <header>
 <div class="logo">BITPAY</div>
-<button onclick="openSidebar()" style="font-size:22px; background:none; border:none; color:#fff; cursor:pointer;">☰</button>
+<button onclick="openSidebar()" style="font-size:22px; background:none; border:none; color:#fff;">☰</button>
 </header>
 
 <!-- HERO -->
 <div class="hero">
+
 <div class="tag">🌐 GLOBAL CRYPTO EXCHANGE</div>
+
 <h1>Trade Crypto <br> With <span>Confidence</span></h1>
+
 <p>Buy, sell and trade 300+ cryptocurrencies on BITPay. Competitive rates, ultra-low fees.</p>
-<a class="btn primary">🚀 Start Trading</a>
+
+<a class="btn primary" onclick="showLogin()">🚀 Start Trading</a>
 <a class="btn primary" onclick="showLogin()">🔐 Login</a>
 <a class="btn secondary" onclick="showSignup()">📝 Register</a>
+
 </div>
 
 <!-- STATS -->
@@ -361,7 +365,9 @@ border-radius:50%;
 
 <!-- WHY -->
 <div class="section">
+
 <div class="tag">⚡ WHY BITPAY</div>
+
 <h2>Built for Serious Traders</h2>
 <p>Professional grade tools, institutional security</p>
 
@@ -379,10 +385,12 @@ border-radius:50%;
 <h3>🌍 P2P + Spot + OTC</h3>
 <p>Trade peer-to-peer, access spot markets, or place OTC orders.</p>
 </div>
+
 </div>
 
 <!-- MARKETS -->
 <div class="section">
+
 <div class="tag">📈 TOP MARKETS</div>
 <h2>Hot Right Now</h2>
 
@@ -398,6 +406,7 @@ border-radius:50%;
 </div>
 <span class="green">+1.42%</span>
 </div>
+
 <h3>$67,842</h3>
 <p style="color:#888;">Vol: $8.4B</p>
 </div>
@@ -414,6 +423,7 @@ border-radius:50%;
 </div>
 <span class="red">-0.31%</span>
 </div>
+
 <h3>$3,512</h3>
 <p style="color:#888;">Vol: $4.2B</p>
 </div>
@@ -430,6 +440,7 @@ border-radius:50%;
 </div>
 <span class="green">+2.14%</span>
 </div>
+
 <h3>$172.40</h3>
 <p style="color:#888;">Vol: $1.8B</p>
 </div>
@@ -446,15 +457,19 @@ border-radius:50%;
 </div>
 <span class="green">+0.18%</span>
 </div>
+
 <h3>₹94.69</h3>
 <p style="color:#888;">Vol: $2.4M</p>
 </div>
-</div>
 
+</div>
 <!-- PARTNERS -->
 <div style="padding:40px 20px; text-align:center;">
+
 <p style="color:#888; letter-spacing:2px;">TRUSTED TECHNOLOGY PARTNERS</p>
+
 <br>
+
 <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; color:#888;">
 <span>Binance</span>
 <span>Coinbase</span>
@@ -465,39 +480,50 @@ border-radius:50%;
 <span>TRON</span>
 <span>BNB Chain</span>
 </div>
+
 </div>
 
 <hr style="border:1px solid #111; margin:20px;">
 
 <!-- MAIN FOOTER -->
 <div style="padding:30px 20px;">
+
 <h2 style="font-size:32px;">BITPAY</h2>
+
 <p style="color:#aaa; margin-top:10px;">
 Global crypto exchange — Dubai headquartered, VARA regulated. Secure and fast trading from P2P to Spot.
 </p>
+
 <br>
+
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-<button style="background:#00e6a7; color:#000; padding:10px 15px; border-radius:8px; border:none; font-weight:bold;">
+<button style="background:#00e6a7; color:#000; padding:10px 15px; border-radius:8px; border:none;">
 🇦🇪 Dubai HQ
 </button>
-<button style="background:#1a1a1a; color:#ffcc00; padding:10px 15px; border-radius:8px; border:none; font-weight:bold;">
+
+<button style="background:#1a1a1a; color:#ffcc00; padding:10px 15px; border-radius:8px; border:none;">
 🔒 VARA Regulated
 </button>
 </div>
+
 </div>
 
 <!-- LINKS -->
 <div style="padding:20px;">
+
 <h3 style="margin-bottom:10px;">PRODUCTS</h3>
 <p style="color:#888;">P2P Trading</p>
 <p style="color:#888;">Spot Exchange</p>
 <p style="color:#888;">OTC Desk</p>
 <p style="color:#888;">API Access</p>
+
 <br>
+
 <h3 style="margin-bottom:10px;">SUPPORT</h3>
 <p style="color:#888;">Help Center</p>
 <p style="color:#888;">P2P Trading</p>
 <p style="color:#888;">24/7 Available</p>
+
 </div>
 
 <hr style="border:1px solid #111; margin:20px;">
@@ -515,6 +541,7 @@ z-index:9999;
 justify-content:center;
 align-items:center;
 ">
+
     <div style="
     background:#0f172a;
     padding:25px;
@@ -523,6 +550,7 @@ align-items:center;
     max-width:350px;
     position:relative;
     ">
+
         <!-- ❌ CLOSE -->
         <span onclick="closeAuth()" style="
         position:absolute;
@@ -534,9 +562,13 @@ align-items:center;
 
         <h2 id="authTitle">Login</h2>
 
-        <input id="fullname" placeholder="Full Name" style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; display:none; background:#1e293b; color:#fff;">
-        <input id="phone" placeholder="Phone Number" style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; background:#1e293b; color:#fff;">
-        <input id="password" type="password" placeholder="Password" style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; background:#1e293b; color:#fff;">
+        <input id="fullname" placeholder="Full Name"
+style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; display:none; background:#1e293b; color:#fff;">
+        <input id="phone" placeholder="Phone Number"
+        style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; background:#1e293b; color:#fff;">
+
+        <input id="password" type="password" placeholder="Password"
+        style="width:100%; margin-top:10px; padding:12px; border-radius:8px; border:none; background:#1e293b; color:#fff;">
 
         <button id="authBtn" style="margin-top:15px; width:100%; padding:12px; background:#00e6a7; border:none; border-radius:8px; font-weight:bold; color:#000; cursor:pointer;">
         Continue
@@ -544,10 +576,15 @@ align-items:center;
 
         <!-- 🔔 IN-FORM ALERT TEXT BOX -->
         <div id="formAlertBox" class="form-alert"></div>
+
     </div>
 </div>
+    
 
-<!-- 📊 NEW PROFESSIONAL SIDEBAR -->
+<!-- COPYRIGHT -->
+<div style="text-align:center; padding:10px; color:#666; font-size:12px;">
+© 2026 BITPay Exchange. All rights reserved.
+</div>
 <div id="sidebar">
     <div class="sidebar-header">
         <div class="sidebar-brand">BITPAY</div>
@@ -578,20 +615,16 @@ align-items:center;
     </div>
 </div>
 
-<!-- OVERLAY -->
+<!-- OVERLAY YAHA -->
 <div id="overlay" onclick="closeSidebar()"></div>
-
-<!-- COPYRIGHT -->
-<div style="text-align:center; padding:20px; color:#666; font-size:12px; background:#060b17;">
-© 2026 BITPay Exchange. All rights reserved.
-</div>
 
 <!-- ✅ FIREBASE CDN -->
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
-<!-- ✅ SCRIPT LOGIC -->
+<!-- ✅ SINGLE SCRIPT -->
 <script>
+
 // 🔥 FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
@@ -602,6 +635,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
 
 // 🚀 CUSTOM FORM IN-ALERT TEXT HANDLER
 function showAlert(message, type) {
@@ -623,12 +657,14 @@ function clearAlert() {
     alertBox.innerText = "";
 }
 
+
 // ✅ SHOW LOGIN
 function showLogin() {
     clearAlert();
     document.getElementById("authBox").style.display = "flex";
     document.getElementById("authTitle").innerText = "Login";
     document.getElementById("fullname").style.display = "none";
+
     document.getElementById("authBtn").onclick = loginUser;
 }
 
@@ -638,10 +674,11 @@ function showSignup() {
     document.getElementById("authBox").style.display = "flex";
     document.getElementById("authTitle").innerText = "Register";
     document.getElementById("fullname").style.display = "block";
+
     document.getElementById("authBtn").onclick = registerUser;
 }
 
-// ✅ SIDEBAR CONTROL
+// ✅ SIDEBAR
 function openSidebar() {
     document.getElementById("sidebar").style.left = "0";
     document.getElementById("overlay").style.display = "block";
@@ -660,6 +697,7 @@ function closeAuth() {
 
 // ✅ REGISTER
 async function registerUser() {
+
     const name = document.getElementById("fullname").value;
     const phone = document.getElementById("phone").value;
     const pass = document.getElementById("password").value;
@@ -675,15 +713,19 @@ async function registerUser() {
             phone: phone,
             password: pass
         });
+
         showAlert("Account Created ✅", "success");
         setTimeout(() => { closeAuth(); }, 1200);
+
     } catch (err) {
         showAlert("❌ Error creating account!", "error");
     }
 }
 
+
 // ✅ LOGIN
 async function loginUser() {
+
     const phone = document.getElementById("phone").value;
     const pass = document.getElementById("password").value;
 
@@ -696,19 +738,23 @@ async function loginUser() {
         const userRef = await db.collection("users").doc(phone).get();
 
         if (userRef.exists && userRef.data().password === pass) {
-            localStorage.setItem("user", phone);
+
+            localStorage.setItem("user", phone);  // ✅ save user
             showAlert("Login successful 🔥", "success");
-            
+
             setTimeout(() => {
-                window.location.href = "./dashboard.html";
+                window.location.href = "./dashboard.html"; // ✅ redirect
             }, 1000);
+
         } else {
             showAlert("❌ Wrong ID or Password!", "error");
         }
+
     } catch (err) {
         showAlert("⚠️ Network error!", "error");
     }
 }
+    
 </script>
 </body>
 </html>
