@@ -31,8 +31,6 @@
     })();
 </script>
 
-
-
     <!-- Tailwind Engine Configuration Framework -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome System Vector Graphics -->
@@ -100,7 +98,7 @@
     <div class="w-full max-w-md bg-white min-h-screen relative flex flex-col pb-36 overflow-x-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border-x border-slate-800/10">
         
         <!-- ========================================================================= -->
-        <!-- 1. SYSTEM HOME NODE SCREEN SECTION (Image 1000058502.jpg Pixel Precise Match) -->
+        <!-- 1. SYSTEM HOME NODE SCREEN SECTION -->
         <!-- ========================================================================= -->
         <div id="view-home" class="view-screen-layer flex flex-col w-full animated-transition">
             
@@ -158,22 +156,22 @@
             </div>
 
             <!-- NEGATIVE MARGIN OVERLAP LAYER PIPELINE CONTAINER -->
-            <div class="px-4 -mt-16 z-10 space-y-4">
+            <div class="px-4 -mt-12 z-10 space-y-4">
                 
-                <!-- Component 1: Operational Core Wallet Balance Card -->
-                <div class="bg-white p-4.5 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-100/80 flex justify-between items-center">
-                    <div class="flex items-center gap-3.5">
-                        <div class="bg-blue-50 p-3 rounded-xl text-blue-600 shadow-sm shadow-blue-500/5">
+                <!-- FIXED FLOATING WALLET DESIGN (IMAGE 1000059319.jpg EXACT MATCH) -->
+                <div class="bg-white p-5 rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-slate-100 flex justify-between items-center relative">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-blue-50 w-11 h-11 rounded-xl text-blue-600 shadow-sm flex items-center justify-center">
                             <i class="fa-solid fa-wallet text-xl"></i>
                         </div>
                         <div>
-                            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Prime Exch USDT Balance</p>
-                            <p class="text-2xl font-black text-slate-800 mt-0.5">0.00 <span class="text-lg font-extrabold text-slate-400">USDT</span></p>
+                            <p class="text-xs text-slate-400 font-semibold">Prime Exch USDT Balance</p>
+                            <p class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">0.00 <span class="text-lg font-bold text-slate-800">USDT</span></p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Wallet Type</p>
-                        <p class="text-[11px] font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md mt-0.5 border border-blue-100/50">PEX-USDT</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Wallet</p>
+                        <p class="text-xs font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg mt-1 border border-blue-100">PEX-USDT</p>
                     </div>
                 </div>
 
@@ -181,7 +179,7 @@
                 <div class="bg-white p-5 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 space-y-4">
                     <div class="flex justify-between items-center">
                         <div>
-                            <span class="text-[11px] text-slate-400 font-extrabold tracking-widest uppercase">USDT / INR Matrix</span>
+                            <span class="text-[11px] text-slate-400 font-extrabold tracking-widest uppercase">USDT / INR</span>
                             <h2 class="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">₹92.00</h2>
                         </div>
                         <span class="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-blue-100/30">
@@ -191,58 +189,58 @@
 
                     <!-- Input Box: Source Fiat Currency Amount -->
                     <div>
-                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">You Pay (INR Amount)</label>
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">You Pay (INR)</label>
                         <div class="relative rounded-xl overflow-hidden shadow-inner">
                             <input id="inrInput" type="number" value="10000" class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-lg font-black text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
                         </div>
                     </div>
 
-                    <!-- Input Box: Destination Yield Value Output Display -->
+                    <!-- Input Box: Destination Yield Value Output Display (FIXED DYNAMIC LOGO) -->
                     <div>
-                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">You Get (Calculated USDT Yield)</label>
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">You Get (USDT)</label>
                         <div class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-lg font-black text-blue-600 flex items-center gap-2.5 shadow-inner">
-                            <i class="fa-brands fa-ethereum text-slate-500 text-xl"></i>
+                            <i id="calculatorCoinLogo" class="fa-brands fa-ethereum text-slate-600 text-xl w-6 text-center"></i>
                             <span id="usdtOutput">108.70 USDT</span>
                         </div>
                     </div>
 
                     <!-- Core Action CTA Processing Node -->
                     <button onclick="triggerBuyProcess()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-4 rounded-xl transition shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 text-base click-bounce">
-                        Buy Order Execution <i class="fa-solid fa-arrow-right-long ml-1"></i>
+                        Buy <i class="fa-solid fa-arrow-right-long ml-1"></i>
                     </button>
                 </div>
 
                 <!-- Component 3: Static Selector Array Module Framework -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-100/80">
-                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 px-1">Select Active Network</h3>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 px-1">Select Network</h3>
                     <div class="grid grid-cols-3 gap-2.5">
                         
                         <!-- TRC20 Card System Module -->
                         <div id="net-trc" onclick="selectHomeNetwork('trc')" class="home-network-card bg-white border border-slate-200 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200 hover:bg-slate-50">
                             <i class="fa-solid fa-triangle-exclamation text-red-500 text-lg mb-1"></i>
                             <span class="text-xs font-bold text-slate-800">TRC20</span>
-                            <span class="text-[9px] text-slate-400 mt-1.5 leading-tight">Fee: <b class="text-slate-600">1.3 USDT</b></span>
+                            <span class="text-[9px] text-slate-400 mt-1.5 leading-tight">Exchange fee:<br><b class="text-slate-600">1.3 USDT</b></span>
                         </div>
                         
-                        <!-- ERC20 Card System Module (Default Selected State Matrix) -->
+                        <!-- ERC20 Card System Module -->
                         <div id="net-erc" onclick="selectHomeNetwork('erc')" class="home-network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200">
                             <i class="fa-brands fa-ethereum text-slate-800 text-lg mb-1"></i>
                             <span class="text-xs font-bold text-slate-800">ERC20</span>
-                            <span class="text-[9px] text-slate-400 mt-1.5 leading-tight">Fee: <b class="text-slate-600">0.45 USDT</b></span>
+                            <span class="text-[9px] text-slate-400 mt-1.5 leading-tight">Exchange fee:<br><b class="text-slate-600">0.45 USDT</b></span>
                         </div>
                         
                         <!-- BEP20 Card System Module -->
                         <div id="net-bep" onclick="selectHomeNetwork('bep')" class="home-network-card bg-white border border-slate-200 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200 hover:bg-slate-50">
                             <i class="fa-solid fa-coins text-amber-500 text-lg mb-1"></i>
                             <span class="text-xs font-bold text-slate-800">BEP20</span>
-                            <span class="text-[9px] text-slate-400 mt-1.5 leading-tight">Fee: <b class="text-slate-600">0.01 USDT</b></span>
+                            <span class="text-[9px] text-slate-400 mt-1.5 leading-tight">Exchange fee:<br><b class="text-slate-600">0.01 USDT</b></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Component 4: Quick Operational Menu Rows System Matrix -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-100/80">
-                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 px-1">Quick System Actions</h3>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 px-1">Quick Actions</h3>
                     <div class="space-y-2.5">
                         
                         <!-- Row Node 1 -->
@@ -250,8 +248,8 @@
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">1</span>
                                 <div>
-                                    <h4 class="text-xs font-extrabold text-slate-800">Buy USDT Vector</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Convert INR fiat to stablecoin instantly</p>
+                                    <h4 class="text-xs font-extrabold text-slate-800">Buy USDT</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Convert INR to USDT instantly</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
@@ -262,8 +260,8 @@
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">2</span>
                                 <div>
-                                    <h4 class="text-xs font-extrabold text-slate-800">Sell USDT Vector</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Liquidate stable crypto yields to local bank account</p>
+                                    <h4 class="text-xs font-extrabold text-slate-800">Sell USDT</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Sell USDT and receive INR</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
@@ -274,8 +272,8 @@
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">3</span>
                                 <div>
-                                    <h4 class="text-xs font-extrabold text-slate-800">Audit Transaction History</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Review and verify ledger processing logs</p>
+                                    <h4 class="text-xs font-extrabold text-slate-800">Track Orders</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">View all your transactions</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
@@ -286,8 +284,8 @@
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">4</span>
                                 <div>
-                                    <h4 class="text-xs font-extrabold text-slate-800">Multi-Network Secure Vault</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Configure withdrawal nodes and cryptographic options</p>
+                                    <h4 class="text-xs font-extrabold text-slate-800">Secure Wallet</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Multi-network support</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
@@ -295,17 +293,19 @@
                     </div>
                 </div>
 
-                <!-- Footer Compliance Trust Logos Block -->
-                <div class="flex justify-center items-center gap-5 py-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                <!-- FIXED FOOTER ELEMENT COMPLIANCE STATUS BAR -->
+                <div class="flex justify-center items-center gap-4 py-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                     <span><i class="fa-solid fa-shield-check text-blue-500 mr-1"></i> SSL Secured</span>
                     <span>•</span>
-                    <span><i class="fa-solid fa-bolt-lightning text-blue-500 mr-1"></i> Instant Processing</span>
+                    <span><i class="fa-solid fa-bolt text-blue-500 mr-1"></i> Instant Processing</span>
+                    <span>•</span>
+                    <span><i class="fa-solid fa-users text-blue-500 mr-1"></i> 10K+ Users</span>
                 </div>
             </div>
         </div>
 
         <!-- ========================================================================= -->
-        <!-- 2. SYSTEM BUY TAB SCREEN MODULE (Image 1000059209.jpg Pixel Precise Match)-->
+        <!-- 2. SYSTEM BUY TAB SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-buy" class="view-screen-layer hidden flex flex-col w-full animated-transition">
             
@@ -357,22 +357,22 @@
                             <!-- Card Module TRC20 -->
                             <div id="buy-net-trc" onclick="selectBuyTabNetwork('trc', 1.00)" class="buy-tab-network-card border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer hover:bg-slate-50/50 transition">
                                 <span class="text-xs font-extrabold text-slate-800">TRC20</span>
-                                <span class="text-[10px] text-slate-400 font-medium mt-2">Exchange fee: 1 USDT</span>
+                                <span class="text-[10px] text-slate-400 mt-2">Exchange fee: 1 USDT</span>
                             </div>
                             
                             <!-- Card Module ERC20 -->
                             <div id="buy-net-erc" onclick="selectBuyTabNetwork('erc', 0.45)" class="buy-tab-network-card border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer hover:bg-slate-50/50 transition">
                                 <span class="text-xs font-extrabold text-slate-800">ERC20</span>
-                                <span class="text-[10px] text-slate-400 font-medium mt-2">Exchange fee: 0.45 USDT</span>
+                                <span class="text-[10px] text-slate-400 mt-2">Exchange fee: 0.45 USDT</span>
                             </div>
                             
                             <!-- Card Module BEP20 -->
                             <div id="buy-net-bep" onclick="selectBuyTabNetwork('bep', 0.01)" class="buy-tab-network-card border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer hover:bg-slate-50/50 transition">
                                 <span class="text-xs font-extrabold text-slate-800">BEP20</span>
-                                <span class="text-[10px] text-slate-400 font-medium mt-2">Exchange fee: 0.01 USDT</span>
+                                <span class="text-[10px] text-slate-400 mt-2">Exchange fee: 0.01 USDT</span>
                             </div>
                             
-                            <!-- Card Module PEX-USDT (Default Selected Image State Match) -->
+                            <!-- Card Module PEX-USDT -->
                             <div id="buy-net-pex" onclick="selectBuyTabNetwork('pex', 0.00)" class="buy-tab-network-card border-2 border-blue-500 bg-blue-50/60 rounded-xl p-3 flex flex-col justify-between cursor-pointer transition">
                                 <span class="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
                                     PEX-USDT <i class="fa-solid fa-circle-check text-blue-600 text-[10px]"></i>
@@ -400,8 +400,8 @@
             </div>
         </div>
 
-<!-- ========================================================================= -->
-        <!-- 3. SYSTEM SELL TAB SCREEN MODULE (Image 1000059210.jpg Pixel Precise Match)-->
+        <!-- ========================================================================= -->
+        <!-- 3. SYSTEM SELL TAB SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-sell" class="view-screen-layer hidden flex flex-col w-full animated-transition">
             
@@ -474,20 +474,20 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!-- 4. SYSTEM TXNS SCREEN MODULE (Image 1000059211.jpg Pixel Precise Match)-->
+        <!-- 4. SYSTEM TXNS SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-txns" class="view-screen-layer hidden flex flex-col w-full animated-transition">
             <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20">
                 <h2 class="text-base font-extrabold text-slate-800">Transactions Ledger</h2>
             </div>
-            <!-- Absolute Minimalist Empty State Matrix (Direct Image Match) -->
+            <!-- Absolute Minimalist Empty State Matrix -->
             <div class="flex-grow flex flex-col items-center justify-center py-40 text-slate-400 font-semibold text-sm">
                 No transactions yet.
             </div>
         </div>
 
         <!-- ========================================================================= -->
-        <!-- 5. SYSTEM PROFILE SCREEN MODULE (Image 1000059212.jpg Pixel Precise Match)-->
+        <!-- 5. SYSTEM PROFILE SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-profile" class="view-screen-layer hidden flex flex-col w-full animated-transition">
             <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20">
@@ -510,11 +510,11 @@
                     
                     <!-- Meta Contact Vectors Grid Box Row Details -->
                     <div class="text-xs text-slate-600 space-y-2.5 pt-3.5 border-t border-slate-100 font-semibold tracking-wide">
-                        <p class="flex items-center gap-2.5"><i class="fa-regular fa-envelope text-slate-400 text-sm"></i> mrbondex3@gmail.com</p>
+                        <p class="flex items-center gap-2.5"><i class="fa-regular fa-envelope text-slate-400 text-sm"></i> <span id="profileIdentityEmail">mrbondex3@gmail.com</span></p>
                         <p class="flex items-center gap-2.5"><i class="fa-regular fa-phone text-gray-400 text-sm"></i> <span id="profileIdentityPhone">7779826401</span></p>
                     </div>
 
-                    <!-- RE-BUILT USDT INTEGRATED BALANCE AND WITHDRAW ARROW COMPONENT (Image Exact Match) -->
+                    <!-- USDT INTEGRATED BALANCE AND WITHDRAW ARROW COMPONENT -->
                     <div class="bg-slate-50/80 border border-slate-100 rounded-xl p-4 flex justify-between items-center mt-2 shadow-inner">
                         <div class="flex items-center gap-3">
                             <div class="bg-blue-50 p-2.5 rounded-lg text-blue-600"><i class="fa-solid fa-wallet"></i></div>
@@ -528,7 +528,7 @@
                     </div>
                 </div>
 
-                <!-- Navigation Hyperlink Menu Item Rows (Image 1000059212.jpg Match) -->
+                <!-- Navigation Hyperlink Menu Item Rows -->
                 <div class="space-y-2.5">
                     
                     <!-- Row item 1 -->
@@ -537,11 +537,11 @@
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
                     
-                    <!-- Row item 2 -->
-                    <div class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition">
+                    <!-- Row item 2 (🛠️ REDIRECTED CONTACT US ENGINES WITH MAILTO TRRIGERS) -->
+                    <a href="mailto:mrbondex3@gmail.com" class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition block decoration-none">
                         <span class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-envelope-open-text text-blue-500 text-sm"></i> Contact Us</span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
-                    </div>
+                    </a>
                     
                     <!-- Row item 3 -->
                     <div onclick="switchView('txns')" class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition">
@@ -557,15 +557,15 @@
             </div>
         </div>
 
-        <!-- STICKY FLOATING WHATSAPP ASSISTANCE ANCHOR NODE -->
-        <a href="https://wa.me/#" target="_blank" class="fixed bottom-24 right-4 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl click-bounce z-50 flex items-center justify-center w-14 h-14 border border-white/10">
+        <!-- STICKY FLOATING WHATSAPP ASSISTANCE ANCHOR NODE (🛠️ FIXED REDIRECT ROUTE TO 8579832980) -->
+        <a href="https://wa.me/918579832980" target="_blank" class="fixed bottom-24 right-4 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl click-bounce z-50 flex items-center justify-center w-14 h-14 border border-white/10">
             <i class="fa-brands fa-whatsapp text-3xl"></i>
         </a>
 
         <!-- ========================================================================= -->
         <!--             FIXED PERMANENT ANCHORED BOTTOM NAVIGATION BAR                -->
         <!-- ========================================================================= -->
-        <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-slate-100 px-2 py-3.5 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+           <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-slate-100 px-2 py-3.5 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
             
             <!-- Navbar Trigger: Home -->
             <button id="nav-home" onclick="switchView('home')" class="nav-action-item flex flex-col items-center gap-1 text-blue-600">
@@ -598,7 +598,22 @@
     <!-- ========================================================================= -->
     <!--                      CORE DATA OPERATIONS LOGIC MODULE                    -->
     <!-- ========================================================================= -->
+    <!-- ✅ FIREBASE CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
+
     <script>
+        // 🔥 FIREBASE CONFIG
+        const firebaseConfig = {
+          apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
+          authDomain: "trusted-usdt-seller.firebaseapp.com",
+          projectId: "trusted-usdt-seller",
+          appId: "1:667426874776:web:2c058a8b06a985e390b7ed"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         const profileBtn = document.getElementById('profileBtn');
         const logoutDropdown = document.getElementById('logoutDropdown');
         const userDisplay = document.getElementById('userDisplay');
@@ -607,6 +622,7 @@
         // Home Segment Elements Map
         const inrInput = document.getElementById('inrInput');
         const usdtOutput = document.getElementById('usdtOutput');
+        const calculatorCoinLogo = document.getElementById('calculatorCoinLogo');
         const standardRate = 92.00;
 
         // Buy View Segment Elements Map
@@ -660,7 +676,7 @@
         function calculateBuyTabLiveUSDT() {
             const rawInr = parseFloat(buyTabInrInput.value);
             if (!isNaN(rawInr) && rawInr > 0) {
-                const totalGrossCrypto = rawInr / 91.00; // Direct conversion rate configuration matches inner tab labels
+                const totalGrossCrypto = rawInr / 91.00; 
                 const calculatedNetCrypto = Math.max(0, totalGrossCrypto - activeBuyTabFee).toFixed(2);
                 buyTabUsdtOutput.innerText = `${calculatedNetCrypto} USDT`;
             } else {
@@ -687,6 +703,15 @@
                 card.className = "home-network-card bg-white border border-slate-200 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200 hover:bg-slate-50";
             });
             document.getElementById(`net-${networkCode}`).className = "home-network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200";
+            
+            // Change upper dynamic icons block
+            if(networkCode === 'trc') {
+                calculatorCoinLogo.className = "fa-solid fa-triangle-exclamation text-red-500 text-xl w-6 text-center";
+            } else if (networkCode === 'erc') {
+                calculatorCoinLogo.className = "fa-brands fa-ethereum text-slate-700 text-xl w-6 text-center";
+            } else if (networkCode === 'bep') {
+                calculatorCoinLogo.className = "fa-solid fa-coins text-amber-500 text-xl w-6 text-center";
+            }
         }
 
         function selectBuyTabNetwork(networkCode, dynamicFeeValue) {
@@ -733,6 +758,23 @@
         if(cachedUserSessionKey) {
             userDisplay.innerText = "User ID: " + cachedUserSessionKey;
             document.getElementById("profileIdentityPhone").innerText = cachedUserSessionKey;
+            
+            // Firebase Firestore database pull query logic
+            db.collection("users").doc(cachedUserSessionKey).get().then((doc) => {
+                if(doc.exists) {
+                    const data = doc.data();
+                    if(data.name) {
+                        document.getElementById("profileIdentityName").innerText = data.name;
+                    }
+                    if(data.email) {
+                        document.getElementById("profileIdentityEmail").innerText = data.email;
+                    } else {
+                        document.getElementById("profileIdentityEmail").innerText = "user_" + cachedUserSessionKey + "@bitpay.pro";
+                    }
+                }
+            }).catch((err) => {
+                console.log("Profile error log:", err);
+            });
         }
 
         // Toggle user dropdown card options layout
