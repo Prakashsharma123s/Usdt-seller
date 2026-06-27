@@ -7,36 +7,30 @@
     
     <!-- 🔒 HIGH-SECURITY ULTIMATE GUARD: Place this at the very top of <head> -->
 <script>
-    (function() {
-        // 1. URL Se kisi bhi tarah ke parameters ko check karna
-        const urlParams = new URLSearchParams(window.location.search);
+    // 🔒 HIGH-SECURITY DEVICE & URL ISOLATION SHIELD
+    (function () {
+        // Immediate Session Checking
+        const sessionToken = localStorage.getItem("user");
         
-        // Anti-bypass check: Agar link ke sath direct data leak lag kar aaya hai toh use block karo
-        if (window.location.href.includes('?') || window.location.href.includes('#')) {
-            localStorage.clear(); // Wipe potential session hijacking leak
-            window.location.href = "index.html";
-            return;
-        }
-
-        // 2. Client Browser validation
-        const localUser = localStorage.getItem("user");
-        
-        // Agar browser local storage empty hai, toh instant drop karo
-        if (!localUser || localUser === "null" || localUser === "undefined") {
-            window.location.href = "index.html";
-            return;
-        }
-
-        // 3. Extra Server Sync Verification (Optional but secure)
-        // Yeh check karega ki user string sirf valid digit phone context hai ya nahi
-        const isPhoneValid = /^\d+$/.test(localUser);
-        if (!isPhoneValid) {
+        // 1. Agar user logged in nahi hai, toh instant block aur wipe out
+        if (!sessionToken || sessionToken === "null" || sessionToken === "undefined" || !/^\d+$/.test(sessionToken)) {
             localStorage.clear();
-            window.location.href = "index.html";
+            document.documentElement.style.display = 'none'; // Poore page ko invisible karo
+            window.location.replace("index.html"); // History bypass protection redirect
+            return;
+        }
+
+        // 2. Anti-Share URL Parameter Meta Check
+        // Agar link kisi ne WhatsApp ya direct copy karke bheja hai aur URL mein ? ya # parameters hain toh block karo
+        if (window.location.search || window.location.hash || window.location.href.includes('?')) {
+            localStorage.clear();
+            document.documentElement.style.display = 'none';
+            window.location.replace("index.html");
             return;
         }
     })();
 </script>
+
 
 
     <!-- Tailwind Engine Configuration Framework -->
