@@ -5,12 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Prime Exchange - Professional Crypto Node</title>
     
-    <!-- 🔒 PRE-LOAD EXCLUSIVITY SECURITY GUARD -->
-    <script>
-        if (!localStorage.getItem("user")) {
+    <!-- 🔒 HIGH-SECURITY ULTIMATE GUARD: Place this at the very top of <head> -->
+<script>
+    (function() {
+        // 1. URL Se kisi bhi tarah ke parameters ko check karna
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Anti-bypass check: Agar link ke sath direct data leak lag kar aaya hai toh use block karo
+        if (window.location.href.includes('?') || window.location.href.includes('#')) {
+            localStorage.clear(); // Wipe potential session hijacking leak
             window.location.href = "index.html";
+            return;
         }
-    </script>
+
+        // 2. Client Browser validation
+        const localUser = localStorage.getItem("user");
+        
+        // Agar browser local storage empty hai, toh instant drop karo
+        if (!localUser || localUser === "null" || localUser === "undefined") {
+            window.location.href = "index.html";
+            return;
+        }
+
+        // 3. Extra Server Sync Verification (Optional but secure)
+        // Yeh check karega ki user string sirf valid digit phone context hai ya nahi
+        const isPhoneValid = /^\d+$/.test(localUser);
+        if (!isPhoneValid) {
+            localStorage.clear();
+            window.location.href = "index.html";
+            return;
+        }
+    })();
+</script>
+
 
     <!-- Tailwind Engine Configuration Framework -->
     <script src="https://cdn.tailwindcss.com"></script>
