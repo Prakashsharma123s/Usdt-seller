@@ -166,7 +166,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-slate-400 font-semibold">Prime Exch USDT Balance</p>
-                            <p class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">0.00 <span class="text-lg font-bold text-slate-800">USDT</span></p>
+                            <p class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight"><span id="dashboardUsdtStack">0.00</span> <span class="text-lg font-bold text-slate-800">USDT</span></p>
                         </div>
                     </div>
                     <div class="text-right">
@@ -180,7 +180,8 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <span class="text-[11px] text-slate-400 font-extrabold tracking-widest uppercase">USDT / INR</span>
-                            <h2 class="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">₹92.00</h2>
+                            <!-- 🛠️ DYNAMIC NODE: RATE HEADING SYNCED FROM DATABASE -->
+                            <h2 id="liveRateDisplay" class="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">₹92.00</h2>
                         </div>
                         <span class="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-blue-100/30">
                             <i class="fa-solid fa-chart-line-up"></i> Platform rate
@@ -389,7 +390,8 @@
                     </div>
 
                     <div class="flex justify-between text-[11px] text-slate-400 font-bold uppercase tracking-wider pt-1">
-                        <span>Rate Vector: ₹91/USDT</span>
+                        <!-- 🛠️ DYNAMIC NODE TEXT LABEL FOR RATE -->
+                        <span id="buyTabRateLabel">Rate Vector: ₹92/USDT</span>
                         <span id="buyTabActiveNetText">Network: PEX-USDT</span>
                     </div>
 
@@ -451,7 +453,8 @@
                         <span id="sellTabInrOutput" class="text-xl font-black text-blue-600">₹0.00</span>
                     </div>
 
-                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wide">Rate Matrix: ₹91/USDT</p>
+                    <!-- 🛠️ DYNAMIC NODE TEXT LABEL FOR SELL RATE -->
+                    <p id="sellTabRateLabel" class="text-xs text-slate-400 font-bold uppercase tracking-wide">Rate Matrix: ₹92/USDT</p>
 
                     <!-- Exact 2 Network Selection Grid Node Blocks -->
                     <div>
@@ -520,7 +523,7 @@
                             <div class="bg-blue-50 p-2.5 rounded-lg text-blue-600"><i class="fa-solid fa-wallet"></i></div>
                             <div>
                                 <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest">Prime Exch USDT</p>
-                                <p class="text-lg font-black text-slate-800 mt-0.5">0.00 <span class="text-xs font-bold text-slate-400">USDT</span></p>
+                                <p class="text-lg font-black text-slate-800 mt-0.5"><span id="profileUsdtDisplay">0.00</span> <span class="text-xs font-bold text-slate-400">USDT</span></p>
                                 <p class="text-[9px] text-slate-400 font-medium">Wallet • PEX-USDT</p>
                             </div>
                         </div>
@@ -623,17 +626,45 @@
         const inrInput = document.getElementById('inrInput');
         const usdtOutput = document.getElementById('usdtOutput');
         const calculatorCoinLogo = document.getElementById('calculatorCoinLogo');
-        const standardRate = 92.00;
+        const liveRateDisplay = document.getElementById('liveRateDisplay');
 
         // Buy View Segment Elements Map
         const buyTabInrInput = document.getElementById('buyTabInrInput');
         const buyTabUsdtOutput = document.getElementById('buyTabUsdtOutput');
         const buyTabActiveNetText = document.getElementById('buyTabActiveNetText');
+        const buyTabRateLabel = document.getElementById('buyTabRateLabel');
         let activeBuyTabFee = 0.00;
 
         // Sell View Segment Elements Map
         const sellTabUsdtInput = document.getElementById('sellTabUsdtInput');
         const sellTabInrOutput = document.getElementById('sellTabInrOutput');
+        const sellTabRateLabel = document.getElementById('sellTabRateLabel');
+
+        // ==========================================
+        // 🛠️ DYNAMIC LIVE CONVERSIONS RATIO SHIELD
+        // ==========================================
+        let standardRate = 92.00; 
+
+        // Admin dynamic controller listener hook
+        db.collection("settings").doc("payment").onSnapshot((doc) => {
+            if (doc.exists && doc.data().rate) {
+                standardRate = parseFloat(doc.data().rate);
+                
+                // Real-time text labels replacements
+                liveRateDisplay.innerText = "₹" + standardRate.toFixed(2);
+                buyTabRateLabel.innerText = "Rate Vector: ₹" + standardRate.toFixed(0) + "/USDT";
+                sellTabRateLabel.innerText = "Rate Matrix: ₹" + standardRate.toFixed(0) + "/USDT";
+                
+                // Fire instant computations
+                calculateHomeLiveUSDT();
+                if(!document.getElementById('view-buy').classList.contains('hidden')) {
+                    calculateBuyTabLiveUSDT();
+                }
+                if(!document.getElementById('view-sell').classList.contains('hidden')) {
+                    calculateSellTabLiveINR();
+                }
+            }
+        });
 
         // ==========================================
         // 🚀 ROUTER VIEW TOGGLE ENGINE MECHANISM
@@ -676,7 +707,7 @@
         function calculateBuyTabLiveUSDT() {
             const rawInr = parseFloat(buyTabInrInput.value);
             if (!isNaN(rawInr) && rawInr > 0) {
-                const totalGrossCrypto = rawInr / 91.00; 
+                const totalGrossCrypto = rawInr / standardRate; 
                 const calculatedNetCrypto = Math.max(0, totalGrossCrypto - activeBuyTabFee).toFixed(2);
                 buyTabUsdtOutput.innerText = `${calculatedNetCrypto} USDT`;
             } else {
@@ -688,7 +719,7 @@
         function calculateSellTabLiveINR() {
             const rawCrypto = parseFloat(sellTabUsdtInput.value);
             if (!isNaN(rawCrypto) && rawCrypto > 0) {
-                sellTabInrOutput.innerText = `₹${(rawCrypto * 91.00).toFixed(2)}`;
+                sellTabInrOutput.innerText = `₹${(rawCrypto * standardRate).toFixed(2)}`;
             } else {
                 sellTabInrOutput.innerText = "₹0.00";
             }
@@ -759,8 +790,8 @@
             userDisplay.innerText = "User ID: " + cachedUserSessionKey;
             document.getElementById("profileIdentityPhone").innerText = cachedUserSessionKey;
             
-            // Firebase Firestore database pull query logic
-            db.collection("users").doc(cachedUserSessionKey).get().then((doc) => {
+            // 🛠️ REALTIME BALANCE ENGINE UPDATES FOR TRADERS BALANCE CARD
+            db.collection("users").doc(cachedUserSessionKey).onSnapshot((doc) => {
                 if(doc.exists) {
                     const data = doc.data();
                     if(data.name) {
@@ -771,9 +802,13 @@
                     } else {
                         document.getElementById("profileIdentityEmail").innerText = "user_" + cachedUserSessionKey + "@bitpay.pro";
                     }
+                    if(data.usdt !== undefined) {
+                        document.getElementById("dashboardUsdtStack").innerText = parseFloat(data.usdt).toFixed(2);
+                        document.getElementById("profileUsdtDisplay").innerText = parseFloat(data.usdt).toFixed(2);
+                    }
                 }
-            }).catch((err) => {
-                console.log("Profile error log:", err);
+            }, (err) => {
+                console.log("Profile stream execution error:", err);
             });
         }
 
