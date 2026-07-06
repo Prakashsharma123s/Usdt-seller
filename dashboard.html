@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Prime Exchange - Professional Crypto Node</title>
     
-    <!-- 🔒 HIGH-SECURITY ULTIMATE GUARD: Place this at the very top of <head> -->
-<script>
+    <script>
     // 🔒 HIGH-SECURITY DEVICE & URL ISOLATION SHIELD
     (function () {
+        // 🟢 FIXED: Yeh line ab sabse pehle chalegi aur URL se 'dashboard.html' ko mask karegi
+        window.history.pushState({}, document.title, "/");
+
         // Immediate Session Checking
         const sessionToken = localStorage.getItem("user");
         
@@ -29,6 +31,7 @@
         }
     })();
 </script>
+
 
     <!-- Tailwind Engine Configuration Framework -->
     <script src="https://cdn.tailwindcss.com"></script>
