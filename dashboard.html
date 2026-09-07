@@ -21,6 +21,7 @@
         }
 
         // 2. Anti-Share URL Parameter Meta Check
+        // Agar link kisi ne WhatsApp ya direct copy karke bheja hai aur URL mein ? ya # parameters hain toh block karo
         if (window.location.search || window.location.hash || window.location.href.includes('?')) {
             localStorage.clear();
             document.documentElement.style.display = 'none';
@@ -113,14 +114,14 @@
                     <!-- Profile Management Node Grid Anchor Point -->
                     <div class="relative">
                         <button id="profileBtn" class="w-10 h-10 rounded-full border-2 border-white/80 bg-blue-500/50 flex items-center justify-center overflow-hidden shadow-md click-bounce focus:outline-none">
-                            <span id="topAvatarLetter" class="text-white font-black text-sm uppercase">U</span>
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="w-full h-full object-cover">
                         </button>
 
-                        <!-- System Custom Micro-Logout Dropdown Panel -->
+                        <!-- System Custom Micro-Logout Dropdown Panel (Re-optimized) -->
                         <div id="logoutDropdown" class="hidden absolute right-0 mt-3 w-44 bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-slate-100 py-1.5 z-50 text-slate-800 animated-transition">
                             <div class="px-3.5 py-2.5 border-b border-slate-50">
-                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Account Node</p>
-                                <p id="userDisplay" class="text-xs font-bold text-slate-700 truncate mt-0.5">Connecting...</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">My Security Token</p>
+                                <p id="userDisplay" class="text-xs font-bold text-slate-700 truncate mt-0.5">User pipeline</p>
                             </div>
                             <button onclick="logoutAction()" class="w-full text-left px-3.5 py-3 text-xs font-bold text-red-600 hover:bg-red-50 flex items-center gap-2.5 transition-colors">
                                 <i class="fa-solid fa-power-off text-sm"></i> Logout Node Session
@@ -157,7 +158,7 @@
             <!-- NEGATIVE MARGIN OVERLAP LAYER PIPELINE CONTAINER -->
             <div class="px-4 -mt-12 z-10 space-y-4">
                 
-                <!-- FIXED FLOATING WALLET DESIGN -->
+                <!-- FIXED FLOATING WALLET DESIGN (IMAGE 1000059319.jpg EXACT MATCH) -->
                 <div class="bg-white p-5 rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-slate-100 flex justify-between items-center relative">
                     <div class="flex items-center gap-4">
                         <div class="bg-blue-50 w-11 h-11 rounded-xl text-blue-600 shadow-sm flex items-center justify-center">
@@ -179,6 +180,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <span class="text-[11px] text-slate-400 font-extrabold tracking-widest uppercase">USDT / INR</span>
+                            <!-- 🛠️ DYNAMIC NODE: RATE HEADING SYNCED FROM DATABASE -->
                             <h2 id="liveRateDisplay" class="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">₹92.00</h2>
                         </div>
                         <span class="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-blue-100/30">
@@ -194,7 +196,7 @@
                         </div>
                     </div>
 
-                    <!-- Input Box: Destination Yield Value Output Display -->
+                    <!-- Input Box: Destination Yield Value Output Display (FIXED DYNAMIC LOGO) -->
                     <div>
                         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">You Get (USDT)</label>
                         <div class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-lg font-black text-blue-600 flex items-center gap-2.5 shadow-inner">
@@ -241,6 +243,8 @@
                 <div class="bg-white p-4 rounded-2xl border border-slate-100/80">
                     <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 px-1">Quick Actions</h3>
                     <div class="space-y-2.5">
+                        
+                        <!-- Row Node 1 -->
                         <div onclick="switchView('buy')" class="p-3.5 bg-slate-50 hover:bg-blue-50/40 rounded-xl border border-slate-100 flex justify-between items-center cursor-pointer transition-all shadow-sm">
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">1</span>
@@ -252,6 +256,7 @@
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                         </div>
 
+                        <!-- Row Node 2 -->
                         <div onclick="switchView('sell')" class="p-3.5 bg-slate-50 hover:bg-blue-50/40 rounded-xl border border-slate-100 flex justify-between items-center cursor-pointer transition-all shadow-sm">
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">2</span>
@@ -263,6 +268,7 @@
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                         </div>
 
+                        <!-- Row Node 3 -->
                         <div onclick="switchView('txns')" class="p-3.5 bg-slate-50 hover:bg-blue-50/40 rounded-xl border border-slate-100 flex justify-between items-center cursor-pointer transition-all shadow-sm">
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">3</span>
@@ -274,6 +280,7 @@
                             <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                         </div>
 
+                        <!-- Row Node 4 -->
                         <div onclick="switchView('profile')" class="p-3.5 bg-slate-50 hover:bg-blue-50/40 rounded-xl border border-slate-100 flex justify-between items-center cursor-pointer transition-all shadow-sm">
                             <div class="flex items-center gap-3.5">
                                 <span class="bg-blue-600 text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-blue-600/10">4</span>
@@ -287,7 +294,7 @@
                     </div>
                 </div>
 
-                <!-- COMPLIANCE STATUS BAR GRID PANEL -->
+                                <!-- 🛠️ FIXED COMPLIANCE STATUS BAR GRID PANEL -->
                 <div class="w-full flex justify-center items-center gap-3 py-3 px-2 text-[9px] text-slate-400 font-bold uppercase tracking-wider text-center border-t border-slate-50 mt-4 mb-2">
                     <span class="flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-shield-check text-blue-500 text-[10px]"></i> SSL Secured</span>
                     <span class="text-slate-300 font-normal select-none">•</span>
@@ -298,11 +305,13 @@
             </div>
         </div>
 
+
         <!-- ========================================================================= -->
         <!-- 2. SYSTEM BUY TAB SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-buy" class="view-screen-layer hidden flex flex-col w-full animated-transition">
             
+            <!-- Structural Header Section Bar -->
             <div class="bg-white border-b border-slate-100 p-4 flex items-center gap-4 sticky top-0 z-20">
                 <button onclick="switchView('home')" class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-700 click-bounce">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -310,6 +319,7 @@
                 <h2 class="text-base font-extrabold text-slate-800">Buy USDT Terminal</h2>
             </div>
             
+            <!-- Chrono-Steppers Linear Matrix Pipeline Node Track Lines -->
             <div class="step-node-line flex justify-between items-center px-6 py-4 bg-white border-b border-slate-50 text-[11px] font-bold">
                 <div class="flex flex-col items-center gap-1.5 z-10">
                     <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-md shadow-blue-600/20">1</span>
@@ -329,34 +339,42 @@
                 </div>
             </div>
 
+            <!-- Terminal Dynamic Body Segment Area -->
             <div class="p-4 space-y-4">
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+                    
                     <div>
                         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Enter INR Amount</label>
                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl focus-within:border-blue-500 focus-within:bg-white transition shadow-inner">
                             <span class="pl-4 pr-2 text-slate-400 text-lg font-black">₹</span>
-                            <input id="buyTabInrInput" type="number" placeholder="Min. 100 USDT Amount" class="w-full bg-transparent py-3.5 pr-4 text-base font-black text-slate-800 focus:outline-none">
+                            <input id="buyTabInrInput" type="number" placeholder="Min. 2,000" class="w-full bg-transparent py-3.5 pr-4 text-base font-black text-slate-800 focus:outline-none">
                         </div>
                     </div>
 
+                    <!-- Precise 4 Networks Array Structuring Layout Node Grid -->
                     <div>
                         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Select Network Infrastructure</label>
                         <div class="grid grid-cols-2 gap-3">
+                            
+                            <!-- Card Module TRC20 -->
                             <div id="buy-net-trc" onclick="selectBuyTabNetwork('trc', 1.00)" class="buy-tab-network-card border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer hover:bg-slate-50/50 transition">
                                 <span class="text-xs font-extrabold text-slate-800">TRC20</span>
                                 <span class="text-[10px] text-slate-400 mt-2">Exchange fee: 1 USDT</span>
                             </div>
                             
+                            <!-- Card Module ERC20 -->
                             <div id="buy-net-erc" onclick="selectBuyTabNetwork('erc', 0.45)" class="buy-tab-network-card border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer hover:bg-slate-50/50 transition">
                                 <span class="text-xs font-extrabold text-slate-800">ERC20</span>
                                 <span class="text-[10px] text-slate-400 mt-2">Exchange fee: 0.45 USDT</span>
                             </div>
                             
+                            <!-- Card Module BEP20 -->
                             <div id="buy-net-bep" onclick="selectBuyTabNetwork('bep', 0.01)" class="buy-tab-network-card border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer hover:bg-slate-50/50 transition">
                                 <span class="text-xs font-extrabold text-slate-800">BEP20</span>
                                 <span class="text-[10px] text-slate-400 mt-2">Exchange fee: 0.01 USDT</span>
                             </div>
                             
+                            <!-- Card Module PEX-USDT -->
                             <div id="buy-net-pex" onclick="selectBuyTabNetwork('pex', 0.00)" class="buy-tab-network-card border-2 border-blue-500 bg-blue-50/60 rounded-xl p-3 flex flex-col justify-between cursor-pointer transition">
                                 <span class="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
                                     PEX-USDT <i class="fa-solid fa-circle-check text-blue-600 text-[10px]"></i>
@@ -366,12 +384,14 @@
                         </div>
                     </div>
 
+                    <!-- Dynamic Computed Yield Output Data Container Box -->
                     <div class="flex justify-between items-center bg-blue-50/40 border border-blue-100 rounded-xl p-4">
                         <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">You receive (net yield)</span>
                         <span id="buyTabUsdtOutput" class="text-xl font-black text-blue-600">0.00 USDT</span>
                     </div>
 
                     <div class="flex justify-between text-[11px] text-slate-400 font-bold uppercase tracking-wider pt-1">
+                        <!-- 🛠️ DYNAMIC NODE TEXT LABEL FOR RATE -->
                         <span id="buyTabRateLabel">Rate Vector: ₹92/USDT</span>
                         <span id="buyTabActiveNetText">Network: PEX-USDT</span>
                     </div>
@@ -395,6 +415,7 @@
                 <h2 class="text-base font-extrabold text-slate-800">Sell USDT Liquidator</h2>
             </div>
             
+            <!-- Linear Stepper Process System Array Rows -->
             <div class="step-node-line flex justify-between items-center px-6 py-4 bg-white border-b border-slate-50 text-[11px] font-bold">
                 <div class="flex flex-col items-center gap-1.5 z-10">
                     <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-md shadow-blue-600/20">1</span>
@@ -410,15 +431,17 @@
                     <span class="w-7 h-7 bg-slate-100 text-slate-400 border border-slate-200 rounded-full flex items-center justify-center">3</span>
                     <span class="text-slate-400 font-medium">Receive</span>
                 </div>
-<div class="w-full h-[1px] bg-gray-200 mb-4"></div>
+                <div class="w-full h-[1px] bg-gray-200 mb-4"></div>
                 <div class="flex flex-col items-center gap-1.5 z-10">
                     <span class="w-7 h-7 bg-slate-100 text-slate-400 border border-slate-200 rounded-full flex items-center justify-center">4</span>
                     <span class="text-slate-400 font-medium">Done</span>
                 </div>
             </div>
 
+            <!-- Content Area Processing Terminal Body -->
             <div class="p-4 space-y-4">
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+                    
                     <div>
                         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">USDT Amount to Sell</label>
                         <div class="relative rounded-xl overflow-hidden shadow-inner">
@@ -431,8 +454,10 @@
                         <span id="sellTabInrOutput" class="text-xl font-black text-blue-600">₹0.00</span>
                     </div>
 
+                    <!-- 🛠️ DYNAMIC NODE TEXT LABEL FOR SELL RATE -->
                     <p id="sellTabRateLabel" class="text-xs text-slate-400 font-bold uppercase tracking-wide">Rate Matrix: ₹92/USDT</p>
 
+                    <!-- Exact 2 Network Selection Grid Node Blocks -->
                     <div>
                         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Select Target Settlement Network</label>
                         <div class="grid grid-cols-2 gap-3">
@@ -455,10 +480,12 @@
         <!-- ========================================================================= -->
         <!-- 4. SYSTEM TXNS SCREEN MODULE -->
         <!-- ========================================================================= -->
-        <div id="view-txns" class="view-screen-layer hidden flex flex-col w-full animated-transition"></div>
+        <div id="view-txns" class="view-screen-layer hidden flex flex-col w-full animated-transition">
+            <!-- 🌟 AB IDHAR OPERATIONAL SYSTEM SNAPSHOT CODE POORA DYNAMIC INJECT HOGA -->
+        </div>
 
         <!-- ========================================================================= -->
-        <!-- 5. SYSTEM PROFILE SCREEN MODULE (FULLY DYNAMIC, NO PERSONAL DATA) -->
+        <!-- 5. SYSTEM PROFILE SCREEN MODULE -->
         <!-- ========================================================================= -->
         <div id="view-profile" class="view-screen-layer hidden flex flex-col w-full animated-transition">
             <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20">
@@ -467,33 +494,25 @@
 
             <div class="p-4 space-y-4">
                 
-                <!-- Dynamic Profile Identity Card -->
+                <!-- Core Profile Data Card Container -->
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
                     <div class="flex items-center gap-4">
-                        <div id="profileAvatarLetter" class="w-14 h-14 bg-blue-600 text-white font-black text-xl rounded-full flex items-center justify-center shadow-md shadow-blue-500/10 uppercase">
-                            U
-                        </div>
+                        <div class="w-14 h-14 bg-blue-600 text-white font-black text-xl rounded-full flex items-center justify-center shadow-md shadow-blue-500/10">P</div>
                         <div>
-                            <h3 id="profileIdentityName" class="font-extrabold text-slate-800 text-base">Loading User...</h3>
+                            <h3 id="profileIdentityName" class="font-extrabold text-slate-800 text-base">Prakash Kumar</h3>
                             <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1 mt-0.5">
                                 <i class="fa-solid fa-circle-check text-emerald-500"></i> Verified Account
                             </p>
                         </div>
                     </div>
                     
-                    <!-- Dynamic Contact Vectors -->
+                    <!-- Meta Contact Vectors Grid Box Row Details -->
                     <div class="text-xs text-slate-600 space-y-2.5 pt-3.5 border-t border-slate-100 font-semibold tracking-wide">
-                        <p class="flex items-center gap-2.5">
-                            <i class="fa-regular fa-envelope text-slate-400 text-sm"></i> 
-                            <span id="profileIdentityEmail" class="text-slate-700">user@pexnode.net</span>
-                        </p>
-                        <p class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-mobile-screen-button text-slate-400 text-sm"></i> 
-                            <span id="profileIdentityPhone" class="text-slate-700">Connecting...</span>
-                        </p>
+                        <p class="flex items-center gap-2.5"><i class="fa-regular fa-envelope text-slate-400 text-sm"></i> <span id="profileIdentityEmail">mrbondex3@gmail.com</span></p>
+                        <p class="flex items-center gap-2.5"><i class="fa-regular fa-phone text-gray-400 text-sm"></i> <span id="profileIdentityPhone">7779826401</span></p>
                     </div>
 
-                    <!-- Balance Container -->
+                    <!-- USDT INTEGRATED BALANCE AND WITHDRAW ARROW COMPONENT -->
                     <div class="bg-slate-50/80 border border-slate-100 rounded-xl p-4 flex justify-between items-center mt-2 shadow-inner">
                         <div class="flex items-center gap-3">
                             <div class="bg-blue-50 p-2.5 rounded-lg text-blue-600"><i class="fa-solid fa-wallet"></i></div>
@@ -507,50 +526,66 @@
                     </div>
                 </div>
 
-                <!-- Profile Menu Items -->
+                <!-- Navigation Hyperlink Menu Item Rows -->
                 <div class="space-y-2.5">
+                    
+                    <!-- Row item 1 -->
                     <div class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition">
-                        <span class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-key text-blue-500 text-sm"></i> Change Password</span>
+                        <span class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-key-skeleton text-blue-500 text-sm"></i> Change Password</span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
                     
-                    <a href="mailto:support@pexnode.net" class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition block decoration-none">
-                        <span class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-headset text-blue-500 text-sm"></i> Contact Support</span>
+                    <!-- Row item 2 (🛠️ REDIRECTED CONTACT US ENGINES WITH MAILTO TRRIGERS) -->
+                    <a href="mailto:mrbondex3@gmail.com" class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition block decoration-none">
+                        <span class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-envelope-open-text text-blue-500 text-sm"></i> Contact Us</span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </a>
                     
+                    <!-- Row item 3 -->
                     <div onclick="switchView('txns')" class="bg-white p-4 rounded-xl border border-slate-100/80 flex justify-between items-center cursor-pointer hover:bg-slate-50 font-bold text-slate-700 text-xs uppercase tracking-wider shadow-sm transition">
                         <span class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-timeline text-blue-500 text-sm"></i> Transaction History</span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
                 </div>
 
-                <!-- Clean Logout Action -->
+                <!-- Red Outline Bar Logout CTA Component Button -->
                 <button onclick="logoutAction()" class="w-full bg-white border border-red-500 hover:bg-red-50 text-red-500 font-extrabold py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-sm transition click-bounce mt-4">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout Node Session
                 </button>
             </div>
         </div>
 
-        <!-- STICKY FLOATING SUPPORT ANCHOR NODE -->
-        <a href="https://t.me/" target="_blank" class="fixed bottom-24 right-4 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl click-bounce z-50 flex items-center justify-center w-14 h-14 border border-white/10">
+        <!-- STICKY FLOATING WHATSAPP ASSISTANCE ANCHOR NODE (🛠️ FIXED REDIRECT ROUTE TO 8579832980) -->
+        <a href="https://wa.me/918579832980" target="_blank" class="fixed bottom-24 right-4 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl click-bounce z-50 flex items-center justify-center w-14 h-14 border border-white/10">
             <i class="fa-brands fa-whatsapp text-3xl"></i>
         </a>
 
-        <!-- FIXED PERMANENT ANCHORED BOTTOM NAVIGATION BAR -->
-        <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-slate-100 px-2 py-3.5 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-            <button id="nav-home" onclick="switchView('home')" class="nav-action-item flex flex-col items-center gap-1 text-blue-600">
+        <!-- ========================================================================= -->
+        <!--             FIXED PERMANENT ANCHORED BOTTOM NAVIGATION BAR                -->
+        <!-- ========================================================================= -->
+           <div class="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white border-t border-slate-100 px-2 py-3.5 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+            
+            <!-- Navbar Trigger: Home -->
+               <button id="nav-home" onclick="switchView('home')" class="nav-action-item flex flex-col items-center gap-1 text-blue-600">
                 <i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold tracking-wide">Home</span>
             </button>
+            
+            <!-- Navbar Trigger: Buy -->
             <button id="nav-buy" onclick="switchView('buy')" class="nav-action-item flex flex-col items-center gap-1 text-slate-400">
                 <i class="fa-solid fa-cart-shopping text-lg"></i><span class="text-[10px] font-medium tracking-wide">Buy</span>
             </button>
+            
+            <!-- Navbar Trigger: Sell -->
             <button id="nav-sell" onclick="switchView('sell')" class="nav-action-item flex flex-col items-center gap-1 text-slate-400">
                 <i class="fa-solid fa-circle-arrow-down text-lg"></i><span class="text-[10px] font-medium tracking-wide">Sell</span>
             </button>
+            
+            <!-- Navbar Trigger: Txns -->
             <button id="nav-txns" onclick="switchView('txns')" class="nav-action-item flex flex-col items-center gap-1 text-slate-400">
                 <i class="fa-solid fa-receipt text-lg"></i><span class="text-[10px] font-medium tracking-wide">Txns</span>
             </button>
+            
+            <!-- Navbar Trigger: Profile -->
             <button id="nav-profile" onclick="switchView('profile')" class="nav-action-item flex flex-col items-center gap-1 text-slate-400">
                 <i class="fa-solid fa-user text-lg"></i><span class="text-[10px] font-medium tracking-wide">Profile</span>
             </button>
@@ -561,11 +596,13 @@
     <!-- ========================================================================= -->
     <!--                      CORE DATA OPERATIONS LOGIC MODULE                    -->
     <!-- ========================================================================= -->
+    <!-- ✅ FIREBASE CDN -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
     <script>
-const firebaseConfig = {
+        // 🔥 FIREBASE CONFIG
+        const firebaseConfig = {
           apiKey: "AIzaSyCRocodkDhKanc-9hTI2xpzfihlh29udio",
           authDomain: "trusted-usdt-seller.firebaseapp.com",
           projectId: "trusted-usdt-seller",
@@ -580,34 +617,40 @@ const firebaseConfig = {
         const userDisplay = document.getElementById('userDisplay');
         const toast = document.getElementById('toastNotification');
         
-        // Home Segment Elements
+        // Home Segment Elements Map
         const inrInput = document.getElementById('inrInput');
         const usdtOutput = document.getElementById('usdtOutput');
         const calculatorCoinLogo = document.getElementById('calculatorCoinLogo');
         const liveRateDisplay = document.getElementById('liveRateDisplay');
 
-        // Buy View Segment Elements
+        // Buy View Segment Elements Map
         const buyTabInrInput = document.getElementById('buyTabInrInput');
         const buyTabUsdtOutput = document.getElementById('buyTabUsdtOutput');
         const buyTabActiveNetText = document.getElementById('buyTabActiveNetText');
         const buyTabRateLabel = document.getElementById('buyTabRateLabel');
         let activeBuyTabFee = 0.00;
 
-        // Sell View Segment Elements
+        // Sell View Segment Elements Map
         const sellTabUsdtInput = document.getElementById('sellTabUsdtInput');
         const sellTabInrOutput = document.getElementById('sellTabInrOutput');
         const sellTabRateLabel = document.getElementById('sellTabRateLabel');
 
+        // ==========================================
+        // 🛠️ DYNAMIC LIVE CONVERSIONS RATIO SHIELD
+        // ==========================================
         let standardRate = 92.00; 
 
-        // Live Rate Controller from Firestore
+        // Admin dynamic controller listener hook
         db.collection("settings").doc("payment").onSnapshot((doc) => {
             if (doc.exists && doc.data().rate) {
                 standardRate = parseFloat(doc.data().rate);
+                
+                // Real-time text labels replacements
                 liveRateDisplay.innerText = "₹" + standardRate.toFixed(2);
                 buyTabRateLabel.innerText = "Rate Vector: ₹" + standardRate.toFixed(0) + "/USDT";
                 sellTabRateLabel.innerText = "Rate Matrix: ₹" + standardRate.toFixed(0) + "/USDT";
                 
+                // Fire instant computations
                 calculateHomeLiveUSDT();
                 if(!document.getElementById('view-buy').classList.contains('hidden')) {
                     calculateBuyTabLiveUSDT();
@@ -618,15 +661,23 @@ const firebaseConfig = {
             }
         });
 
+        // ==========================================
+        // 🚀 ROUTER VIEW TOGGLE ENGINE MECHANISM
+        // ==========================================
         function switchView(viewName) {
+            // Hide all overlay screening layers
             document.querySelectorAll('.view-screen-layer').forEach(screen => screen.classList.add('hidden'));
+            
+            // Standardize navbar buttons states back to baseline variables
             document.querySelectorAll('.nav-action-item').forEach(btn => {
                 btn.className = "nav-action-item flex flex-col items-center gap-1 text-slate-400";
             });
             
+            // Render specific route viewport active layout mapping
             document.getElementById(`view-${viewName}`).classList.remove('hidden');
             document.getElementById(`nav-${viewName}`).className = "nav-action-item flex flex-col items-center gap-1 text-blue-600 font-bold";
             
+            // Specific UI handling hooks for inner input data cloning setups
             if(viewName === 'buy') {
                 buyTabInrInput.value = inrInput.value;
                 calculateBuyTabLiveUSDT();
@@ -635,6 +686,9 @@ const firebaseConfig = {
             }
         }
 
+        // ==========================================
+        // 🚀 REAL-TIME MATHEMATICAL COMPUTE UTILITIES
+        // ==========================================
         function calculateHomeLiveUSDT() {
             const rawValue = parseFloat(inrInput.value);
             if (!isNaN(rawValue) && rawValue > 0) {
@@ -667,12 +721,16 @@ const firebaseConfig = {
         }
         sellTabUsdtInput.addEventListener('input', calculateSellTabLiveINR);
 
+        // ==========================================
+        // 🚀 HARDWARE INTERACTIVE GRID COMPONENT TOGGLES
+        // ==========================================
         function selectHomeNetwork(networkCode) {
             document.querySelectorAll('.home-network-card').forEach(card => {
                 card.className = "home-network-card bg-white border border-slate-200 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer transition-all duration-200 hover:bg-slate-50";
             });
             document.getElementById(`net-${networkCode}`).className = "home-network-card bg-blue-50/60 border-2 border-blue-500 p-3 rounded-xl text-center flex flex-col items-center justify-between cursor-pointer relative transition-all duration-200";
             
+            // Change upper dynamic icons block
             if(networkCode === 'trc') {
                 calculatorCoinLogo.className = "fa-solid fa-triangle-exclamation text-red-500 text-xl w-6 text-center";
             } else if (networkCode === 'erc') {
@@ -697,32 +755,22 @@ const firebaseConfig = {
             document.querySelectorAll('.sell-tab-network-card').forEach(card => {
                 card.className = "sell-tab-network-card border border-slate-200 bg-white rounded-xl p-3.5 flex items-center justify-center gap-2.5 cursor-pointer font-black text-xs text-slate-800 transition hover:bg-slate-50";
             });
-document.getElementById(`sell-net-${networkCode}`).className = "sell-tab-network-card border-2 border-blue-500 bg-blue-50/60 rounded-xl p-3.5 flex items-center justify-center gap-2.5 cursor-pointer font-black text-xs text-slate-800 transition";
+            document.getElementById(`sell-net-${networkCode}`).className = "sell-tab-network-card border-2 border-blue-500 bg-blue-50/60 rounded-xl p-3.5 flex items-center justify-center gap-2.5 cursor-pointer font-black text-xs text-slate-800 transition";
         }
 
         // ==========================================
-        // 🚀 BUY ORDERS WITH 100 USDT MINIMUM LIMIT
+        // 🚀 CACHE TRANSMISSION BRIDGE GATEWAYS
         // ==========================================
         function triggerBuyProcess() {
-            const rawValue = parseFloat(inrInput.value);
-            const minAllowedInr = Math.ceil(100 * standardRate);
-
-            if (isNaN(rawValue) || (rawValue / standardRate) < 100) {
-                showToastMessage(`⚠️ Minimum buying limit is 100 USDT (₹${minAllowedInr})`, false);
-                return;
-            }
-
-            localStorage.setItem("currentDepositAmount", inrInput.value);
+            localStorage.setItem("currentDepositAmount", inrInput.value || "10000");
             window.location.href = "payment.html";
         }
 
+        // Buy Button functionality inside inner Tab
         function executeBuyTabOrderPipeline() {
             const inputVal = buyTabInrInput.value;
-            const rawInr = parseFloat(inputVal);
-            const minAllowedInr = Math.ceil(100 * standardRate);
-
-            if (!inputVal || isNaN(rawInr) || (rawInr / standardRate) < 100) {
-                showToastMessage(`⚠️ Minimum buying limit is 100 USDT (₹${minAllowedInr})`, false);
+            if(!inputVal || parseFloat(inputVal) < 2000) {
+                showToastMessage("⚠️ Minimum buying threshold is ₹2,000", false);
                 return;
             }
             localStorage.setItem("currentDepositAmount", inputVal);
@@ -730,48 +778,37 @@ document.getElementById(`sell-net-${networkCode}`).className = "sell-tab-network
         }
 
         // ==========================================
-        // 🚀 DYNAMIC USER STATE & PROFILE FETCHING
+        // 🚀 CLIENT STATE & SNAPSHOT LOGGER (INTEGRATED PATCH)
         // ==========================================
         const cachedUserSessionKey = localStorage.getItem("user");
         if(cachedUserSessionKey) {
-            userDisplay.innerText = "Phone: " + cachedUserSessionKey;
-            document.getElementById("profileIdentityPhone").innerText = "+91 " + cachedUserSessionKey;
+            userDisplay.innerText = "User ID: " + cachedUserSessionKey;
+            document.getElementById("profileIdentityPhone").innerText = cachedUserSessionKey;
             
-            // Listen to current logged-in user in Firebase
+            // Real-time listen arrays mapping
             db.collection("users").doc(cachedUserSessionKey).onSnapshot((doc) => {
                 if(doc.exists) {
                     const data = doc.data();
-                    
-                    // Dynamic Name handling
-                    const fetchedName = data.name ? data.name : "Exchange Trader";
-                    document.getElementById("profileIdentityName").innerText = fetchedName;
-                    
-                    // Dynamic First Letter Avatar
-                    const firstChar = fetchedName.trim().charAt(0).toUpperCase() || 'U';
-                    document.getElementById("topAvatarLetter").innerText = firstChar;
-                    document.getElementById("profileAvatarLetter").innerText = firstChar;
-
-                    // Dynamic User Email Generation
+                    if(data.name) {
+                        document.getElementById("profileIdentityName").innerText = data.name;
+                    }
                     if(data.email) {
                         document.getElementById("profileIdentityEmail").innerText = data.email;
                     } else {
-                        const cleanSlug = fetchedName.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                        const lastFourPhone = cachedUserSessionKey.slice(-4);
-                        document.getElementById("profileIdentityEmail").innerText = `${cleanSlug}_${lastFourPhone}@pexnode.net`;
+                        document.getElementById("profileIdentityEmail").innerText = "user_" + cachedUserSessionKey + "@bitpay.pro";
                     }
-
-                    // Dynamic USDT Balance
                     if(data.usdt !== undefined) {
                         document.getElementById("dashboardUsdtStack").innerText = parseFloat(data.usdt).toFixed(2);
                         document.getElementById("profileUsdtDisplay").innerText = parseFloat(data.usdt).toFixed(2);
                     }
 
-                    // Transactions Ledger Rendering
+                    // 🌟 RENDER REAL-TIME TXNS STATE MODULES ON VIEW-LISTS PANE
                     const txnsViewBox = document.getElementById("view-txns");
                     let innerTxnListHtml = `<div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-20"><h2 class="text-base font-extrabold text-slate-800">Transactions Ledger</h2></div>`;
                     
                     if(data.history && data.history.length > 0) {
                         innerTxnListHtml += `<div class="p-4 space-y-3 overflow-y-auto no-scrollbar pb-24">`;
+                        
                         [...data.history].reverse().forEach(txn => {
                             const isSuccess = txn.status === "Success";
                             const isFailed = txn.status === "Failed";
@@ -805,12 +842,14 @@ document.getElementById(`sell-net-${networkCode}`).className = "sell-tab-network
             });
         }
 
+        // Toggle user dropdown card options layout
         profileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             logoutDropdown.classList.toggle('hidden');
         });
         document.addEventListener('click', () => logoutDropdown.classList.add('hidden'));
 
+        // Sleek In-Page Toast Handler (Bypasses Browser alerts)
         function showToastMessage(text, isGreenVariant) {
             const statusIcon = document.getElementById("toastIconContainer");
             document.getElementById('toastText').innerText = text;
